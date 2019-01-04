@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace blockoptimiser.ViewModels
 {
-    class ShellViewModel : Screen
+    class ShellViewModel : Conductor<Object>
     {
+        public ShellViewModel()
+        {
+            ActivateItem(new ProjectsViewModel());
+        }
     }
 }
