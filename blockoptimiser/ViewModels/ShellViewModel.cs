@@ -40,7 +40,8 @@ namespace blockoptimiser.ViewModels
             String EventName = message as String;
             if (EventName == "loaded:project")
             {
-                ActivateItem(new MainViewModel());
+                //ActivateItem(new MainViewModel());
+                ActivateItem(new AppViewModel());
             }
         }
     }
