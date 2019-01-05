@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace blockoptimiser.ViewModels
 {
@@ -18,10 +19,29 @@ namespace blockoptimiser.ViewModels
             ActivateItem(new ProjectsViewModel(_eventAggregator));
         }
 
+        public void ClickTab(object sender)
+        {
+            var selectedButton = sender as Button;
+            //SetDefaultButtonForegrounds();
+            if (selectedButton != null)
+            {
+                String keyword = selectedButton.Content.ToString();
+                ShowProjectsViewScreen();
+            }
+        }
+
+        private void ShowProjectsViewScreen()
+        {
+            ActivateItem(new ProjectsViewModel(_eventAggregator));
+        }
+
         public void Handle(object message)
         {
             String EventName = message as String;
-            MessageBox.Show(EventName);
+            if (EventName == "loaded:project")
+            {
+                ActivateItem(new MainViewModel());
+            }
         }
     }
 }
