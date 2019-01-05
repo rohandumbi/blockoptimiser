@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataDataAccess.cs" />

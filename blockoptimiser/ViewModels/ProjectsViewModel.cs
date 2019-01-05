@@ -16,9 +16,11 @@ namespace blockoptimiser.ViewModels
         private String _projectName;
         private String _projectDescription;
 
-        public ProjectsViewModel()
+        private readonly IEventAggregator _eventAggregator;
+
+        public ProjectsViewModel(IEventAggregator eventAggregator)
         {
-            //_eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator;
             _projectDAO = new ProjectDataAccess();
             LoadProjects();
         }
@@ -42,8 +44,8 @@ namespace blockoptimiser.ViewModels
         {
             set
             {
-                //Context.ProjectId = value.Id;
-                //_eventAggregator.PublishOnUIThread("loaded:project");
+                Context.ProjectId = value.Id;
+                _eventAggregator.PublishOnUIThread("loaded:project");
             }
         }
 
