@@ -33,16 +33,6 @@
             </StackPanel.Resources>
             <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" Content="Projects" Foreground="{Binding ProjectButtonForeground}">
             </Button>
-            <!--<Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsProjectSelected}" Content="Fleet List" Foreground="{Binding FleetListButtonForeground}">
-            </Button>
-            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsProjectSelected}" Content="Hub Definition" Foreground="{Binding HubDefinitionButtonForeground}">
-            </Button>
-            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsProjectSelected}" Content="Truck Hub Priority" Foreground="{Binding HubPriorityButtonForeground}">
-            </Button>
-            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsProjectSelected}" Content="Hub Allocation" Foreground="{Binding HubAllocationButtonForeground}">
-            </Button>
-            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsProjectSelected}" Content="Scenario" Foreground="{Binding ScenarioButtonForeground}">
-            </Button>-->
         </StackPanel>
         <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="1"/>
     </Grid>

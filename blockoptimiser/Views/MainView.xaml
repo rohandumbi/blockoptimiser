@@ -7,7 +7,38 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label x:Name="label" Content="This will be the main view with menu on left and content on right." HorizontalAlignment="Left" Margin="274,104,0,0" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="374,178,0,0" TextWrapping="Wrap" Text="{Binding ProjectId}" VerticalAlignment="Top"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <GroupBox x:Name="groupBox" 
+                  Header="Create New Row" 
+                  Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10px" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="LabelFileName" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Select File:"/>
+                <TextBox x:Name="FleetFile" Grid.Row="2" Grid.Column="2" Width="350" Margin="0 0 5 10" PreviewMouseDown="FleetFile_MouseDown"/>
+                <TextBlock x:Name="LabelModelBearing" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Model Bearing:"/>
+                <TextBox x:Name="ModelBearing" Grid.Row="2" Grid.Column="6" Width="150" Margin="0 0 5 10" Text="{Binding ModelBearing}"/>
+                <Button x:Name="ImportData" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Import</Button>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>
