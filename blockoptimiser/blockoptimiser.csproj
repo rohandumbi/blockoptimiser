@@ -81,13 +81,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Book.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Course.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataDataAccess.cs" />
+    <Compile Include="Department.cs" />
     <Compile Include="Models\ProjectDataModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="TreeViewModel.cs" />
+    <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProjectsViewModel.cs" />

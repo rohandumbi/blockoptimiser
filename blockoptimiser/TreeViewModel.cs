@@ -1,17 +1,16 @@
-﻿using Caliburn.Micro;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace blockoptimiser.ViewModels
+namespace blockoptimiser
 {
-    public class AppViewModel : Screen
+    public class TreeViewModel : ViewModelBase
     {
         private List<Department> departments;
-        public AppViewModel()
+
+        public TreeViewModel()
         {
             Departments = new List<Department>()
             {
@@ -29,7 +28,7 @@ namespace blockoptimiser.ViewModels
             set
             {
                 departments = value;
-                NotifyOfPropertyChange("Departments");
+                OnPropertyChanged("Departments");
             }
         }
     }
