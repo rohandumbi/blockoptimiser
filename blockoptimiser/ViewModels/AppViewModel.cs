@@ -17,21 +17,25 @@ namespace blockoptimiser.ViewModels
         private List<ProjectDataModel> ProjectDataModels;
         private ProjectDataDataAccess ProjectDataDAO;
         private ProjectDataAccess ProjectDAO;
+        private String _newModelName;
+        private MenuItem ProjectMenu;
+        private MenuItem DataImportMenu;
+        private MenuItem GeoTechMenu;
         public AppViewModel()
         {
             ProjectDAO = new ProjectDataAccess();
             ProjectDataDAO = new ProjectDataDataAccess();
             ProjectModel Project = ProjectDAO.Get(Context.ProjectId);
-            MenuItem ProjectMenu = new MenuItem(Project.Name);
+            ProjectMenu = new MenuItem(Project.Name);
             ProjectDataModels = ProjectDataDAO.GetAll(Context.ProjectId);
-            MenuItem DataImport = new MenuItem("Data Import");
+            DataImportMenu = new MenuItem("Data Import");
             foreach (ProjectDataModel model in ProjectDataModels)
             {
-                DataImport.ChildMenuItems.Add(new MenuItem(model.Name));
+                DataImportMenu.ChildMenuItems.Add(new MenuItem(model.Name));
             }
-            MenuItem GeoTech = new MenuItem("Geotech/Process");
-            ProjectMenu.ChildMenuItems.Add(DataImport);
-            ProjectMenu.ChildMenuItems.Add(GeoTech);
+            GeoTechMenu = new MenuItem("Geotech/Process");
+            ProjectMenu.ChildMenuItems.Add(DataImportMenu);
+            ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
 
             MenuItems = new List<MenuItem>()
             {
@@ -50,6 +54,24 @@ namespace blockoptimiser.ViewModels
                 menuItems = value;
                 NotifyOfPropertyChange("Departments");
             }
+        }
+
+        public String ModelName
+        {
+            set { _newModelName = value; }
+        }
+
+        public void AddModel()
+        {
+            ProjectDataModel newModel = new ProjectDataModel
+            {
+                ProjectId = Context.ProjectId,
+                Name = _newModelName,
+                Bearing = 1
+            };
+            ProjectDataDAO.Insert(newModel);
+            DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name));
+            NotifyOfPropertyChange("MenuItems");
         }
     }
 }
