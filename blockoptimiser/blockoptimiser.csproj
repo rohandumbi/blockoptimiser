@@ -89,6 +89,7 @@
     <Compile Include="DataAccessClasses\ProjectDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataDataAccess.cs" />
     <Compile Include="Department.cs" />
+    <Compile Include="MenuItem.cs" />
     <Compile Include="Models\ProjectDataModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="TreeViewModel.cs" />

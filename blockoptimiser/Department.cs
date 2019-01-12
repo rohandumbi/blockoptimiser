@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace blockoptimiser
-{
+{   
     public class Department : ViewModelBase
     {
         private List<Course> courses;

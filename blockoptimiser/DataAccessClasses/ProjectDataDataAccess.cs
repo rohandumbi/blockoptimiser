@@ -19,6 +19,14 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public List<ProjectDataModel> GetAll(int ProjectId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<ProjectDataModel>("select * from ProjectData where ProjectId=" + ProjectId).ToList();
+            }
+        }
+
         public void Insert(ProjectDataModel newProjectData)
         {
 
