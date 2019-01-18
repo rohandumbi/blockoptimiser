@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:blockoptimiser.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
    
@@ -22,35 +23,18 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        <!--<TreeView x:Name="MainTreeView" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding Departments}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Courses}">
-                    <Label Content="{Binding DepartmentName}"/>
-                    <HierarchicalDataTemplate.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Books}">
-                            <Label Content="{Binding CourseName}"/>
-                            <HierarchicalDataTemplate.ItemTemplate>
-                                <DataTemplate>
-                                    <Label Content="{Binding BookName}"/>
-                                </DataTemplate>
-                            </HierarchicalDataTemplate.ItemTemplate>
-                        </HierarchicalDataTemplate>
-                    </HierarchicalDataTemplate.ItemTemplate>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>-->
         <TextBox x:Name="ModelName" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10"/>
         <Button x:Name="AddModel" Grid.Row="1" Grid.Column="2" Width="75" Margin="0 0 0 10">Add Model</Button>
         <TreeView x:Name="MainTreeView" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding MenuItems}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
-                    <Label Content="{Binding MenuLabel}"/>
+                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($eventArgs))]" Content="{Binding MenuLabel}"/>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
-                            <Label Content="{Binding MenuLabel}"/>
+                            <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($eventArgs))]" Content="{Binding MenuLabel}"/>
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <DataTemplate>
-                                    <Label Content="{Binding MenuLabel}"/>
+                                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($source, $eventArgs))]" Content="{Binding MenuLabel}"/>
                                 </DataTemplate>
                             </HierarchicalDataTemplate.ItemTemplate>
                         </HierarchicalDataTemplate>
@@ -58,5 +42,6 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="3"/>
     </Grid>
 </UserControl>

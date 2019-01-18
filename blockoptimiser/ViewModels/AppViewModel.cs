@@ -7,10 +7,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace blockoptimiser.ViewModels
 {
-    public class AppViewModel : Screen
+    public class AppViewModel : Conductor<Object>
     {
         //private List<Department> departments;
         private List<MenuItem> menuItems;
@@ -21,19 +24,20 @@ namespace blockoptimiser.ViewModels
         private MenuItem ProjectMenu;
         private MenuItem DataImportMenu;
         private MenuItem GeoTechMenu;
+        private Boolean isPrimaryModel = true;
         public AppViewModel()
         {
             ProjectDAO = new ProjectDataAccess();
             ProjectDataDAO = new ProjectDataDataAccess();
             ProjectModel Project = ProjectDAO.Get(Context.ProjectId);
-            ProjectMenu = new MenuItem(Project.Name);
+            ProjectMenu = new MenuItem(Project.Name, "project");
             ProjectDataModels = ProjectDataDAO.GetAll(Context.ProjectId);
-            DataImportMenu = new MenuItem("Data Import");
+            DataImportMenu = new MenuItem("Data Import", "data-import");
             foreach (ProjectDataModel model in ProjectDataModels)
             {
-                DataImportMenu.ChildMenuItems.Add(new MenuItem(model.Name));
+                DataImportMenu.ChildMenuItems.Add(new MenuItem(model.Name, "model"));
             }
-            GeoTechMenu = new MenuItem("Geotech/Process");
+            GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
             ProjectMenu.ChildMenuItems.Add(DataImportMenu);
             ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
 
@@ -41,6 +45,7 @@ namespace blockoptimiser.ViewModels
             {
                 ProjectMenu
             };
+            //ActivateItem(new ModelDefinitionViewModel());
         }
 
         public List<MenuItem> MenuItems
@@ -52,7 +57,20 @@ namespace blockoptimiser.ViewModels
             set
             {
                 menuItems = value;
-                NotifyOfPropertyChange("Departments");
+                NotifyOfPropertyChange("MenuItems");
+            }
+        }
+
+        public void ClickMenu(object e, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            // MessageBox.Show(e.Source.ToString());
+            if (isPrimaryModel)
+            {
+                ActivateItem(new PrimaryModelDefinitionViewModel());
+            }
+            else
+            {
+                ActivateItem(new ModelDefinitionViewModel());
             }
         }
 
@@ -70,7 +88,7 @@ namespace blockoptimiser.ViewModels
                 Bearing = 1
             };
             ProjectDataDAO.Insert(newModel);
-            DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name));
+            DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
             NotifyOfPropertyChange("MenuItems");
         }
     }

@@ -10,9 +10,10 @@ namespace blockoptimiser
     {
         private List<MenuItem> childMenuItems;
 
-        public MenuItem(string name)
+        public MenuItem(string name, string category)
         {
             MenuLabel = name;
+            Category = category;
             ChildMenuItems = new List<MenuItem>();
         }
 
@@ -30,6 +31,12 @@ namespace blockoptimiser
         }
 
         public string MenuLabel
+        {
+            get;
+            set;
+        }
+
+        public string Category
         {
             get;
             set;
