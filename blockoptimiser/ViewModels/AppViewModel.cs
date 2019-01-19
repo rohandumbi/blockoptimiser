@@ -24,7 +24,7 @@ namespace blockoptimiser.ViewModels
         private MenuItem ProjectMenu;
         private MenuItem DataImportMenu;
         private MenuItem GeoTechMenu;
-        private Boolean isPrimaryModel = true;
+        private Boolean isPrimaryModel = false;
         public AppViewModel()
         {
             ProjectDAO = new ProjectDataAccess();

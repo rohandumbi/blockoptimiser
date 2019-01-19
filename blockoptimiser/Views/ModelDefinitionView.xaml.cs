@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace blockoptimiser.Views
         public ModelDefinitionView()
         {
             InitializeComponent();
+        }
+
+        private void FleetFile_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                FleetFile.Text = openFileDialog.FileName;
         }
     }
 }

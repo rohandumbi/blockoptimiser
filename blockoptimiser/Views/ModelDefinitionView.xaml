@@ -7,7 +7,70 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="236,169,0,0" TextWrapping="Wrap" Text="Model Definition View" VerticalAlignment="Top" Height="55" Width="287"/>
-
+    <Grid.RowDefinitions>
+        <RowDefinition Height="20" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <GroupBox x:Name="groupBox" 
+                  Header="Create New Row" 
+                  Grid.Row="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10px" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="LabelFileName" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Select File:"/>
+            <TextBox x:Name="FleetFile" Grid.Row="2" Grid.Column="2" Width="350" Margin="0 0 5 10" PreviewMouseDown="FleetFile_MouseDown"/>
+            <TextBlock x:Name="LabelModelBearing" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Model Bearing:"/>
+            <TextBox x:Name="ModelBearing" Grid.Row="2" Grid.Column="6" Width="150" Margin="0 0 5 10" Text="{Binding ModelBearing}"/>
+            <Button x:Name="ImportData" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Import</Button>
+        </Grid>
+    </GroupBox>
+        <DataGrid x:Name="PrimaryFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=FieldName}" />
+                <DataGridTemplateColumn Header="Model Mapping">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=MapName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Path=MappingOptions}" SelectedItem="{Binding Path=MapName}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="DimensionModels"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
+                  AutoGenerateColumns="False">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+            <DataGridTextColumn Header="X" Binding="{Binding Path=XCordinate}" />
+            <DataGridTextColumn Header="Y" Binding="{Binding Path=YCordinate}" />
+            <DataGridTextColumn Header="Z" Binding="{Binding Path=ZCordinate}" />
+        </DataGrid.Columns>
+    </DataGrid>
     </Grid>
 </UserControl>
