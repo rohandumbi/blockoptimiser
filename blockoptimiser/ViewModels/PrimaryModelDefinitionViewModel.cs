@@ -15,6 +15,7 @@ namespace blockoptimiser.ViewModels
         public List<string> DataTypes { get; set; }
         public BindableCollection<FieldMappingModel> FieldMappings { get; set; }
         public BindableCollection<FixedFieldMappingModel> FixedFieldMappings { get; set; }
+        public BindableCollection<DimensionModel> DimensionModels { get; set; }
         private String _fleetFileName;
         public String ModelBearing { get; set; }
         public PrimaryModelDefinitionViewModel()
@@ -42,6 +43,12 @@ namespace blockoptimiser.ViewModels
                 new FieldMappingModel("mpdest", "group by", "", CSVFields, DataTypes),
                 new FieldMappingModel("sprod1_t", "additive", "", CSVFields, DataTypes),
                 new FieldMappingModel("sprod1_fe", "grade", "sprod1_t", CSVFields, DataTypes),
+            };
+
+            DimensionModels = new BindableCollection<DimensionModel> {
+                new DimensionModel("Origin", "1", "2", "3"),
+                new DimensionModel("Dimensions", "3", "2", "1"),
+                new DimensionModel("Number of Blocks", "1000", "2000", "3000")
             };
         }
 
@@ -73,6 +80,23 @@ namespace blockoptimiser.ViewModels
                 MappingOptions = mappingOptions;
                 DataTypeOptions = dataTypeOptions;
             }
+        }
+
+        public class DimensionModel
+        {
+            public string Name { get; set; }
+            public string XCordinate { get; set; }
+            public string YCordinate { get; set; }
+            public string ZCordinate { get; set; }
+
+            public DimensionModel(string name, string xCordinate, string yCordinate, string zCordinate)
+            {
+                Name = name;
+                XCordinate = xCordinate;
+                YCordinate = yCordinate;
+                ZCordinate = zCordinate;
+            }
+
         }
 
         public String FleetFile

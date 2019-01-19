@@ -39,7 +39,7 @@
                 <Button x:Name="ImportData" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Import</Button>
             </Grid>
         </GroupBox>
-        <DataGrid x:Name="FixedFieldMappings"  Grid.Row="2" CanUserAddRows="False"
+        <DataGrid x:Name="FixedFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Field" Binding="{Binding Path=FieldName}" />
@@ -63,7 +63,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid x:Name="FieldMappings"  Grid.Row="3" CanUserAddRows="False"
+        <DataGrid x:Name="FieldMappings"  Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Field" Binding="{Binding Path=FieldName}" />
@@ -103,6 +103,15 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="DimensionModels"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Header="X" Binding="{Binding Path=XCordinate}" />
+                <DataGridTextColumn Header="Y" Binding="{Binding Path=YCordinate}" />
+                <DataGridTextColumn Header="Z" Binding="{Binding Path=ZCordinate}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
