@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace blockoptimiser.ViewModels
 {
@@ -14,6 +15,8 @@ namespace blockoptimiser.ViewModels
         public List<string> DataTypes { get; set; }
         public BindableCollection<FieldMappingModel> FieldMappings { get; set; }
         public BindableCollection<FixedFieldMappingModel> FixedFieldMappings { get; set; }
+        private String _fleetFileName;
+        public String ModelBearing { get; set; }
         public PrimaryModelDefinitionViewModel()
         {
             CSVFields = new List<string>
@@ -70,6 +73,26 @@ namespace blockoptimiser.ViewModels
                 MappingOptions = mappingOptions;
                 DataTypeOptions = dataTypeOptions;
             }
+        }
+
+        public String FleetFile
+        {
+            set { _fleetFileName = value; }
+        }
+
+        public void ImportData()
+        {
+            if (String.IsNullOrEmpty(_fleetFileName))
+            {
+                MessageBox.Show("Please select a file!");
+                return;
+            }
+            if (String.IsNullOrEmpty(ModelBearing))
+            {
+                MessageBox.Show("Please provide a value for model bearing!");
+                return;
+            }
+            MessageBox.Show("File selected is: " + _fleetFileName + " and model bearing is: " + ModelBearing);
         }
     }
 }
