@@ -86,12 +86,14 @@
     <Compile Include="Context.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
+    <Compile Include="DataAccessClasses\ModelDimensionDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataAccess.cs" />
-    <Compile Include="DataAccessClasses\ProjectDataDataAccess.cs" />
+    <Compile Include="DataAccessClasses\ModelDataAccess.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="MenuItem.cs" />
-    <Compile Include="Models\ProjectDataModel.cs" />
-    <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\ModelDimension.cs" />
+    <Compile Include="Models\Project.cs" />
     <Compile Include="TreeViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
@@ -173,10 +175,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="db\" />
+    <Content Include="db\install.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

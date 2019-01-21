@@ -17,8 +17,8 @@ namespace blockoptimiser.ViewModels
     {
         //private List<Department> departments;
         private List<MenuItem> menuItems;
-        private List<ProjectDataModel> ProjectDataModels;
-        private ProjectDataDataAccess ProjectDataDAO;
+        private List<Model> Models;
+        private ModelDataAccess ModelDAO;
         private ProjectDataAccess ProjectDAO;
         private String _newModelName;
         private MenuItem ProjectMenu;
@@ -28,12 +28,12 @@ namespace blockoptimiser.ViewModels
         public AppViewModel()
         {
             ProjectDAO = new ProjectDataAccess();
-            ProjectDataDAO = new ProjectDataDataAccess();
-            ProjectModel Project = ProjectDAO.Get(Context.ProjectId);
+            ModelDAO = new ModelDataAccess();
+            Project Project = ProjectDAO.Get(Context.ProjectId);
             ProjectMenu = new MenuItem(Project.Name, "project");
-            ProjectDataModels = ProjectDataDAO.GetAll(Context.ProjectId);
+            Models = ModelDAO.GetAll(Context.ProjectId);
             DataImportMenu = new MenuItem("Data Import", "data-import");
-            foreach (ProjectDataModel model in ProjectDataModels)
+            foreach (Model model in Models)
             {
                 DataImportMenu.ChildMenuItems.Add(new MenuItem(model.Name, "model"));
             }
@@ -81,13 +81,12 @@ namespace blockoptimiser.ViewModels
 
         public void AddModel()
         {
-            ProjectDataModel newModel = new ProjectDataModel
+            Model newModel = new Model
             {
                 ProjectId = Context.ProjectId,
-                Name = _newModelName,
-                Bearing = 1
+                Name = _newModelName
             };
-            ProjectDataDAO.Insert(newModel);
+            ModelDAO.Insert(newModel);
             DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
             NotifyOfPropertyChange("MenuItems");
         }

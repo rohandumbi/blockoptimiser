@@ -10,13 +10,26 @@ CREATE TABLE Project (
    UNIQUE (Name)
 );
 
-IF OBJECT_ID('ProjectData', 'U') IS NOT NULL 
-DROP TABLE ProjectData;
+IF OBJECT_ID('Model', 'U') IS NOT NULL 
+DROP TABLE Model;
 
-CREATE TABLE ProjectData (
+CREATE TABLE Model (
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(50) NOT NULL,
-   Bearing DECIMAL(18,10),
+   Bearing INT,
    UNIQUE (ProjectId, Name)
+);
+
+IF OBJECT_ID('ModelDimension', 'U') IS NOT NULL 
+DROP TABLE ModelDimension;
+
+CREATE TABLE ModelDimension (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ModelId INT,
+   Type VARCHAR(50) NOT NULL,
+   XDim DECIMAL(18, 10),
+   YDim DECIMAL(18, 10),
+   ZDim DECIMAL(18, 10),
+   UNIQUE (ModelId, Type)
 );

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace blockoptimiser.Models
 {
-    public class ProjectDataModel
+    public class Project
     {
         public int Id { get; set; }
-        public int ProjectId { get; set; }
         public String Name { get; set; }
-        public Decimal Bearing { get; set; }
+        public String Description { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
     }
 }

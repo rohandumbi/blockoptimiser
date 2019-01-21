@@ -11,24 +11,24 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ProjectDataAccess : BaseDataAccess
     {
-        public List<ProjectModel> GetAll()
+        public List<Project> GetAll()
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<ProjectModel>("select * from project").ToList();
+                return connection.Query<Project>("select * from project").ToList();
             }
         }
 
-        public ProjectModel Get(int ProjectId)
+        public Project Get(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
                 String selectQuery = $"select * from Project where Id = { ProjectId }";
-                return connection.Query<ProjectModel>(selectQuery).ToList().First();
+                return connection.Query<Project>(selectQuery).ToList().First();
             }
         }
 
-        public void Insert(ProjectModel newProject)
+        public void Insert(Project newProject)
         {
 
             using (IDbConnection connection = getConnection())

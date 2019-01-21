@@ -11,7 +11,7 @@ namespace blockoptimiser.ViewModels
 {
     class ProjectsViewModel : Screen
     {
-        public BindableCollection<ProjectModel> Projects { get; set; }
+        public BindableCollection<Project> Projects { get; set; }
         private ProjectDataAccess _projectDAO;
         private String _projectName;
         private String _projectDescription;
@@ -27,7 +27,7 @@ namespace blockoptimiser.ViewModels
 
         private void LoadProjects()
         {
-            Projects = new BindableCollection<ProjectModel>(_projectDAO.GetAll());
+            Projects = new BindableCollection<Project>(_projectDAO.GetAll());
         }
 
         public String ProjectName
@@ -40,7 +40,7 @@ namespace blockoptimiser.ViewModels
             set { _projectDescription = value; }
         }
 
-        public ProjectModel SelectedItem
+        public Project SelectedItem
         {
             set
             {
@@ -51,7 +51,7 @@ namespace blockoptimiser.ViewModels
 
         public void CreateProject()
         {
-            ProjectModel newProject = new ProjectModel
+            Project newProject = new Project
             {
                 Name = _projectName,
                 Description = _projectDescription
