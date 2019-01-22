@@ -1,0 +1,56 @@
+﻿using blockoptimiser.Models;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace blockoptimiser.DataAccessClasses
+{
+    public class CsvColumnMappingDataAccess : BaseDataAccess
+    {
+        public List<CsvColumnMapping> GetAll()
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<CsvColumnMapping>("select * from CsvColumnMapping").ToList();
+            }
+        }
+
+        public List<CsvColumnMapping> GetAll(int ModelId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<CsvColumnMapping>("select * from CsvColumnMapping where ModelId=" + ModelId).ToList();
+            }
+        }
+
+        public void Insert(CsvColumnMapping newCsvColumnMapping)
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                String insertQuery = $"insert into CsvColumnMapping (ModelId, ColumnName, FieldId)" +
+                    $" OUTPUT INSERTED.Id  " +
+                    $" VALUES(@ModelId, @ColumnName, @FieldId)";
+                newCsvColumnMapping.Id = connection.QuerySingle<int>(insertQuery, new
+                {
+                    newCsvColumnMapping.ModelId,
+                    newCsvColumnMapping.ColumnName,
+                    newCsvColumnMapping.FieldId
+                });
+            }
+        }
+
+        public void Delete(int Id)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String deleteQuery = $"delete from CsvColumnMapping where Id = { Id }";
+                connection.Execute(deleteQuery);
+            }
+        }
+    }
+}
