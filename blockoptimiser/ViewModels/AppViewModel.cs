@@ -64,14 +64,15 @@ namespace blockoptimiser.ViewModels
         public void ClickMenu(object e, MouseButtonEventArgs mouseButtonEventArgs)
         {
             // MessageBox.Show(e.Source.ToString());
-            if (isPrimaryModel)
+            /*if (isPrimaryModel)
             {
                 ActivateItem(new PrimaryModelDefinitionViewModel());
             }
             else
             {
                 ActivateItem(new ModelDefinitionViewModel());
-            }
+            }*/
+            ActivateItem(new GeotechContainerViewModel());
         }
 
         public String ModelName

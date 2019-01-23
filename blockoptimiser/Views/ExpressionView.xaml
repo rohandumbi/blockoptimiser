@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="blockoptimiser.Views.ExpressionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:blockoptimiser.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Label x:Name="label" Content="This is Expression view." HorizontalAlignment="Left" Margin="189,176,0,0" VerticalAlignment="Top" Width="480"/>
+
+    </Grid>
+</UserControl>
