@@ -19,7 +19,7 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public List<RequiredFieldMapping> GetAll(int PrjectId)
+        public List<RequiredFieldMapping> GetAll(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
