@@ -16,7 +16,7 @@ namespace blockoptimiser.ViewModels
         public BindableCollection<FieldMappingModel> FieldMappings { get; set; }
         public BindableCollection<FixedFieldMappingModel> FixedFieldMappings { get; set; }
         public BindableCollection<DimensionModel> DimensionModels { get; set; }
-        private String _fleetFileName;
+        private String _inputFileName;
         public String ModelBearing { get; set; }
         public PrimaryModelDefinitionViewModel()
         {
@@ -99,14 +99,21 @@ namespace blockoptimiser.ViewModels
 
         }
 
-        public String FleetFile
+        public String InputFile
         {
-            set { _fleetFileName = value; }
+            set {
+                _inputFileName = value;
+                Console.WriteLine("Input file name is "+ _inputFileName);
+                FetchHeaders();
+            }
         }
-
+        private void FetchHeaders()
+        {
+            Console.WriteLine("Inside fetch headers");
+        }
         public void ImportData()
         {
-            if (String.IsNullOrEmpty(_fleetFileName))
+            if (String.IsNullOrEmpty(_inputFileName))
             {
                 MessageBox.Show("Please select a file!");
                 return;
@@ -116,7 +123,7 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please provide a value for model bearing!");
                 return;
             }
-            MessageBox.Show("File selected is: " + _fleetFileName + " and model bearing is: " + ModelBearing);
+            MessageBox.Show("File selected is: " + _inputFileName + " and model bearing is: " + ModelBearing);
         }
     }
 }
