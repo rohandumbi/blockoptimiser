@@ -25,11 +25,11 @@ namespace blockoptimiser.Views
         {
             InitializeComponent();
         }
-        private void FleetFile_MouseDown(object sender, MouseButtonEventArgs e)
+        private void InputFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
-                FleetFile.Text = openFileDialog.FileName;
+                InputFile.Text = openFileDialog.FileName;
         }
     }
 }

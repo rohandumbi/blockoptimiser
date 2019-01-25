@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using blockoptimiser.DataAccessClasses;
+using blockoptimiser.Models;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +15,8 @@ namespace blockoptimiser.ViewModels
         public BindableCollection<string> FixedFields { get; set; }
         public List<string> CSVFields { get; set; }
         public BindableCollection<PrimaryFieldMappingModel> PrimaryFieldMappings { get; set; }
-        public BindableCollection<DimensionModel> DimensionModels { get; set; }
-        private String _fleetFileName;
+        public BindableCollection<ModelDimension> ModelDimensions { get; set; }
+        private String _inputFileName;
         public String ModelBearing { get; set; }
         public ModelDefinitionViewModel()
         {
@@ -33,11 +35,7 @@ namespace blockoptimiser.ViewModels
                 new PrimaryFieldMappingModel("sprod1_fe", "sprod1_fe", CSVFields),
             };
 
-            DimensionModels = new BindableCollection<DimensionModel> {
-                new DimensionModel("Origin", "1", "2", "3"),
-                new DimensionModel("Dimensions", "3", "2", "1"),
-                new DimensionModel("Number of Blocks", "1000", "2000", "3000")
-            };
+            ModelDimensions = new BindableCollection<ModelDimension>(new ModelDimensionDataAccess().GetAll(1));
         }
 
         public class PrimaryFieldMappingModel
@@ -55,31 +53,18 @@ namespace blockoptimiser.ViewModels
 
 
 
-        public class DimensionModel
+ 
+        public String InputFile
         {
-            public string Name { get; set; }
-            public string XCordinate { get; set; }
-            public string YCordinate { get; set; }
-            public string ZCordinate { get; set; }
-
-            public DimensionModel(string name, string xCordinate, string yCordinate, string zCordinate)
-            {
-                Name = name;
-                XCordinate = xCordinate;
-                YCordinate = yCordinate;
-                ZCordinate = zCordinate;
+            set {
+                _inputFileName = value;
+                Console.WriteLine("Inside model definition view model");
             }
-
-        }
-
-        public String FleetFile
-        {
-            set { _fleetFileName = value; }
         }
 
         public void ImportData()
         {
-            if (String.IsNullOrEmpty(_fleetFileName))
+            if (String.IsNullOrEmpty(_inputFileName))
             {
                 MessageBox.Show("Please select a file!");
                 return;
@@ -89,7 +74,7 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please provide a value for model bearing!");
                 return;
             }
-            MessageBox.Show("File selected is: " + _fleetFileName + " and model bearing is: " + ModelBearing);
+            MessageBox.Show("File selected is: " + _inputFileName + " and model bearing is: " + ModelBearing);
         }
     }
 }
