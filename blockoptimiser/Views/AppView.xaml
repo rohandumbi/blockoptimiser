@@ -28,13 +28,13 @@
         <TreeView x:Name="MainTreeView" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding MenuItems}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
-                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($source, $eventArgs))]" Content="{Binding MenuLabel}"/>
+                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($dataContext, $eventArgs))]" Content="{Binding MenuLabel}"/>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
-                            <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($source, $eventArgs))]" Content="{Binding MenuLabel}"/>
+                            <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($dataContext, $eventArgs))]" Content="{Binding MenuLabel}"/>
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <DataTemplate>
-                                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($source, $eventArgs))]" Content="{Binding MenuLabel}"/>
+                                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($dataContext, $eventArgs))]" Content="{Binding MenuLabel}"/>
                                 </DataTemplate>
                             </HierarchicalDataTemplate.ItemTemplate>
                         </HierarchicalDataTemplate>

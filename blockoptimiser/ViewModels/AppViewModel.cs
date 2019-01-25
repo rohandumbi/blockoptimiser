@@ -64,15 +64,23 @@ namespace blockoptimiser.ViewModels
         public void ClickMenu(object e, MouseButtonEventArgs mouseButtonEventArgs)
         {
             // MessageBox.Show(e.Source.ToString());
-            if (isPrimaryModel)
+            MenuItem SelectedMenuItem = (MenuItem)e;
+            if (SelectedMenuItem.Category == "geotech")
             {
-                ActivateItem(new PrimaryModelDefinitionViewModel());
+                ActivateItem(new GeotechContainerViewModel());
             }
-            else
+            else if (SelectedMenuItem.Category == "model")
             {
-                ActivateItem(new ModelDefinitionViewModel());
+                if (isPrimaryModel)
+                {
+                    ActivateItem(new PrimaryModelDefinitionViewModel());
+                }
+                else
+                {
+                    ActivateItem(new ModelDefinitionViewModel());
+                }
             }
-            //ActivateItem(new GeotechContainerViewModel());
+            else return;
         }
 
         public String ModelName
