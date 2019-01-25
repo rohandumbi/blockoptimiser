@@ -67,3 +67,25 @@ CREATE TABLE RequiredFieldMapping(
    FieldId INT,
    UNIQUE (ProjectId, RequiredFieldName)
 );
+
+IF OBJECT_ID('Geotech', 'U') IS NOT NULL 
+DROP TABLE Geotech
+
+CREATE TABLE Geotech(
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ModelId INT,
+   Type INT(100),
+   FieldId INT,
+   Script VARCHAR(200),
+   UNIQUE (ModelId)
+);
+
+IF OBJECT_ID('Process', 'U') IS NOT NULL 
+DROP TABLE Process
+
+CREATE TABLE Process(
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT,
+   Name INT(100),
+   UNIQUE (ProjectId, Name)
+);
