@@ -81,10 +81,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Book.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
-    <Compile Include="Course.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
     <Compile Include="DataAccessClasses\GeotechDataAccess.cs" />
     <Compile Include="DataAccessClasses\RequiredFieldMappingDataAccess.cs" />
@@ -93,7 +91,6 @@
     <Compile Include="DataAccessClasses\ModelDimensionDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProjectDataAccess.cs" />
     <Compile Include="DataAccessClasses\ModelDataAccess.cs" />
-    <Compile Include="Department.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Models\CsvColumnMapping.cs" />
     <Compile Include="Models\Field.cs" />
@@ -102,13 +99,11 @@
     <Compile Include="Models\ModelDimension.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\RequiredFieldMapping.cs" />
-    <Compile Include="TreeViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ExpressionViewModel.cs" />
     <Compile Include="ViewModels\GeotechContainerViewModel.cs" />
     <Compile Include="ViewModels\GeotechViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ModelDefinitionViewModel.cs" />
     <Compile Include="ViewModels\PrimaryModelDefinitionViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModel.cs" />
@@ -125,9 +120,6 @@
     </Compile>
     <Compile Include="Views\GeotechView.xaml.cs">
       <DependentUpon>GeotechView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModelDefinitionView.xaml.cs">
       <DependentUpon>ModelDefinitionView.xaml</DependentUpon>
@@ -161,10 +153,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GeotechView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
