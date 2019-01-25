@@ -60,15 +60,15 @@ namespace blockoptimiser.ViewModels
 
         public void SetDisabledButtonForegrounds()
         {
-            GeotechButtonForeground = "#D3D3D3";
-            ProcessButtonForeground = "#D3D3D3";
-            ExpressionButtonForeground = "#D3D3D3";
+            GeotechButtonForeground = "#D3D3D5";
+            ProcessButtonForeground = "#D3D3D5";
+            ExpressionButtonForeground = "#D3D3D5";
         }
 
         public void ClickTab(object sender)
         {
             var selectedButton = sender as Button;
-            SetDefaultButtonForegrounds();
+            SetDisabledButtonForegrounds();
             if (selectedButton != null)
             {
                 String keyword = selectedButton.Content.ToString();
