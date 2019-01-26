@@ -84,6 +84,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
+    <Compile Include="DataAccessClasses\ExpressionDataAccess.cs" />
     <Compile Include="DataAccessClasses\GeotechDataAccess.cs" />
     <Compile Include="DataAccessClasses\RequiredFieldMappingDataAccess.cs" />
     <Compile Include="DataAccessClasses\CsvColumnMappingDataAccess.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="DataAccessClasses\ModelDataAccess.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Models\CsvColumnMapping.cs" />
+    <Compile Include="Models\Expression.cs" />
     <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Geotech.cs" />
     <Compile Include="Models\Model.cs" />
