@@ -11,19 +11,12 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class FieldDataAccess : BaseDataAccess
     {
-        public List<Field> GetAll()
-        {
-            using (IDbConnection connection = getConnection())
-            {
-                return connection.Query<Field>("select * from field").ToList();
-            }
-        }
 
-        public List<Model> GetAll(int ProjectId)
+        public List<Field> GetAll(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<Model>("select * from field where ProjectId=" + ProjectId).ToList();
+                return connection.Query<Field>("select * from field where ProjectId = { ProjectId } ").ToList();
             }
         }
 

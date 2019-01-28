@@ -74,7 +74,7 @@ DROP TABLE Geotech
 CREATE TABLE Geotech(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ModelId INT,
-   Type INT(100),
+   Type INT,
    FieldId INT,
    Script VARCHAR(200),
    UNIQUE (ModelId)
@@ -86,6 +86,26 @@ DROP TABLE Process
 CREATE TABLE Process(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
-   Name INT(100),
+   Name VARCHAR(100),
    UNIQUE (ProjectId, Name)
+);
+
+IF OBJECT_ID('Expression', 'U') IS NOT NULL 
+DROP TABLE Expression
+
+CREATE TABLE Expression (
+   id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT,
+   Name VARCHAR(100),
+   UNIQUE (ProjectId, Name)
+);
+IF OBJECT_ID('ExprModelMapping', 'U') IS NOT NULL 
+DROP TABLE ExprModelMapping
+
+CREATE TABLE ExprModelMapping (
+   id INT IDENTITY(1,1) PRIMARY KEY,
+   ExprId INT,
+   ModelId INT,
+   ExprString VARCHAR(400),
+   UNIQUE (ExprId, ModelId)
 );

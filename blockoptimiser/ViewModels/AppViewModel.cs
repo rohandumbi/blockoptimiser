@@ -24,7 +24,7 @@ namespace blockoptimiser.ViewModels
         private MenuItem ProjectMenu;
         private MenuItem DataImportMenu;
         private MenuItem GeoTechMenu;
-        private Boolean isPrimaryModel = false;
+        private String PrimaryModelName;
         public AppViewModel()
         {
             ProjectDAO = new ProjectDataAccess();
@@ -36,6 +36,10 @@ namespace blockoptimiser.ViewModels
             foreach (Model model in Models)
             {
                 DataImportMenu.ChildMenuItems.Add(new MenuItem(model.Name, "model"));
+                if (String.IsNullOrEmpty(PrimaryModelName))
+                {
+                    PrimaryModelName = model.Name;
+                }
             }
             GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
             ProjectMenu.ChildMenuItems.Add(DataImportMenu);
@@ -71,6 +75,7 @@ namespace blockoptimiser.ViewModels
             }
             else if (SelectedMenuItem.Category == "model")
             {
+                Boolean isPrimaryModel = PrimaryModelName.Equals(SelectedMenuItem.MenuLabel);
                 if (isPrimaryModel)
                 {
                     ActivateItem(new PrimaryModelDefinitionViewModel());
