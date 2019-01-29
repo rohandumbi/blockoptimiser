@@ -63,14 +63,14 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid x:Name="FieldMappings"  Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
+        <DataGrid x:Name="Fields"  Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Field" Binding="{Binding Path=FieldName}" />
+                <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" />
                 <DataGridTemplateColumn Header="Data type">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=DataType}" />
+                            <TextBlock Text="{Binding Path=DataTypeName}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -88,7 +88,7 @@
                 <DataGridTemplateColumn Header="Associated Field">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=AssociatedField}" />
+                            <TextBlock Text="{Binding Path=AssociatedFieldName}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>

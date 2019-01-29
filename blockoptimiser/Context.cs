@@ -9,6 +9,6 @@ namespace blockoptimiser
     class Context
     {
         public static int ProjectId = -1;
-        public static int ScenarioId = -1;
+        public static int ModelId = -1;
     }
 }

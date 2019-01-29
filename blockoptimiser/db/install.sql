@@ -18,6 +18,7 @@ CREATE TABLE Model (
    ProjectId INT,
    Name VARCHAR(50) NOT NULL,
    Bearing INT,
+   HasData BIT,
    UNIQUE (ProjectId, Name)
 );
 
@@ -42,7 +43,7 @@ CREATE TABLE Field(
    ProjectId INT,
    Name VARCHAR(100),
    DataType INT,
-   WeightedUnit VARCHAR(100),
+   AssociatedField INT,
    UNIQUE (ProjectId, Name)
 );
 
@@ -73,6 +74,7 @@ DROP TABLE Geotech
 
 CREATE TABLE Geotech(
    Id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT,
    ModelId INT,
    Type INT,
    FieldId INT,

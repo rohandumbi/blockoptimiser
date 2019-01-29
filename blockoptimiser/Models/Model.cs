@@ -12,5 +12,6 @@ namespace blockoptimiser.Models
         public int ProjectId { get; set; }
         public String Name { get; set; }
         public Decimal Bearing { get; set; }
+        public Boolean HasData { get; set; }
     }
 }

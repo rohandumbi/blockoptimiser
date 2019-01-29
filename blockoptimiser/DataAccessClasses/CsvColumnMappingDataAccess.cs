@@ -11,19 +11,12 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class CsvColumnMappingDataAccess : BaseDataAccess
     {
-        public List<CsvColumnMapping> GetAll()
-        {
-            using (IDbConnection connection = getConnection())
-            {
-                return connection.Query<CsvColumnMapping>("select * from CsvColumnMapping").ToList();
-            }
-        }
-
         public List<CsvColumnMapping> GetAll(int ModelId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<CsvColumnMapping>("select * from CsvColumnMapping where ModelId=" + ModelId).ToList();
+                return connection.Query<CsvColumnMapping>($"select a.*, b.DataType, b.AssociatedField " +
+                    $"from CsvColumnMapping a, field b where b.Id = a.FieldId and a.ModelId = { ModelId }").ToList();
             }
         }
 

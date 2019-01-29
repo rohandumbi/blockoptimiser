@@ -11,7 +11,13 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class GeotechDataAccess : BaseDataAccess
     {
-    
+        public Geotech GetAll(int ProjectId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.QuerySingle<Geotech>($"select * from field geotech ProjectId  = { ProjectId }");
+            }
+        }
         public Geotech Get(int ModelId)
         {
             using (IDbConnection connection = getConnection())
@@ -20,20 +26,21 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public void Insert(Field newField)
+        public void Insert(Geotech newGeotech)
         {
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into field (ProjectId, Name, DataType, WeightedUnit)" +
+                String insertQuery = $"insert into Geotech (ProjectId, ModelId, Type, FieldId, Script)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name, @DataType, @WeightedUnit)";
-                newField.Id = connection.QuerySingle<int>(insertQuery, new
+                    $" VALUES(@ProjectId, @ModelId, @Type, @FieldId, @Script)";
+                newGeotech.Id = connection.QuerySingle<int>(insertQuery, new
                 {
-                    newField.ProjectId,
-                    newField.Name,
-                    newField.DataType,
-                    newField.WeightedUnit
+                    newGeotech.ProjectId,
+                    newGeotech.ModelId,
+                    newGeotech.Type,
+                    newGeotech.FieldId,
+                    newGeotech.Script
                 });
             }
         }
@@ -42,7 +49,7 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String deleteQuery = $"delete from field where Id = { Id }";
+                String deleteQuery = $"delete from geotech where Id = { Id }";
                 connection.Execute(deleteQuery);
             }
         }

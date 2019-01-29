@@ -11,19 +11,12 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ModelDataAccess : BaseDataAccess
     {
-        public List<Model> GetAll()
-        {
-            using (IDbConnection connection = getConnection())
-            {
-                return connection.Query<Model>("select * from model").ToList();
-            }
-        }
 
         public List<Model> GetAll(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<Model>("select * from model where ProjectId=" + ProjectId).ToList();
+                return connection.Query<Model>($"select * from model where ProjectId= { ProjectId } ").ToList();
             }
         }
 
@@ -39,6 +32,21 @@ namespace blockoptimiser.DataAccessClasses
                 {
                     newModel.ProjectId,
                     newModel.Name
+                });
+            }
+        }
+
+        public void Update(Model model)
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update model set Bearing = @Bearing, HasData = @HasData where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    model.Bearing,
+                    model.HasData,
+                    model.Id
                 });
             }
         }

@@ -12,5 +12,7 @@ namespace blockoptimiser.Models
         public int ModelId { get; set; }
         public String ColumnName { get; set; }
         public int FieldId { get; set; }
+        public int DataType { get; set; }
+        public int AssociatedField { get; set; }
     }
 }
