@@ -14,11 +14,42 @@ namespace blockoptimiser.ViewModels
         private ModelDataAccess ModelDAO;
         private ExpressionDataAccess ExpressionDAO;
         private List<Model> Models;
-        private List<Expression> Expressions;
+        private BindableCollection<Expression> Expressions { get; set; }
+        public String ExpressionName { get; set; }
         public ExpressionViewModel()
         {
+            ExpressionDAO = new ExpressionDataAccess();
+            ModelDAO = new ModelDataAccess();
             Models = ModelDAO.GetAll(Context.ProjectId);
-            Expressions = ExpressionDAO.GetAll(Context.ProjectId);
+            Expressions = new BindableCollection<Expression>(ExpressionDAO.GetAll(Context.ProjectId));
+        }
+
+        public void AddExpression()
+        {
+            Expression NewExpression = new Expression
+            {
+                ProjectId = Context.ProjectId,
+                Name = ExpressionName,
+                modelMapping = GetDefaultModelMapping()
+            };
+            ExpressionDAO.Insert(NewExpression);
+            Expressions.Add(NewExpression);
+            NotifyOfPropertyChange("Expressions");
+        }
+
+        private List<ExprModelMapping> GetDefaultModelMapping()
+        {
+            List<ExprModelMapping> DefaultMapping = new List<ExprModelMapping>();
+            foreach (Model Model in Models)
+            {
+                ExprModelMapping NewMapping = new ExprModelMapping();
+                NewMapping.ModelId = Model.Id;
+                NewMapping.ModelName = Model.Name;
+                NewMapping.ExprString = "";
+                DefaultMapping.Add(NewMapping);
+            }
+
+            return DefaultMapping;
         }
     }
 }
