@@ -15,7 +15,7 @@ namespace blockoptimiser.ViewModels
         private ModelDataAccess ModelDAO;
         private ExpressionDataAccess ExpressionDAO;
         private List<Model> Models;
-        private BindableCollection<Expression> Expressions { get; set; }
+        public BindableCollection<Expression> Expressions { get; set; }
         public String ExpressionName { get; set; }
         public ExpressionViewModel()
         {
@@ -35,7 +35,7 @@ namespace blockoptimiser.ViewModels
             };
             ExpressionDAO.Insert(NewExpression);
             Expressions.Add(NewExpression);
-            NotifyOfPropertyChange("ExpressionNames");
+            NotifyOfPropertyChange("Expressions");
         }
 
         private List<ExprModelMapping> GetDefaultModelMapping()

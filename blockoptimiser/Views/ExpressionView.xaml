@@ -24,7 +24,7 @@
         <TextBox x:Name="ExpressionName" Grid.Row="1" Grid.Column="1" Width="150" Margin="0 0 5 10"/>
         <Button x:Name="AddExpression" Grid.Row="1" Grid.Column="2" Width="100" Margin="0 0 0 10">Add Expression</Button>
 
-        <ListView x:Name="Expressions" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectionChanged="ExpressionNames_SelectionChanged">
+        <ListView x:Name="Expressions" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>
