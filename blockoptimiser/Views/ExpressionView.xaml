@@ -7,7 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label x:Name="label" Content="This is Expression view." HorizontalAlignment="Left" Margin="189,176,0,0" VerticalAlignment="Top" Width="480"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
 
+        <TextBox x:Name="ExpressionName" Grid.Row="1" Grid.Column="1" Width="150" Margin="0 0 5 10"/>
+        <Button x:Name="AddExpression" Grid.Row="1" Grid.Column="2" Width="100" Margin="0 0 0 10">Add Expression</Button>
+
+        <ListView x:Name="Expressions" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

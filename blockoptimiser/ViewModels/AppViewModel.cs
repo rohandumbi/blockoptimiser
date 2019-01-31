@@ -16,7 +16,7 @@ namespace blockoptimiser.ViewModels
     public class AppViewModel : Conductor<Object>
     {
         //private List<Department> departments;
-        private List<MenuItem> menuItems;
+        private BindableCollection<MenuItem> menuItems { get; set; }
         private List<Model> Models;
         private ModelDataAccess ModelDAO;
         private ProjectDataAccess ProjectDAO;
@@ -45,14 +45,14 @@ namespace blockoptimiser.ViewModels
             ProjectMenu.ChildMenuItems.Add(DataImportMenu);
             ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
 
-            MenuItems = new List<MenuItem>()
+            MenuItems = new BindableCollection<MenuItem>()
             {
                 ProjectMenu
             };
             //ActivateItem(new ModelDefinitionViewModel());
         }
 
-        public List<MenuItem> MenuItems
+        public BindableCollection<MenuItem> MenuItems
         {
             get
             {
