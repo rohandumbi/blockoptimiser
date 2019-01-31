@@ -3,6 +3,7 @@ using blockoptimiser.Models;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace blockoptimiser.ViewModels
         {
             ExpressionDAO = new ExpressionDataAccess();
             ModelDAO = new ModelDataAccess();
-            Models = ModelDAO.GetAll(Context.ProjectId);
             Expressions = new BindableCollection<Expression>(ExpressionDAO.GetAll(Context.ProjectId));
+            Models = ModelDAO.GetAll(Context.ProjectId);
         }
 
         public void AddExpression()
@@ -34,7 +35,7 @@ namespace blockoptimiser.ViewModels
             };
             ExpressionDAO.Insert(NewExpression);
             Expressions.Add(NewExpression);
-            NotifyOfPropertyChange("Expressions");
+            NotifyOfPropertyChange("ExpressionNames");
         }
 
         private List<ExprModelMapping> GetDefaultModelMapping()

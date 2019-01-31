@@ -24,5 +24,10 @@ namespace blockoptimiser.Views
         {
             InitializeComponent();
         }
+
+        private void ExpressionNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<Field>("select * from field where ProjectId = { ProjectId } ").ToList();
+                return connection.Query<Field>($"select * from field where ProjectId = { ProjectId } ").ToList();
             }
         }
 
