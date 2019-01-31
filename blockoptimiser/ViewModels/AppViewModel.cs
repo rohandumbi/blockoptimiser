@@ -19,6 +19,7 @@ namespace blockoptimiser.ViewModels
         private BindableCollection<MenuItem> menuItems { get; set; }
         private List<Model> Models;
         private ModelDataAccess ModelDAO;
+        private ModelDimensionDataAccess ModelDimensionDAO;
         private ProjectDataAccess ProjectDAO;
         private String _newModelName;
         private MenuItem ProjectMenu;
@@ -29,6 +30,7 @@ namespace blockoptimiser.ViewModels
         {
             ProjectDAO = new ProjectDataAccess();
             ModelDAO = new ModelDataAccess();
+            ModelDimensionDAO = new ModelDimensionDataAccess();
             Project Project = ProjectDAO.Get(Context.ProjectId);
             ProjectMenu = new MenuItem(Project.Name, "project");
             Models = ModelDAO.GetAll(Context.ProjectId);
@@ -75,6 +77,14 @@ namespace blockoptimiser.ViewModels
             }
             else if (SelectedMenuItem.Category == "model")
             {
+                foreach(var Model in Models)
+                {
+                    if(Model.Name.Equals(SelectedMenuItem.MenuLabel))
+                    {
+                        Context.ModelId = Model.Id;
+                        break;
+                    }
+                }
                 Boolean isPrimaryModel = PrimaryModelName.Equals(SelectedMenuItem.MenuLabel);
                 if (isPrimaryModel)
                 {
@@ -101,6 +111,16 @@ namespace blockoptimiser.ViewModels
                 Name = _newModelName
             };
             ModelDAO.Insert(newModel);
+            String[] Types = { "Origin", "Dimensions", "No Of Blocks" };
+            for(int i = 0; i< Types.Length; i++)
+            {
+                ModelDimension obj = new ModelDimension
+                {
+                    ModelId = newModel.Id,
+                    Type = Types[i]
+                };
+                ModelDimensionDAO.Insert(obj);
+            }
             DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
             NotifyOfPropertyChange("MenuItems");
         }

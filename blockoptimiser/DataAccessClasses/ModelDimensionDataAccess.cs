@@ -11,19 +11,12 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ModelDimensionDataAccess : BaseDataAccess
     {
-        public List<ModelDimension> GetAll()
-        {
-            using (IDbConnection connection = getConnection())
-            {
-                return connection.Query<ModelDimension>("select * from modeldimension").ToList();
-            }
-        }
 
         public List<ModelDimension> GetAll(int ModelId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<ModelDimension>("select * from modeldimension where ModelId=" + ModelId).ToList();
+                return connection.Query<ModelDimension>($"select * from modeldimension where ModelId =  { ModelId } ").ToList();
             }
         }
 
@@ -34,7 +27,7 @@ namespace blockoptimiser.DataAccessClasses
             {
                 String insertQuery = $"insert into modeldimension (ModelId, Type, XDim, YDim, ZDim)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name)";
+                    $" VALUES(@ModelId, @Type, @XDim, @YDim, @ZDim)";
                 newModelDimension.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newModelDimension.ModelId,

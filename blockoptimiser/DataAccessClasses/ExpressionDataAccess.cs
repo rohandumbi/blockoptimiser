@@ -18,8 +18,8 @@ namespace blockoptimiser.DataAccessClasses
                 var Expressions = connection.Query<Expression>($"select * from expression where ProjectId = { ProjectId } ").ToList();
                 foreach (var Expression in Expressions)
                 {
-                    Expression.modelMapping
-                        = connection.Query<ExprModelMapping>($"select *, b.Name from ExprModelMapping a, Model b" +
+                    Expression.modelMapping 
+                        = connection.Query<ExprModelMapping>($"select *, b.Name from ExprModelMapping a, Model b " +
                         $"where b.Id = a.ModelId and ExprId = { Expression.Id }").ToList();
                 }
                 return Expressions;

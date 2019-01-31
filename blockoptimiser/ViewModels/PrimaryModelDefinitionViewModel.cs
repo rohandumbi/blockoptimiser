@@ -29,7 +29,7 @@ namespace blockoptimiser.ViewModels
             RequiredFieldMappings = new BindableCollection<RequiredFieldMapping>(new RequiredFieldMappingDataAccess().GetAll());
             Fields = new BindableCollection<Field>(new FieldDataAccess().GetAll(Context.ProjectId));
             CSVFieldMappings = new BindableCollection<CsvColumnMapping>(new CsvColumnMappingDataAccess().GetAll(1));
-            ModelDimensions = new BindableCollection<ModelDimension>(new ModelDimensionDataAccess().GetAll());
+            ModelDimensions = new BindableCollection<ModelDimension>(new ModelDimensionDataAccess().GetAll(Context.ModelId));
         }
 
         public String InputFile
@@ -38,6 +38,7 @@ namespace blockoptimiser.ViewModels
                 _inputFileName = value;
                 Console.WriteLine("Input file name is "+ _inputFileName);
                 fileReader.SetFile(_inputFileName);
+                fileReader.FetchDataTypes();
                 CSVFields = fileReader.Headers;
                 DataTypes = fileReader.DataTypes;
                 Fields = new BindableCollection<Field>();

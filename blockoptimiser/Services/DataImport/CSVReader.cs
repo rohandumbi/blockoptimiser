@@ -27,7 +27,6 @@ namespace blockoptimiser.Services.DataImport
             _rowsRead = 0;
             _file = File.OpenText(FileName);
             FetchHeaders();
-            FetchDataTypes();
         }
 
         public void ImportData()
@@ -46,8 +45,12 @@ namespace blockoptimiser.Services.DataImport
             }
 
         }
-        private void FetchDataTypes()
+        public void FetchDataTypes()
         {
+            if(_file == null)
+            {
+                throw new Exception("Please select a file first.");
+            }
             ReadLine();
             DataTypes = new int[_lineArr.Length];
             for (int i = 0; i < _lineArr.Length; i++)

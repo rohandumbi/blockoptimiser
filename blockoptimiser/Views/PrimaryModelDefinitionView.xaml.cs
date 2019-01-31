@@ -31,5 +31,7 @@ namespace blockoptimiser.Views
             if (openFileDialog.ShowDialog() == true)
                 InputFile.Text = openFileDialog.FileName;
         }
+
+        
     }
 }
