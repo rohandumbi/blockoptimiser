@@ -7,8 +7,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label x:Name="label" Content="Expression Model mapping to come. Expression selected: " HorizontalAlignment="Left" Margin="175,178,0,0" VerticalAlignment="Top" Height="45" Width="446"/>
-        <Label x:Name="label1" Content="{Binding ExpressionName}" HorizontalAlignment="Left" Margin="382,267,0,0" VerticalAlignment="Top"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ItemsControl x:Name="ModelMapping" Grid.Row="0">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ModelName}" Margin="10 0 5 10"/>
+                        <TextBox Text="{Binding ExprString}" Width="250px"></TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>
