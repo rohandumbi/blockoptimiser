@@ -103,6 +103,7 @@
     <Compile Include="Models\RequiredFieldMapping.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\ExpressionViewModel.cs" />
     <Compile Include="ViewModels\GeotechContainerViewModel.cs" />
     <Compile Include="ViewModels\GeotechViewModel.cs" />
@@ -113,6 +114,9 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpressionModelMappingView.xaml.cs">
+      <DependentUpon>ExpressionModelMappingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExpressionView.xaml.cs">
       <DependentUpon>ExpressionView.xaml</DependentUpon>
@@ -143,6 +147,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExpressionModelMappingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
