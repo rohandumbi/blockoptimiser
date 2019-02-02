@@ -13,12 +13,13 @@ namespace blockoptimiser.ViewModels
 {
     public class ModelDefinitionViewModel : Screen
     {
+        private String _inputFileName;
+        private CSVReader _fileReader;
         public List<string> CSVFields { get; set; }
         public BindableCollection<Field> Fields { get; set; }
         public BindableCollection<CsvColumnMapping> CSVFieldMappings { get; set; }
         public BindableCollection<ModelDimension> ModelDimensions { get; set; }
-        private String _inputFileName;
-        private CSVReader fileReader;
+
         public String ModelBearing { get; set; }
         public ModelDefinitionViewModel()
         {
@@ -32,7 +33,8 @@ namespace blockoptimiser.ViewModels
             set {
                 _inputFileName = value;
                 Console.WriteLine("Input file name is " + _inputFileName);
-                fileReader = new CSVReader(_inputFileName, true);
+                _fileReader = new CSVReader(_inputFileName);
+
             }
         }
 
@@ -48,7 +50,9 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please provide a value for model bearing!");
                 return;
             }
-            MessageBox.Show("File selected is: " + _inputFileName + " and model bearing is: " + ModelBearing);
+            CSVDataLoader loader = new CSVDataLoader(_fileReader);
+            loader.Load();
+            MessageBox.Show("File imported successfully.");
         }
     }
 }

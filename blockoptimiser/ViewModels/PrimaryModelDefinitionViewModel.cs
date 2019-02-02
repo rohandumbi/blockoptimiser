@@ -13,6 +13,8 @@ namespace blockoptimiser.ViewModels
 {
     public class PrimaryModelDefinitionViewModel: Screen
     {
+        private String _inputFileName;
+        private CSVReader _fileReader;
         public BindableCollection<string> FixedFields { get; set;}
         public String[] CSVFields { get; set; }
         public int[] DataTypes { get; set; }
@@ -20,8 +22,7 @@ namespace blockoptimiser.ViewModels
         public BindableCollection<CsvColumnMapping> CSVFieldMappings { get; set; }
         public BindableCollection<RequiredFieldMapping> RequiredFieldMappings { get; set; }
         public BindableCollection<ModelDimension> ModelDimensions { get; set; }
-        private String _inputFileName;
-        private CSVReader fileReader;
+        public String ModelBearing { get; set; }
 
         public PrimaryModelDefinitionViewModel()
         {
@@ -36,9 +37,9 @@ namespace blockoptimiser.ViewModels
             set {
                 _inputFileName = value;
                 Console.WriteLine("Input file name is "+ _inputFileName);
-                fileReader = new CSVReader(_inputFileName, true);
-                CSVFields = fileReader.Header;
-                DataTypes = fileReader.DataTypes;
+                _fileReader = new CSVReader(_inputFileName, true);
+                CSVFields = _fileReader.Header;
+                DataTypes = _fileReader.DataTypes;
                 Fields = new BindableCollection<Field>();
                 Field LastAdditiveField = null ;
                 for(int i = 0; i< CSVFields.Length; i++)
@@ -76,8 +77,14 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a file!");
                 return;
             }
-            CSVDataLoader loader = new CSVDataLoader(fileReader);
+            if (String.IsNullOrEmpty(ModelBearing))
+            {
+                MessageBox.Show("Please provide a value for model bearing!");
+                return;
+            }
+            CSVDataLoader loader = new CSVDataLoader(_fileReader);
             loader.Load();
+            MessageBox.Show("File imported successfully.");
         }
     }
 }

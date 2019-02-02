@@ -38,7 +38,14 @@ namespace blockoptimiser.Services.DataImport
             using (IDbConnection connection = getConnection())
             {
                 String ddl = "drop table BOData_" + Context.ProjectId + "_" + Context.ModelId;
-                connection.Execute(ddl);
+                try
+                {
+                    connection.Execute(ddl);
+                } catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                
             }
         }
 
