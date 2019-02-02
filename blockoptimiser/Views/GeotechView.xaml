@@ -33,7 +33,7 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Name="LabelAssetModel" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10" Text="Geotech Row:"/>
-                                <ComboBox x:Name="Fields"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0 0 5 10" Width="150" SelectedItem="{Binding SelectedAssetModel}" >
+                                <ComboBox ItemsSource="{Binding Path=AvaialableFields}"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0 0 5 10" Width="150" SelectedItem="{Binding SelectedAssetModel}" >
                                 </ComboBox>
                                 <TextBlock x:Name="LabelPriority" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Script:"/>
                                 <TextBox x:Name="Priority" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" AcceptsReturn="True" Height="100" Width="150" Margin="0 0 5 10" Text="{Binding SelectedHubPriority}"/>

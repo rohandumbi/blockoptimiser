@@ -15,7 +15,7 @@ namespace blockoptimiser.ViewModels
         private GeotechDataAccess GeotechDAO;
         private FieldDataAccess FieldDAO;
         private List<Model> Models;
-        public BindableCollection<Field> Fields { get; set; }
+        private List<Field> Fields { get; set; }
         public BindableCollection<Geotech> Geotechs { get; set; }
         public GeotechViewModel()
         {
@@ -23,7 +23,7 @@ namespace blockoptimiser.ViewModels
             GeotechDAO = new GeotechDataAccess();
             FieldDAO = new FieldDataAccess();
             Models = ModelDAO.GetAll(Context.ProjectId);
-            Fields = new BindableCollection<Field>(FieldDAO.GetAll(Context.ProjectId));
+            Fields = FieldDAO.GetAll(Context.ProjectId);
             CreateGeotechForMissingModels();
         }
 
@@ -55,6 +55,14 @@ namespace blockoptimiser.ViewModels
                 } 
             }
             Geotechs = new BindableCollection<Geotech>(GeotechDAO.GetAll(Context.ProjectId));
+            foreach (Geotech geotech in Geotechs)
+            {
+                geotech.AvaialableFields = new List<String>();
+                foreach (Field field in Fields)
+                {
+                    geotech.AvaialableFields.Add(field.Name);
+                }
+            }
         }
     }
 }
