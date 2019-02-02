@@ -15,14 +15,14 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.QuerySingle<Geotech>($"select * from field geotech ProjectId  = { ProjectId }");
+                return connection.QuerySingle<Geotech>($"select * from geotech where ProjectId  = { ProjectId }");
             }
         }
         public Geotech Get(int ModelId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.QuerySingle<Geotech>("select * from field geotech ModelId =" + ModelId);
+                return connection.QuerySingle<Geotech>("select * from geotech where ModelId =" + ModelId);
             }
         }
 
