@@ -53,6 +53,22 @@ namespace blockoptimiser.DataAccessClasses
                 }
             }
         }
+        public void InsertMapping(ExprModelMapping newMapping)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                
+                String insertMappingQuery = $"insert into ExprModelMapping (ExprId, ModelId, ExprString)" +
+                    $" VALUES(@ExprId, @ModelId, @ExprString)";
+
+                connection.Query(insertMappingQuery, new
+                {
+                    newMapping.ExprId,
+                    newMapping.ModelId,
+                    newMapping.ExprString
+                });
+            }
+        }
 
         public void InsertModelMapping(Expression expression)
         {
