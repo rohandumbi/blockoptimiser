@@ -84,10 +84,10 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <DataGrid x:Name="FixedFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
+            <DataGrid x:Name="RequiredFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Field" Binding="{Binding Path=FieldName}" />
+                    <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" />
                     <DataGridTemplateColumn Header="Mapping">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -108,8 +108,8 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            
-            <DataGrid x:Name="DimensionModels"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
+
+            <DataGrid x:Name="ModelDimensions"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}"/>

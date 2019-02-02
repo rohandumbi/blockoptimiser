@@ -25,7 +25,6 @@ namespace blockoptimiser.ViewModels
 
         public PrimaryModelDefinitionViewModel()
         {
-            fileReader = new CSVReader();
             RequiredFieldMappings = new BindableCollection<RequiredFieldMapping>(new RequiredFieldMappingDataAccess().GetAll());
             Fields = new BindableCollection<Field>(new FieldDataAccess().GetAll(Context.ProjectId));
             CSVFieldMappings = new BindableCollection<CsvColumnMapping>(new CsvColumnMappingDataAccess().GetAll(1));
@@ -37,9 +36,8 @@ namespace blockoptimiser.ViewModels
             set {
                 _inputFileName = value;
                 Console.WriteLine("Input file name is "+ _inputFileName);
-                fileReader.SetFile(_inputFileName);
-                fileReader.FetchDataTypes();
-                CSVFields = fileReader.Headers;
+                fileReader = new CSVReader(_inputFileName, true);
+                CSVFields = fileReader.Header;
                 DataTypes = fileReader.DataTypes;
                 Fields = new BindableCollection<Field>();
                 Field LastAdditiveField = null ;
@@ -78,7 +76,8 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a file!");
                 return;
             }
-            MessageBox.Show("File selected is: " + _inputFileName);
+            CSVDataLoader loader = new CSVDataLoader(fileReader);
+            loader.Load();
         }
     }
 }

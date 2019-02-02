@@ -58,6 +58,19 @@ namespace blockoptimiser.ViewModels
             };
             _projectDAO.Insert(newProject);
             Projects.Add(newProject);
+            // Add Required Fields
+            String[] RequiredFields = { "x", "y", "z", "tonnage" };
+            RequiredFieldMappingDataAccess RequiredFieldMappingDAO = new RequiredFieldMappingDataAccess();
+            for (int i = 0; i < RequiredFields.Length; i++)
+            {
+                RequiredFieldMapping obj = new RequiredFieldMapping
+                {
+                    ProjectId = newProject.Id,
+                    RequiredFieldName = RequiredFields[i]
+                };
+                RequiredFieldMappingDAO.Insert(obj);
+            }
+
             NotifyOfPropertyChange("Projects");
         }
     }
