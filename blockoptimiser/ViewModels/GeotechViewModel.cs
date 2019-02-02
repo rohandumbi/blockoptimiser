@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace blockoptimiser.ViewModels
 {
@@ -81,6 +82,19 @@ namespace blockoptimiser.ViewModels
             return returnedField;
         }
 
+        private Field GetFieldByName(string fieldName)
+        {
+            Field returnedField = Fields.First();
+            foreach (Field field in Fields)
+            {
+                if (field.Name == fieldName)
+                {
+                    returnedField = field;
+                }
+            }
+            return returnedField;
+        }
+
         private Model GetModelById(int modelId)
         {
             Model returnedModel = Models.First();
@@ -92,6 +106,12 @@ namespace blockoptimiser.ViewModels
                 }
             }
             return returnedModel;
+        }
+
+        public void UpdateGeotech(Geotech child)
+        {
+            child.FieldId = GetFieldByName(child.FieldName).Id;
+            GeotechDAO.Update(child);
         }
     }
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:blockoptimiser.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -33,12 +34,12 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Name="LabelAssetModel" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10" Text="Geotech Row:"/>
-                                <ComboBox ItemsSource="{Binding Path=AvailableFields}"  SelectedValue="{Binding Path=FieldName}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0 0 5 10" Width="150" >
+                                <ComboBox ItemsSource="{Binding Path=AvailableFields}"  SelectedItem="{Binding Path=FieldName}" SelectedValue="{Binding Path=FieldName}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0 0 5 10" Width="150" >
                                 </ComboBox>
                                 <TextBlock x:Name="LabelPriority" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Script:"/>
                                 <TextBox x:Name="Priority" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" AcceptsReturn="True" Height="100" Width="150" Margin="0 0 5 10" Text="{Binding Script}"/>
                                 <CheckBox x:Name="CheckBoxUseScript" Grid.Row="3" Grid.Column="1" Margin="10 0 5 10" IsChecked="{Binding Path=UseScript, Mode=TwoWay}">Use Script</CheckBox>
-                                <Button x:Name="CreateTruckHubPriority" Grid.Row="3" Grid.Column="2" Width="75" Margin="10 0 5 10">Save</Button>
+                                <Button x:Name="CreateTruckHubPriority" cal:Message.Attach="UpdateGeotech($dataContext)"  Grid.Row="3" Grid.Column="2" Width="75" Margin="10 0 5 10">Save</Button>
                             </Grid>
                         </GroupBox>
                     </StackPanel>

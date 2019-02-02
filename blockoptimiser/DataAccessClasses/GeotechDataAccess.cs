@@ -46,6 +46,24 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void Update(Geotech updatedGeoTech)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update Geotech set ProjectId = @ProjectId, ModelId = @ModelId, Type = @Type, FieldId = @FieldId, UseScript = @UseScript, Script = @Script where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    updatedGeoTech.ProjectId,
+                    updatedGeoTech.ModelId,
+                    updatedGeoTech.Type,
+                    updatedGeoTech.FieldId,
+                    updatedGeoTech.UseScript,
+                    updatedGeoTech.Script,
+                    updatedGeoTech.Id
+                });
+            }
+        }
+
         public void Delete(int Id)
         {
             using (IDbConnection connection = getConnection())
