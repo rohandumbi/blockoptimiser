@@ -16,7 +16,21 @@ namespace blockoptimiser.Models
         public int ProjectId { get; set; }
         public String Name { get; set; }
         public int DataType { get; set; }
-        public String DataTypeName { get; set; }
+        public String DataTypeName {
+            get  {
+                String dataTypeName = "";
+                switch(DataType)
+                {
+                    case DATA_TYPE_GROUP_BY:
+                        dataTypeName = "groupby"; break;
+                    case DATA_TYPE_ADDITIVE:
+                        dataTypeName = "additive"; break;
+                    case DATA_TYPE_GRADE:
+                        dataTypeName = "grade"; break;
+                }
+                return dataTypeName;
+            }
+        }
         public int AssociatedField { get; set; }
         public String AssociatedFieldName { get; set; }
     }

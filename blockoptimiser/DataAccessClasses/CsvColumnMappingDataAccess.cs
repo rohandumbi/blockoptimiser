@@ -37,6 +37,14 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void DeleteAll(int ModelId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String deleteQuery = $"delete from CsvColumnMapping where ModelId = { ModelId }";
+                connection.Execute(deleteQuery);
+            }
+        }
         public void Delete(int Id)
         {
             using (IDbConnection connection = getConnection())

@@ -15,6 +15,10 @@ namespace blockoptimiser.ViewModels
     {
         private String _inputFileName;
         private CSVReader _fileReader;
+        private ModelDataAccess _modelDAO;
+        private ModelDimensionDataAccess _modelDimensionDAO;
+        private FieldDataAccess _fieldDAO;
+        private CsvColumnMappingDataAccess _csvColumnMappingDAO;
         public BindableCollection<string> FixedFields { get; set;}
         public String[] CSVFields { get; set; }
         public int[] DataTypes { get; set; }
@@ -24,12 +28,18 @@ namespace blockoptimiser.ViewModels
         public BindableCollection<ModelDimension> ModelDimensions { get; set; }
         public String ModelBearing { get; set; }
 
+
+
         public PrimaryModelDefinitionViewModel()
         {
+            _modelDAO = new ModelDataAccess();
+            _modelDimensionDAO = new ModelDimensionDataAccess();
+            _fieldDAO = new FieldDataAccess();
+            _csvColumnMappingDAO = new CsvColumnMappingDataAccess();
             RequiredFieldMappings = new BindableCollection<RequiredFieldMapping>(new RequiredFieldMappingDataAccess().GetAll());
-            Fields = new BindableCollection<Field>(new FieldDataAccess().GetAll(Context.ProjectId));
-            CSVFieldMappings = new BindableCollection<CsvColumnMapping>(new CsvColumnMappingDataAccess().GetAll(1));
-            ModelDimensions = new BindableCollection<ModelDimension>(new ModelDimensionDataAccess().GetAll(Context.ModelId));
+            Fields = new BindableCollection<Field>(_fieldDAO.GetAll(Context.ProjectId));
+            CSVFieldMappings = new BindableCollection<CsvColumnMapping>(_csvColumnMappingDAO.GetAll(Context.ModelId));
+            ModelDimensions = new BindableCollection<ModelDimension>(_modelDimensionDAO.GetAll(Context.ModelId));
         }
 
         public String InputFile
@@ -46,23 +56,17 @@ namespace blockoptimiser.ViewModels
                 {
                     Field field = new Field
                     {
+                        ProjectId = Context.ProjectId,
                         Name = CSVFields[i],
                         DataType = DataTypes[i]
                     };
-                    switch (field.DataType)
+                    if(field.DataType == Field.DATA_TYPE_ADDITIVE)
                     {
-                        case Field.DATA_TYPE_GROUP_BY:
-                            field.DataTypeName = "groupby";
-                            break;
-                        case Field.DATA_TYPE_ADDITIVE:
-                            field.DataTypeName = "additive";
-                            LastAdditiveField = field;
-                            break;
-                        case Field.DATA_TYPE_GRADE:
-                            field.DataTypeName = "grade";
-                            field.AssociatedField = LastAdditiveField.Id;
-                            field.AssociatedFieldName = LastAdditiveField.Name;
-                            break;
+                        LastAdditiveField = field;
+                    } else if(field.DataType == Field.DATA_TYPE_GRADE)
+                    {
+                        field.AssociatedField = LastAdditiveField.Id;
+                        field.AssociatedFieldName = LastAdditiveField.Name;
                     }
                     Fields.Add(field);
                 }
@@ -81,6 +85,35 @@ namespace blockoptimiser.ViewModels
             {
                 MessageBox.Show("Please provide a value for model bearing!");
                 return;
+            }
+            // Load all the fields 
+            _fieldDAO.DeleteAll(Context.ProjectId);
+            _csvColumnMappingDAO.DeleteAll(Context.ModelId);
+            int count = 0;
+            foreach (Field newField in Fields)
+            {
+                _fieldDAO.Insert(newField);
+                CsvColumnMapping _csvColumnMapping = new CsvColumnMapping
+                {
+                    ModelId = Context.ModelId,
+                    ColumnName = CSVFields[count],
+                    FieldId = newField.Id
+                };
+                count++;
+            }
+            foreach (Field newField in Fields)
+            {
+                if(newField.DataType == Field.DATA_TYPE_GRADE)
+                {
+                    foreach (Field field in Fields)
+                    {
+                        if(field.DataType == Field.DATA_TYPE_ADDITIVE && field.Name.Equals(newField.AssociatedFieldName))
+                        {
+                            newField.AssociatedField = field.Id;
+                            _fieldDAO.Update(newField);
+                        }
+                    }
+                }
             }
             CSVDataLoader loader = new CSVDataLoader(_fileReader);
             loader.Load();
