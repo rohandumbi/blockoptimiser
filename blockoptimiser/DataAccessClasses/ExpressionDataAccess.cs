@@ -70,6 +70,20 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void UpdateMapping(ExprModelMapping updatedMapping)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update ExprModelMapping set ExprString = @ExprString where ExprId = @ExprId AND ModelId = @ModelId";
+                connection.Execute(updateQuery, new
+                {
+                    updatedMapping.ExprString,
+                    updatedMapping.ExprId,
+                    updatedMapping.ModelId
+                });
+            }
+        }
+
         public void InsertModelMapping(Expression expression)
         {
             using (IDbConnection connection = getConnection())

@@ -92,5 +92,10 @@ namespace blockoptimiser.ViewModels
             }
             return returnedModel;
         }
+
+        public void UpdateMapping(ExprModelMapping mapping)
+        {
+            ExpressionDAO.UpdateMapping(mapping);
+        }
     }
 }

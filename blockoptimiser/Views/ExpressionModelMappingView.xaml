@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:blockoptimiser.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -19,7 +20,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"  Margin="10 0 5 10">
                         <TextBlock Text="{Binding ModelName}" Margin="10 0 5 10"/>
-                        <TextBox Text="{Binding ExprString}" Width="250px"></TextBox>
+                        <TextBox Text="{Binding ExprString}" Width="250px" cal:Message.Attach="[Event LostFocus] = [Action UpdateMapping($dataContext)]" ></TextBox>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
