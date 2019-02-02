@@ -7,10 +7,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace blockoptimiser.ViewModels
 {
-    public class ExpressionViewModel: Screen
+    public class ExpressionViewModel : Conductor<Object>
     {
         private ModelDataAccess ModelDAO;
         private ExpressionDataAccess ExpressionDAO;
@@ -51,6 +52,13 @@ namespace blockoptimiser.ViewModels
             }
 
             return DefaultMapping;
+        }
+
+        public void ClickExpression(object e, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            // MessageBox.Show(e.Source.ToString());
+            Expression SelectedExpression = (Expression)e;
+            ActivateItem(new ExpressionModelMappingViewModel(SelectedExpression));
         }
     }
 }
