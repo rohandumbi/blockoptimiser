@@ -49,6 +49,7 @@ namespace blockoptimiser.ViewModels
                     NewGeotech.ModelId = model.Id;
                     NewGeotech.Script = "";
                     NewGeotech.Type = 1;
+                    NewGeotech.UseScript = false;
                     NewGeotech.FieldId = Fields.First().Id;
                     NewGeotech.ProjectId = Context.ProjectId;
                     GeotechDAO.Insert(NewGeotech);
@@ -57,12 +58,40 @@ namespace blockoptimiser.ViewModels
             Geotechs = new BindableCollection<Geotech>(GeotechDAO.GetAll(Context.ProjectId));
             foreach (Geotech geotech in Geotechs)
             {
-                geotech.AvaialableFields = new List<String>();
+                geotech.AvailableFields = new List<String>();
                 foreach (Field field in Fields)
                 {
-                    geotech.AvaialableFields.Add(field.Name);
+                    geotech.AvailableFields.Add(field.Name);
+                }
+                geotech.FieldName = GetFieldById(geotech.FieldId).Name;
+                geotech.ModelName = GetModelById(geotech.ModelId).Name;
+            }
+        }
+
+        private Field GetFieldById(int fieldId)
+        {
+            Field returnedField = Fields.First();
+            foreach (Field field in Fields)
+            {
+                if (field.Id == fieldId)
+                {
+                    returnedField = field;
                 }
             }
+            return returnedField;
+        }
+
+        private Model GetModelById(int modelId)
+        {
+            Model returnedModel = Models.First();
+            foreach (Model model in Models)
+            {
+                if (model.Id == modelId)
+                {
+                    returnedModel = model;
+                }
+            }
+            return returnedModel;
         }
     }
 }

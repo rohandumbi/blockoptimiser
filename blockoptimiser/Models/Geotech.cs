@@ -13,7 +13,10 @@ namespace blockoptimiser.Models
         public int ModelId { get; set; }
         public int Type { get; set; }
         public int FieldId { get; set; }
+        public Boolean UseScript { get; set; }
+        public String FieldName { get; set; }
         public String Script { get; set; }
-        public List<String> AvaialableFields { get; set; }
+        public List<String> AvailableFields { get; set; }
+        public String ModelName { get; set; }
     }
 }

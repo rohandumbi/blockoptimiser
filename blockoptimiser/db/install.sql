@@ -78,6 +78,7 @@ CREATE TABLE Geotech(
    ModelId INT,
    Type INT,
    FieldId INT,
+   UseScript BIT,
    Script VARCHAR(200),
    UNIQUE (ModelId)
 );

@@ -31,15 +31,16 @@ namespace blockoptimiser.DataAccessClasses
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into Geotech (ProjectId, ModelId, Type, FieldId, Script)" +
+                String insertQuery = $"insert into Geotech (ProjectId, ModelId, Type, FieldId, UseScript, Script)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @ModelId, @Type, @FieldId, @Script)";
+                    $" VALUES(@ProjectId, @ModelId, @Type, @FieldId, @UseScript, @Script)";
                 newGeotech.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newGeotech.ProjectId,
                     newGeotech.ModelId,
                     newGeotech.Type,
                     newGeotech.FieldId,
+                    newGeotech.UseScript,
                     newGeotech.Script
                 });
             }
