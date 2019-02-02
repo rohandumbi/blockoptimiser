@@ -11,11 +11,11 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class GeotechDataAccess : BaseDataAccess
     {
-        public Geotech GetAll(int ProjectId)
+        public List<Geotech> GetAll(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.QuerySingle<Geotech>($"select * from geotech where ProjectId  = { ProjectId }");
+                return connection.Query<Geotech>($"select * from geotech where ProjectId  = { ProjectId }").ToList();
             }
         }
         public Geotech Get(int ModelId)
