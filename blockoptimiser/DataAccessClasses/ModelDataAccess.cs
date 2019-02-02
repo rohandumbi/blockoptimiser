@@ -20,6 +20,14 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public Model Get(int Id)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.QuerySingle<Model>($"select * from model where Id= { Id } ");
+            }
+        }
+
         public void Insert(Model newModel)
         {
 

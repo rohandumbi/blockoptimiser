@@ -15,28 +15,85 @@ namespace blockoptimiser.ViewModels
     {
         private String _inputFileName;
         private CSVReader _fileReader;
-        public List<string> CSVFields { get; set; }
-        public BindableCollection<Field> Fields { get; set; }
-        public BindableCollection<CsvColumnMapping> CSVFieldMappings { get; set; }
+        private Model _model;
+        private Model _primaryModel;
+        private ModelDataAccess _modelDAO;
+        private ModelDimensionDataAccess _modelDimensionDAO;
+        private CsvColumnMappingDataAccess _csvColumnMappingDAO;
+        public List<String> CSVFields { get; set; }
+        public BindableCollection<CSVFieldMapping> CSVFieldMappings { get; set; }
         public BindableCollection<ModelDimension> ModelDimensions { get; set; }
 
-        public String ModelBearing { get; set; }
-        public ModelDefinitionViewModel()
+        public Decimal ModelBearing
         {
-            Fields = new BindableCollection<Field>(new FieldDataAccess().GetAll(Context.ProjectId));
-            CSVFieldMappings = new BindableCollection<CsvColumnMapping>(new CsvColumnMappingDataAccess().GetAll(1));
-            ModelDimensions = new BindableCollection<ModelDimension>(new ModelDimensionDataAccess().GetAll(Context.ModelId));
-        }
- 
+            get { return _model.Bearing; }
+            set
+            {
+                if (value < 0 || value > 360)
+                {
+                    MessageBox.Show("Please enter a valid value for bearing.");
+                    return;
+                }
+                _model.Bearing = value;
+            }
+        } 
         public String InputFile
         {
-            set {
+            get { return _inputFileName; }
+            set
+            {
                 _inputFileName = value;
                 Console.WriteLine("Input file name is " + _inputFileName);
                 _fileReader = new CSVReader(_inputFileName);
 
+                CSVFields = new List<string>();
+                for(int i = 0; i< _fileReader.Header.Length; i++)
+                {
+                    CSVFields.Add(_fileReader.Header[i]);
+                }
+                int count = 0;
+                foreach(CSVFieldMapping mapping in CSVFieldMappings)
+                {
+                    mapping.CSVFields = CSVFields;
+                    mapping.ColumnName = CSVFields.ElementAt(count);
+                    count++;
+                }
+                NotifyOfPropertyChange("CSVFieldMappings");
             }
         }
+        public ModelDefinitionViewModel()
+        {           
+            _modelDAO = new ModelDataAccess();
+            _modelDimensionDAO = new ModelDimensionDataAccess();
+            _csvColumnMappingDAO = new CsvColumnMappingDataAccess();
+            _model = _modelDAO.Get(Context.ModelId);
+            List<Model> Models = _modelDAO.GetAll(Context.ProjectId);
+            ModelDimensions = new BindableCollection<ModelDimension>(_modelDimensionDAO.GetAll(Context.ModelId));
+            _primaryModel = Models.ElementAt(0);
+            List<CsvColumnMapping> _primaryModelColumns = _csvColumnMappingDAO.GetAll(_primaryModel.Id);
+            List<CsvColumnMapping> _csvColumns = _csvColumnMappingDAO.GetAll(Context.ModelId);
+            CSVFieldMappings = new BindableCollection<CSVFieldMapping>();
+            foreach (CsvColumnMapping _primaryModelCsvColumn in _primaryModelColumns)
+            {
+                CSVFieldMapping mapping = new CSVFieldMapping
+                {
+                    PrimayModelColumnName = _primaryModelCsvColumn.ColumnName
+                };
+                foreach (CsvColumnMapping _csvColumn in _csvColumns)
+                {
+                    if(_csvColumn.FieldId == _primaryModelCsvColumn.FieldId)
+                    {
+                        mapping.ColumnName = _csvColumn.ColumnName;
+                        mapping.DefaultValue = _csvColumn.DefaultValue;
+                        break;
+                    }
+                }
+                mapping.CSVFields = CSVFields;
+                CSVFieldMappings.Add(mapping);
+            }
+        }
+ 
+
 
         public void ImportData()
         {
@@ -45,14 +102,19 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a file!");
                 return;
             }
-            if (String.IsNullOrEmpty(ModelBearing))
-            {
-                MessageBox.Show("Please provide a value for model bearing!");
-                return;
-            }
             CSVDataLoader loader = new CSVDataLoader(_fileReader);
             loader.Load();
+            _model.HasData = true;
+            _modelDAO.Update(_model);
             MessageBox.Show("File imported successfully.");
         }
+    }
+
+    public class CSVFieldMapping
+    {
+        public String PrimayModelColumnName { get; set; }
+        public String ColumnName { get; set; }
+        public String DefaultValue { get; set; }
+        public List<String> CSVFields { get; set; }
     }
 }

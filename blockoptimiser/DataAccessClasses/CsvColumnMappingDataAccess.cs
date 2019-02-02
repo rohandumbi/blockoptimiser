@@ -25,18 +25,27 @@ namespace blockoptimiser.DataAccessClasses
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into CsvColumnMapping (ModelId, ColumnName, FieldId)" +
+                String insertQuery = $"insert into CsvColumnMapping (ModelId, ColumnName, FieldId, DefaultValue)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ModelId, @ColumnName, @FieldId)";
+                    $" VALUES(@ModelId, @ColumnName, @FieldId, @DefaultValue)";
                 newCsvColumnMapping.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newCsvColumnMapping.ModelId,
                     newCsvColumnMapping.ColumnName,
-                    newCsvColumnMapping.FieldId
+                    newCsvColumnMapping.FieldId,
+                    newCsvColumnMapping.DefaultValue
                 });
             }
         }
 
+        public void DeleteAll(int ModelId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String deleteQuery = $"delete from CsvColumnMapping where ModelId = { ModelId }";
+                connection.Execute(deleteQuery);
+            }
+        }
         public void Delete(int Id)
         {
             using (IDbConnection connection = getConnection())

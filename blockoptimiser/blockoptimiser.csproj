@@ -84,6 +84,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
+    <Compile Include="DataAccessClasses\DataAccessFactory.cs" />
     <Compile Include="DataAccessClasses\ExpressionDataAccess.cs" />
     <Compile Include="DataAccessClasses\GeotechDataAccess.cs" />
     <Compile Include="DataAccessClasses\RequiredFieldMappingDataAccess.cs" />

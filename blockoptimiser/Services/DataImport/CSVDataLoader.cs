@@ -54,15 +54,15 @@ namespace blockoptimiser.Services.DataImport
             using (IDbConnection connection = getConnection())
             {
                 String ddl = "create table BOData_" + Context.ProjectId + "_" + Context.ModelId + " ( ";
-                for (int i = 1; i <= reader.FieldCount; i++)
+                for (int i = 0; i < reader.Header.Length; i++)
                 {
-                    if (i == 1)
+                    if (i == 0)
                     {
-                        ddl += $" COL_{i} VARCHAR(100) ";
+                        ddl += $" { reader.Header[i]} VARCHAR(100) ";
                     }
                     else
                     {
-                        ddl += $", COL_{i} VARCHAR(100) ";
+                        ddl += $", { reader.Header[i]} VARCHAR(100) ";
                     }
 
                 }
