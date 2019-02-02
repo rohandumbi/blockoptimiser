@@ -14,5 +14,6 @@ namespace blockoptimiser.Models
         public int Type { get; set; }
         public int FieldId { get; set; }
         public String Script { get; set; }
+        public List<String> AvaialableFields { get; set; }
     }
 }
