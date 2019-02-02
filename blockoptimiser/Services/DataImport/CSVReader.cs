@@ -16,7 +16,7 @@ namespace blockoptimiser.Services.DataImport
 
         private StreamReader _file;
         private char _delimiter;
-        private string  _csvHeaderstring = "", _csvlinestring = "";
+        private string _virtualHeaderString = "", _csvHeaderstring = "", _csvlinestring = "", _virtuallineString = "";
         private string[] _header;
         public int[] _dataTypes;
         private int recordsaffected;
@@ -50,7 +50,7 @@ namespace blockoptimiser.Services.DataImport
             {
                 if (headercollection.Contains(item) == true)
                     throw new Exception("Duplicate found in CSV header. Cannot import file with duplicate header");
-                headercollection.Add($"COL_{count}", null);
+                headercollection.Add(item, null);
                 count++;
             }
             
@@ -100,12 +100,40 @@ namespace blockoptimiser.Services.DataImport
             if (result == true)
             {
                 _csvlinestring = _file.ReadLine();
-                _line = ReadRow(_csvlinestring);
+                if (_virtuallineString == "")
+                    _line = ReadRow(_csvlinestring);
+                else
+                    _line = ReadRow(_virtuallineString + _delimiter + _csvlinestring);
                 recordsaffected++;
             }
             if (_iscolumnlocked == false)
                 _iscolumnlocked = true;
             return result;
+        }
+
+        public bool AddVirtualColumn(string columnName, string value)
+        {
+            if (value == null)
+                return false;
+            if (_iscolumnlocked == true)
+                throw new Exception("Cannot add new records after Read() is called.");
+            if (headercollection.Contains(columnName) == true)
+                throw new Exception("Duplicate found in CSV header. Cannot create a CSV readerinstance with duplicate header");
+            headercollection.Add(columnName, value); //add this to main collection so that 
+                                                     //we can check for duplicates next time col is added.
+
+            if (_virtualHeaderString == "")
+                _virtualHeaderString = columnName;
+            else
+                _virtualHeaderString = columnName + _delimiter + _virtualHeaderString;
+            _header = ReadRow(_virtualHeaderString + _delimiter + _csvHeaderstring);
+
+            if (_virtuallineString == "")
+                _virtuallineString = value;
+            else
+                _virtuallineString = value + _delimiter + _virtuallineString;
+            _line = ReadRow(_virtuallineString + _delimiter + _csvlinestring);
+            return true;
         }
 
         private string[] ReadRow(string line)

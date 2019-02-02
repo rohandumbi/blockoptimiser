@@ -39,19 +39,19 @@
             <Button x:Name="ImportData" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Import</Button>
         </Grid>
     </GroupBox>
-        <DataGrid x:Name="PrimaryFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
+        <DataGrid x:Name="CSVFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=FieldName}" />
+                <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=PrimayModelColumnName}" />
                 <DataGridTemplateColumn Header="Model Mapping">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=MapName}" />
+                            <TextBlock Text="{Binding Path=ColumnName}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ComboBox ItemsSource="{Binding Path=MappingOptions}" SelectedItem="{Binding Path=MapName}">
+                            <ComboBox ItemsSource="{Binding Path=CSVFields}" SelectedItem="{Binding Path=ColumnName}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}" />

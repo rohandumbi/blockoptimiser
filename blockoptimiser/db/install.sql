@@ -55,6 +55,7 @@ CREATE TABLE CsvColumnMapping(
    ModelId INT,
    ColumnName VARCHAR(100),
    FieldId INT,
+   DefaultValue VARCHAR(100),
    UNIQUE (ModelId, ColumnName)
 );
 
