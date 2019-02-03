@@ -90,12 +90,8 @@ namespace blockoptimiser.ViewModels
  
         public void ImportData()
         {
-            if (String.IsNullOrEmpty(_inputFileName))
-            {
-                MessageBox.Show("Please select a file!");
-                return;
-            }
-            // Load all the fields 
+            if (!ValidateData()) return;
+            // Load all the fields
             _fieldDAO.DeleteAll(Context.ProjectId);
             _csvColumnMappingDAO.DeleteAll(Context.ModelId);
             int count = 0;
@@ -130,6 +126,16 @@ namespace blockoptimiser.ViewModels
             _model.HasData = true;
             _modelDAO.Update(_model);
             MessageBox.Show("File imported successfully.");
+        }
+
+        private Boolean ValidateData()
+        {
+            if (String.IsNullOrEmpty(_inputFileName))
+            {
+                MessageBox.Show("Please select a file!");
+            }
+
+            return true;
         }
     }
 }
