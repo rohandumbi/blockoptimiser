@@ -21,6 +21,7 @@ namespace blockoptimiser.ViewModels
         private ModelDataAccess _modelDAO;
         private ModelDimensionDataAccess _modelDimensionDAO;
         private CsvColumnMappingDataAccess _csvColumnMappingDAO;
+        private Dictionary<String, int> _columnFieldIdMapping;
         public List<String> CSVFields { get; set; }
         public BindableCollection<CSVFieldMapping> CSVFieldMappings { get; set; }
         public BindableCollection<ModelDimension> ModelDimensions { get; set; }
@@ -79,8 +80,10 @@ namespace blockoptimiser.ViewModels
             List<CsvColumnMapping> _primaryModelColumns = _csvColumnMappingDAO.GetAll(_primaryModel.Id);
             List<CsvColumnMapping> _csvColumns = _csvColumnMappingDAO.GetAll(Context.ModelId);
             CSVFieldMappings = new BindableCollection<CSVFieldMapping>();
+            _columnFieldIdMapping = new Dictionary<string, int>();
             foreach (CsvColumnMapping _primaryModelCsvColumn in _primaryModelColumns)
             {
+                _columnFieldIdMapping.Add(_primaryModelCsvColumn.ColumnName, _primaryModelCsvColumn.FieldId);
                 CSVFieldMapping mapping = new CSVFieldMapping
                 {
                     PrimayModelColumnName = _primaryModelCsvColumn.ColumnName
@@ -113,6 +116,23 @@ namespace blockoptimiser.ViewModels
             {
                 MessageBox.Show("Please select a file!");
                 return;
+            }
+            _csvColumnMappingDAO.DeleteAll(Context.ModelId);
+            foreach(var CSVFieldMapping in CSVFieldMappings)
+            {
+                int fieldId = 0;
+                if (_columnFieldIdMapping.ContainsKey(CSVFieldMapping.ColumnName))
+                {
+                    fieldId = _columnFieldIdMapping[CSVFieldMapping.ColumnName];
+                }
+                CsvColumnMapping csvColumnMapping = new CsvColumnMapping
+                {
+                    ModelId = Context.ModelId,
+                    ColumnName = CSVFieldMapping.ColumnName,
+                    FieldId = fieldId,
+                    DefaultValue = CSVFieldMapping.DefaultValue
+                };
+                _csvColumnMappingDAO.Insert(csvColumnMapping);
             }
             CSVDataLoader loader = new CSVDataLoader(_fileReader);
             loader.Load();

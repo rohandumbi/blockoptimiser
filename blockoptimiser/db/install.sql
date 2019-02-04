@@ -56,7 +56,7 @@ CREATE TABLE CsvColumnMapping(
    ColumnName VARCHAR(100),
    FieldId INT,
    DefaultValue VARCHAR(100),
-   UNIQUE (ModelId, ColumnName)
+   UNIQUE (ModelId, FieldId)
 );
 
 IF OBJECT_ID('RequiredFieldMapping', 'U') IS NOT NULL 
