@@ -91,12 +91,12 @@
                     <DataGridTemplateColumn Header="Mapping">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=MapName}" />
+                                <TextBlock Text="{Binding Path=MappedColumnName}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding Path=MappingOptions}" SelectedItem="{Binding Path=MapName}">
+                                <ComboBox ItemsSource="{Binding Path=mappingOptions}" SelectedItem="{Binding Path=MappedColumnName}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding}" />

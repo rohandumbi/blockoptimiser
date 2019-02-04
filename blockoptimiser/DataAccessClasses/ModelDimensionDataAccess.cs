@@ -39,6 +39,22 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void Update(ModelDimension modelDimension)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update modeldimension set XDim = @XDim, YDim = @YDim, ZDim = @ZDim where Id = @Id";
+                connection.Execute(updateQuery, new
+                {
+                    modelDimension.XDim,
+                    modelDimension.YDim,
+                    modelDimension.ZDim,
+                    modelDimension.Id
+                });
+            }
+        }
+
+
         public void Delete(int Id)
         {
             using (IDbConnection connection = getConnection())

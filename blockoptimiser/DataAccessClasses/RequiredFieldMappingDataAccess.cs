@@ -11,19 +11,12 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class RequiredFieldMappingDataAccess : BaseDataAccess
     {
-        public List<RequiredFieldMapping> GetAll()
-        {
-            using (IDbConnection connection = getConnection())
-            {
-                return connection.Query<RequiredFieldMapping>("select * from RequiredFieldMapping").ToList();
-            }
-        }
-
+        
         public List<RequiredFieldMapping> GetAll(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<RequiredFieldMapping>("select * from RequiredFieldMapping where ProjectId=" + ProjectId).ToList();
+                return connection.Query<RequiredFieldMapping>($"select * from RequiredFieldMapping where ProjectId= { ProjectId } ").ToList();
             }
         }
 
@@ -32,14 +25,28 @@ namespace blockoptimiser.DataAccessClasses
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into RequiredFieldMapping (ProjectId, RequiredFieldName, FieldId)" +
+                String insertQuery = $"insert into RequiredFieldMapping (ProjectId, RequiredFieldName, MappedColumnName)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @RequiredFieldName, @FieldId)";
+                    $" VALUES(@ProjectId, @RequiredFieldName, @MappedColumnName)";
                 newRequiredFieldMapping.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newRequiredFieldMapping.ProjectId,
                     newRequiredFieldMapping.RequiredFieldName,
-                    newRequiredFieldMapping.FieldId
+                    newRequiredFieldMapping.MappedColumnName
+                });
+            }
+        }
+
+        public void Update(RequiredFieldMapping requiredFieldMapping)
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update RequiredFieldMapping set MappedColumnName  =  @MappedColumnName where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    requiredFieldMapping.MappedColumnName,
+                    requiredFieldMapping.Id
                 });
             }
         }

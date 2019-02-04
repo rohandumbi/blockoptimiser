@@ -110,7 +110,14 @@ namespace blockoptimiser.ViewModels
                 ProjectId = Context.ProjectId,
                 Name = _newModelName
             };
-            ModelDAO.Insert(newModel);
+            try
+            {
+                ModelDAO.Insert(newModel);
+            } catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
             String[] Types = { "Origin", "Dimensions", "No Of Blocks" };
             for(int i = 0; i< Types.Length; i++)
             {
@@ -121,6 +128,7 @@ namespace blockoptimiser.ViewModels
                 };
                 ModelDimensionDAO.Insert(obj);
             }
+
             DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
             NotifyOfPropertyChange("MenuItems");
         }

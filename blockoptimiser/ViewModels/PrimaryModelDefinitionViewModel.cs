@@ -4,10 +4,12 @@ using blockoptimiser.Services.DataImport;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace blockoptimiser.ViewModels
 {
@@ -18,10 +20,12 @@ namespace blockoptimiser.ViewModels
         private Model _model;
         private ModelDataAccess _modelDAO;
         private ModelDimensionDataAccess _modelDimensionDAO;
+        private RequiredFieldMappingDataAccess _requiredFieldMappingDAO;
         private FieldDataAccess _fieldDAO;
         private CsvColumnMappingDataAccess _csvColumnMappingDAO;
+
         public BindableCollection<string> FixedFields { get; set;}
-        public String[] CSVFields { get; set; }
+        public List<String> CSVFields { get; set; }
         public int[] DataTypes { get; set; }
         public BindableCollection<Field> Fields { get; set; }
         public BindableCollection<CsvColumnMapping> CSVFieldMappings { get; set; }
@@ -48,16 +52,20 @@ namespace blockoptimiser.ViewModels
                 _inputFileName = value;
                 Console.WriteLine("Input file name is " + _inputFileName);
                 _fileReader = new CSVReader(_inputFileName, true);
-                CSVFields = _fileReader.Header;
                 DataTypes = _fileReader.DataTypes;
+                CSVFields = new List<string>();
+                for (int i = 0; i < _fileReader.Header.Length; i++)
+                {
+                    CSVFields.Add(_fileReader.Header[i]);
+                }
                 Fields = new BindableCollection<Field>();
                 Field LastAdditiveField = null;
-                for (int i = 0; i < CSVFields.Length; i++)
+                for (int i = 0; i < CSVFields.Count; i++)
                 {
                     Field field = new Field
                     {
                         ProjectId = Context.ProjectId,
-                        Name = CSVFields[i],
+                        Name = CSVFields.ElementAt(i),
                         DataType = DataTypes[i]
                     };
                     if (field.DataType == Field.DATA_TYPE_ADDITIVE)
@@ -71,6 +79,11 @@ namespace blockoptimiser.ViewModels
                     }
                     Fields.Add(field);
                 }
+                foreach (var RequiredFieldMapping in RequiredFieldMappings)
+                {
+                    RequiredFieldMapping.mappingOptions = CSVFields;
+                }
+                NotifyOfPropertyChange("RequiredFieldMappings");
                 NotifyOfPropertyChange("Fields");
             }
         }
@@ -81,13 +94,41 @@ namespace blockoptimiser.ViewModels
             _modelDimensionDAO = new ModelDimensionDataAccess();
             _fieldDAO = new FieldDataAccess();
             _csvColumnMappingDAO = new CsvColumnMappingDataAccess();
+            _requiredFieldMappingDAO = new RequiredFieldMappingDataAccess();
             _model = _modelDAO.Get(Context.ModelId);
-            RequiredFieldMappings = new BindableCollection<RequiredFieldMapping>(new RequiredFieldMappingDataAccess().GetAll());
             Fields = new BindableCollection<Field>(_fieldDAO.GetAll(Context.ProjectId));
             CSVFieldMappings = new BindableCollection<CsvColumnMapping>(_csvColumnMappingDAO.GetAll(Context.ModelId));
+            CSVFields = new List<string>();
+            foreach(var CSVFieldMapping in CSVFieldMappings)
+            {
+                CSVFields.Add(CSVFieldMapping.ColumnName);
+            }
             ModelDimensions = new BindableCollection<ModelDimension>(_modelDimensionDAO.GetAll(Context.ModelId));
+            foreach(var ModelDimension in ModelDimensions)
+            {
+                ModelDimension.PropertyChanged += ModelDimension_PropertyChanged;
+            }
+            RequiredFieldMappings = new BindableCollection<RequiredFieldMapping>(_requiredFieldMappingDAO.GetAll(Context.ProjectId));
+            foreach (var RequiredFieldMapping in RequiredFieldMappings)
+            {
+                RequiredFieldMapping.PropertyChanged += RequiredFieldMapping_PropertyChanged;
+                RequiredFieldMapping.mappingOptions = CSVFields;
+            }
         }
- 
+
+        private void RequiredFieldMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RequiredFieldMapping requiredFieldMapping = (RequiredFieldMapping)sender;
+            _requiredFieldMappingDAO.Update(requiredFieldMapping);
+            NotifyOfPropertyChange(() => RequiredFieldMappings);
+        }
+        private void ModelDimension_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ModelDimension modelDimension = (ModelDimension)sender;
+            _modelDimensionDAO.Update(modelDimension);
+            NotifyOfPropertyChange(() => ModelDimensions);
+        }
+
         public void ImportData()
         {
             if (!ValidateData()) return;

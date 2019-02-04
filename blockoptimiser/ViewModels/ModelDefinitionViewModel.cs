@@ -4,6 +4,7 @@ using blockoptimiser.Services.DataImport;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,6 +70,11 @@ namespace blockoptimiser.ViewModels
             _model = _modelDAO.Get(Context.ModelId);
             List<Model> Models = _modelDAO.GetAll(Context.ProjectId);
             ModelDimensions = new BindableCollection<ModelDimension>(_modelDimensionDAO.GetAll(Context.ModelId));
+            foreach (var ModelDimension in ModelDimensions)
+            {
+                ModelDimension.PropertyChanged += ModelDimension_PropertyChanged;
+            }
+
             _primaryModel = Models.ElementAt(0);
             List<CsvColumnMapping> _primaryModelColumns = _csvColumnMappingDAO.GetAll(_primaryModel.Id);
             List<CsvColumnMapping> _csvColumns = _csvColumnMappingDAO.GetAll(Context.ModelId);
@@ -92,8 +98,14 @@ namespace blockoptimiser.ViewModels
                 CSVFieldMappings.Add(mapping);
             }
         }
- 
 
+        private void ModelDimension_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //Do stuff with fleet here
+            ModelDimension modelDimension = (ModelDimension)sender;
+            _modelDimensionDAO.Update(modelDimension);
+            NotifyOfPropertyChange(() => ModelDimensions);
+        }
 
         public void ImportData()
         {

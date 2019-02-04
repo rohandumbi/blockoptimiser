@@ -64,13 +64,13 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="DimensionModels"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
+            <DataGrid x:Name="ModelDimensions"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
                   AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
-                    <DataGridTextColumn Header="X" Binding="{Binding Path=XCordinate}" />
-                    <DataGridTextColumn Header="Y" Binding="{Binding Path=YCordinate}" />
-                    <DataGridTextColumn Header="Z" Binding="{Binding Path=ZCordinate}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}"/>
+                    <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
+                    <DataGridTextColumn Header="Y" Binding="{Binding Path=YDim}" />
+                    <DataGridTextColumn Header="Z" Binding="{Binding Path=ZDim}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

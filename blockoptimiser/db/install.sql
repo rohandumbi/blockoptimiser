@@ -66,7 +66,7 @@ CREATE TABLE RequiredFieldMapping(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    RequiredFieldName VARCHAR(100),
-   FieldId INT,
+   MappedColumnName VARCHAR(100),
    UNIQUE (ProjectId, RequiredFieldName)
 );
 
@@ -88,6 +88,16 @@ IF OBJECT_ID('Process', 'U') IS NOT NULL
 DROP TABLE Process
 
 CREATE TABLE Process(
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT,
+   Name VARCHAR(100),
+   UNIQUE (ProjectId, Name)
+);
+
+IF OBJECT_ID('Product', 'U') IS NOT NULL 
+DROP TABLE Product
+
+CREATE TABLE Product(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
