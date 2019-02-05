@@ -7,7 +7,22 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label x:Name="label" Content="This is Process view" HorizontalAlignment="Left" Margin="148,190,0,0" VerticalAlignment="Top" Width="401"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name = "ButtonPanel" Grid.Row="1" Grid.Column="0">
+            <Button x:Name="AddProcess" Content = "Add Process" Width = "100" Height = "40" Margin = "10" />
+            <Button x:Name="AddProduct" Content = "Add Product" Width = "100" Height = "40" Margin = "10" />
+            <Button x:Name="AddProductJoin" Content = "Add Product Join" Width = "100" Height = "40" Margin = "10" />
+        </StackPanel>
     </Grid>
 </UserControl>
