@@ -71,7 +71,7 @@ CREATE TABLE RequiredFieldMapping(
 );
 
 IF OBJECT_ID('Geotech', 'U') IS NOT NULL 
-DROP TABLE Geotech
+DROP TABLE Geotech;
 
 CREATE TABLE Geotech(
    Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -85,19 +85,50 @@ CREATE TABLE Geotech(
 );
 
 IF OBJECT_ID('Process', 'U') IS NOT NULL 
-DROP TABLE Process
+DROP TABLE Process;
 
 CREATE TABLE Process(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
+   FieldId INT NOT NULL,
+   FilterString VARCHAR(400),
    UNIQUE (ProjectId, Name)
 );
 
+IF OBJECT_ID('ProcessRoute', 'U') IS NOT NULL 
+DROP TABLE ProcessRoute;
+
+CREATE TABLE ProcessRoute (
+   ProjectId INT NOT NULL,
+   ProcessId INT NOT NULL,
+   ParentProcessId INT
+);
+
+IF OBJECT_ID('ProcessJoin', 'U') IS NOT NULL 
+DROP TABLE ProcessJoin
+
+CREATE TABLE ProcessJoin(
+   ProjectId INT NOT NULL,
+   Name  VARCHAR(100) NOT NULL,
+   ChildProcessId INT,
+   unique (ProjectId, Name, ChildProcessId)
+);
 IF OBJECT_ID('Product', 'U') IS NOT NULL 
 DROP TABLE Product
 
 CREATE TABLE Product(
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT,
+   Name VARCHAR(100),
+   AssociatedProcessId INT,
+   UNIQUE (ProjectId, Name)
+);
+
+IF OBJECT_ID('ProductJoin', 'U') IS NOT NULL 
+DROP TABLE ProductJoin
+
+CREATE TABLE ProductJoin(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
