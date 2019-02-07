@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:blockoptimiser.Views"
+        xmlns:global="clr-namespace:blockoptimiser"
         mc:Ignorable="d"
         xmlns:cal="http://www.caliburnproject.org"
         Title="Block Optimiser" Height="600" Width="800" WindowStartupLocation="CenterScreen" Background="#fbf7f5">
