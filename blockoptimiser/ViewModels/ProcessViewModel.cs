@@ -13,7 +13,7 @@ namespace blockoptimiser.ViewModels
     {
         public ProcessViewModel()
         {
-            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            /*System.Windows.Forms.Form form = new System.Windows.Forms.Form();
             //create a viewer object 
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             //create a graph object 
@@ -36,7 +36,10 @@ namespace blockoptimiser.ViewModels
             form.ResumeLayout();
             //show the form 
             form.ShowDialog();
-            StackPanel st1 = App.Current.Windows[0].FindName("ProcessCanvas") as StackPanel;
+            //StackPanel st1 = FrameworkElement.FindName("ProcessCanvas");
+            //StackPanel st1 = App.Current.Windows[0].FindName("ProcessCanvas") as StackPanel;
+            //StackPanel st1 = (StackPanel)this.FindName("");
+            ProcessViewModel processView = this.GetView() as ProcessViewModel;*/
         }
         public void AddProcess()
         {
