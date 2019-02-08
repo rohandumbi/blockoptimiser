@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace blockoptimiser.ViewModels
 {
@@ -35,6 +36,7 @@ namespace blockoptimiser.ViewModels
             form.ResumeLayout();
             //show the form 
             form.ShowDialog();
+            StackPanel st1 = App.Current.Windows[0].FindName("ProcessCanvas") as StackPanel;
         }
         public void AddProcess()
         {

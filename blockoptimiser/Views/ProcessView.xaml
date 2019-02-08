@@ -14,9 +14,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <StackPanel x:Name = "ButtonPanel" Grid.Row="1" Grid.Column="0">
@@ -24,5 +23,7 @@
             <Button x:Name="AddProduct" Content = "Add Product" Width = "100" Height = "40" Margin = "10" />
             <Button x:Name="AddProductJoin" Content = "Add Product Join" Width = "100" Height = "40" Margin = "10" />
         </StackPanel>
+        <StackPanel x:Name = "ProcessCanvas" Grid.Row="1" Grid.Column="1" Background="White" Width="450" Margin="10"></StackPanel>
+        <StackPanel x:Name = "ProductJoinCanvas" Grid.Row="1" Grid.Column="2" Background="White" Width="450" Margin="10"></StackPanel>
     </Grid>
 </UserControl>
