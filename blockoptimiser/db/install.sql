@@ -122,7 +122,7 @@ CREATE TABLE Product(
    ProjectId INT,
    Name VARCHAR(100),
    AssociatedProcessId INT,
-   UNIQUE (ProjectId, Name)
+   UNIQUE (ProjectId, Name, AssociatedProcessId)
 );
 
 IF OBJECT_ID('ProductJoin', 'U') IS NOT NULL 
@@ -132,7 +132,8 @@ CREATE TABLE ProductJoin(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
-   UNIQUE (ProjectId, Name)
+   ChildProductId INT,
+   UNIQUE (ProjectId, Name, ChildProductId)
 );
 
 IF OBJECT_ID('Expression', 'U') IS NOT NULL 
