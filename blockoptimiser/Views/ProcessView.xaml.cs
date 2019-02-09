@@ -25,6 +25,8 @@ namespace blockoptimiser.Views
     public partial class ProcessView : UserControl
     {
         Grid mainGrid = new Grid();
+        Border ProcessGraphBorder = new Border();
+        Border ProductGraphBorder = new Border();
         DockPanel ProcessGraphViewerPanel = new DockPanel();
         DockPanel ProductGraphViewerPanel = new DockPanel();
         GraphViewer ProcessGraphViewer = new GraphViewer();
@@ -35,9 +37,11 @@ namespace blockoptimiser.Views
         ToolBar toolBar = new ToolBar();
         ProductDataAccess ProductDAO;
         ProductJoinDataAccess ProductJoinDAO;
+        ProcessDataAccess ProcessDAO;
 
         List<Product> Products;
         List<ProductJoin> ProductJoins;
+        List<Process> Processes;
 
         StackPanel sp1 = new StackPanel();
         public ProcessView()
@@ -45,9 +49,12 @@ namespace blockoptimiser.Views
             InitializeComponent();
             ProductDAO = new ProductDataAccess();
             ProductJoinDAO = new ProductJoinDataAccess();
+            ProcessDAO = new ProcessDataAccess();
             Products = ProductDAO.GetAll(Context.ProjectId);
             ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
+            Processes = ProcessDAO.GetAll(Context.ProjectId);
             mainGrid.Background = Brushes.White;
+            ProcessGraphBorder.BorderBrush = Brushes.Red;
             this.Content = mainGrid;
             Loaded += MainWindow_Loaded;
         }
@@ -82,18 +89,31 @@ namespace blockoptimiser.Views
 
 
             // Creating the Product Graph
-            AddProductNodes();
+            AddProductNodesInProductGraph();
             AddProductJoinNodes();
-            ProductGraph.Attr.LayerDirection = LayerDirection.LR;
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
             ProductGraphViewer.Graph = ProductGraph;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
 
         }
 
-        private void AddProductNodes()
+        private void AddProductNodesInProductGraph()
         {
             foreach (Product product in Products)
             {
                 ProductGraph.AddNode(product.Name);
+            }
+        }
+
+        private void AddProductNodesInProcessGraph()
+        {
+            foreach (Product product in Products)
+            {
+                ProcessGraph.AddNode(product.Name);
+                ProcessGraph.AddEdge(product.Name, GetProcessById(product.AssociatedProcessId).Name);
             }
         }
 
@@ -103,6 +123,14 @@ namespace blockoptimiser.Views
             {
                 ProductGraph.AddNode(productjoin.Name);
                 ProductGraph.AddEdge(GetProductById(productjoin.ChildProductId).Name, productjoin.Name);
+            }
+        }
+
+        private void AddProcessNodes()
+        {
+            foreach (Process process in Processes)
+            {
+                ProcessGraph.AddNode(process.Name);
             }
         }
 
@@ -118,6 +146,20 @@ namespace blockoptimiser.Views
                 }
             }
             return selectedProduct;
+        }
+
+        private Process GetProcessById(int Id)
+        {
+            Process selectedProcess = new Process();
+            foreach (Process process in Processes)
+            {
+                if (process.Id == Id)
+                {
+                    selectedProcess = process;
+                    break;
+                }
+            }
+            return selectedProcess;
         }
 
         void SetMainMenu()
