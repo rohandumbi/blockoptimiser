@@ -15,7 +15,6 @@ namespace blockoptimiser.ViewModels
 {
     public class AppViewModel : Conductor<Object>
     {
-        //private List<Department> departments;
         private BindableCollection<MenuItem> menuItems { get; set; }
         private List<Model> Models;
         private ModelDataAccess ModelDAO;
