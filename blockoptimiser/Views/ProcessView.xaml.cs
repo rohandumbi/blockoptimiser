@@ -66,7 +66,10 @@ namespace blockoptimiser.Views
             ProductGraphViewerPanel.ClipToBounds = true;
 
             mainGrid.Children.Add(toolBar);
+            //DockPanel.SetDock(toolBar, Dock.Top);
             toolBar.VerticalAlignment = VerticalAlignment.Top;
+
+            SetupToolbar();
 
             mainGrid.Children.Add(ProcessGraphViewerPanel);
             mainGrid.Children.Add(ProductGraphViewerPanel);
@@ -162,12 +165,46 @@ namespace blockoptimiser.Views
             return selectedProcess;
         }
 
-        void SetMainMenu()
+        void SetupToolbar()
         {
-            var mainMenu = new Menu { IsMainMenu = true };
-            toolBar.Items.Add(mainMenu);
-            //SetFileMenu(mainMenu);
-            //SetViewMenu(mainMenu);
+            Button addProcessButton = new Button();
+            addProcessButton.Content = "Add Process";
+            addProcessButton.Click += (s, e) => CreateProcess();
+            addProcessButton.Padding = new Thickness(5);
+            addProcessButton.FontSize = 12;
+            addProcessButton.Background = Brushes.Transparent;
+            toolBar.Items.Add(addProcessButton);
+
+            Button addProductButton = new Button();
+            addProductButton.Content = "Add Product";
+            addProductButton.Click += (s, e) => CreateProduct();
+            addProductButton.Padding = new Thickness(5);
+            addProductButton.FontSize = 12;
+            addProductButton.Background = Brushes.Transparent;
+            toolBar.Items.Add(addProductButton);
+
+            Button addProductJoinButton = new Button();
+            addProductJoinButton.Content = "Add Product Join";
+            addProductJoinButton.Click += (s, e) => CreateProductJoin();
+            addProductJoinButton.Padding = new Thickness(5);
+            addProductJoinButton.FontSize = 12;
+            addProductJoinButton.Background = Brushes.Transparent;
+            toolBar.Items.Add(addProductJoinButton);
+        }
+
+        private void CreateProcess()
+        {
+            MessageBox.Show("Create process.");
+        }
+
+        private void CreateProduct()
+        {
+            MessageBox.Show("Create product.");
+        }
+
+        private void CreateProductJoin()
+        {
+            MessageBox.Show("Create product join.");
         }
     }
 }
