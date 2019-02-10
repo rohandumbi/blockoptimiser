@@ -6,8 +6,24 @@
         xmlns:local="clr-namespace:blockoptimiser.Views"
         mc:Ignorable="d"
         Title="Create Product" Height="450" Width="800">
-    <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="237,150,0,0" TextWrapping="Wrap" Text="Product Definition Window" VerticalAlignment="Top" Height="33" Width="260"/>
-
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label>Name:</Label>
+        <TextBox x:Name="Name" Width="200" Grid.Column="1" Margin="0,0,0,10" />
+        <Label Grid.Row="1">Processes:</Label>
+        <ComboBox ItemsSource="{Binding Path=ProcessNames}"  SelectedItem="{Binding Path=SelectedProcessName}" SelectedValue="{Binding Path=SelectedProcessName}" Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" Width="200" >
+        </ComboBox>
+        <Button x:Name="AddProduct"  Grid.Row="3" Grid.Column="0" Content="Add"></Button>
     </Grid>
 </Window>

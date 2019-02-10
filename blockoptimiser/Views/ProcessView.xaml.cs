@@ -207,6 +207,7 @@ namespace blockoptimiser.Views
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ProcessDefinitionViewModel ProcessDefinitionViewModel = new ProcessDefinitionViewModel();
             WindowManager.ShowWindow(ProcessDefinitionViewModel, null, settings);
+            //MessageBox.Show("Back to XAML");
         }
 
         private void CreateProduct()
@@ -215,6 +216,7 @@ namespace blockoptimiser.Views
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ProductDefinitionViewModel ProductDefinitionViewModel = new ProductDefinitionViewModel();
             WindowManager.ShowWindow(ProductDefinitionViewModel, null, settings);
+            //MessageBox.Show("Back to XAML");
         }
 
         private void CreateProductJoin()
@@ -223,6 +225,7 @@ namespace blockoptimiser.Views
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ProductJoinDefinitionViewModel ProductJoinDefinitionViewModel = new ProductJoinDefinitionViewModel();
             WindowManager.ShowWindow(ProductJoinDefinitionViewModel, null, settings);
+            //MessageBox.Show("Back to XAML");
         }
     }
 }
