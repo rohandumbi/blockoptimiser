@@ -129,6 +129,7 @@
     <Compile Include="Models\RequiredFieldMapping.cs" />
     <Compile Include="Services\DataImport\CSVDataLoader.cs" />
     <Compile Include="Services\DataImport\CSVReader.cs" />
+    <Compile Include="Services\LP\EquationGenerator.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ExpressionModelMappingViewModel.cs" />

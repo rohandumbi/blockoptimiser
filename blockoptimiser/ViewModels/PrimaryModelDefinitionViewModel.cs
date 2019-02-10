@@ -162,8 +162,28 @@ namespace blockoptimiser.ViewModels
                     }
                 }
             }
+            // Map required field with csv
+            Dictionary<String, String> FixedFieldCsvMapping = new Dictionary<string, string>();
+            foreach(RequiredFieldMapping mapping in RequiredFieldMappings)
+            {
+                FixedFieldCsvMapping.Add(mapping.RequiredFieldName, mapping.MappedColumnName);
+            }
+            decimal angle = ModelBearing;
+            if(ModelBearing > 90 && ModelBearing < 180 )
+            {
+                angle = ModelBearing - 90;
+            }
+            else if (ModelBearing > 180 && ModelBearing < 270)
+            {
+                angle = ModelBearing - 180;
+            }
+            else if (ModelBearing > 270 && ModelBearing < 360)
+            {
+                angle = ModelBearing - 270;
+            }
             CSVDataLoader loader = new CSVDataLoader(_fileReader);
             loader.Load();
+            loader.LoadComputedDataTable(FixedFieldCsvMapping, ModelDimensions.ToList(), angle);
             _model.HasData = true;
             _modelDAO.Update(_model);
             MessageBox.Show("File imported successfully.");

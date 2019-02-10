@@ -10,5 +10,18 @@ namespace blockoptimiser
     {
         public static int ProjectId = -1;
         public static int ModelId = -1;
+
+        public Context()
+        {
+            if (ProjectId != -1)
+            {
+                LoadData();
+            }
+        }
+
+        private void LoadData()
+        {
+
+        }
     }
 }

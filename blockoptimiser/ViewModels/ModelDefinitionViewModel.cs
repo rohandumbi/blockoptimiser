@@ -121,9 +121,9 @@ namespace blockoptimiser.ViewModels
             foreach(var CSVFieldMapping in CSVFieldMappings)
             {
                 int fieldId = 0;
-                if (_columnFieldIdMapping.ContainsKey(CSVFieldMapping.ColumnName))
+                if (_columnFieldIdMapping.ContainsKey(CSVFieldMapping.PrimayModelColumnName))
                 {
-                    fieldId = _columnFieldIdMapping[CSVFieldMapping.ColumnName];
+                    fieldId = _columnFieldIdMapping[CSVFieldMapping.PrimayModelColumnName];
                 }
                 CsvColumnMapping csvColumnMapping = new CsvColumnMapping
                 {
@@ -134,8 +134,38 @@ namespace blockoptimiser.ViewModels
                 };
                 _csvColumnMappingDAO.Insert(csvColumnMapping);
             }
+            List<RequiredFieldMapping> RequiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(Context.ProjectId);
+            Dictionary<String, String> FixedFieldCsvMapping = new Dictionary<string, string>();
+            foreach (RequiredFieldMapping mapping in RequiredFieldMappings)
+            { 
+                String mappedColumn = "";
+                foreach(var CSVFieldMapping in CSVFieldMappings)
+                {
+                    if(CSVFieldMapping.PrimayModelColumnName == mapping.MappedColumnName)
+                    {
+                        mappedColumn = CSVFieldMapping.ColumnName;
+                        break;
+                    }
+                }
+                FixedFieldCsvMapping.Add(mapping.RequiredFieldName, mappedColumn);
+            }
+            decimal angle = ModelBearing;
+            if (ModelBearing > 90 && ModelBearing < 180)
+            {
+                angle = ModelBearing - 90;
+            }
+            else if (ModelBearing > 180 && ModelBearing < 270)
+            {
+                angle = ModelBearing - 180;
+            }
+            else if (ModelBearing > 270 && ModelBearing < 360)
+            {
+                angle = ModelBearing - 270;
+            }
+
             CSVDataLoader loader = new CSVDataLoader(_fileReader);
             loader.Load();
+            loader.LoadComputedDataTable(FixedFieldCsvMapping, ModelDimensions.ToList(), angle);
             _model.HasData = true;
             _modelDAO.Update(_model);
             MessageBox.Show("File imported successfully.");
