@@ -10,6 +10,7 @@ namespace blockoptimiser.Models
     {
         public int Id { get; set; }
         public int ProjectId { get; set; }
+        public int ChildProductId { get; set; }
         public String Name { get; set; }
     }
 }

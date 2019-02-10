@@ -1,4 +1,5 @@
-﻿using System;
+﻿using blockoptimiser.DataAccessClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Msagl.Drawing;
+using Microsoft.Msagl.WpfGraphControl;
+using blockoptimiser.Models;
 
 namespace blockoptimiser.Views
 {
@@ -20,9 +24,187 @@ namespace blockoptimiser.Views
     /// </summary>
     public partial class ProcessView : UserControl
     {
+        Grid mainGrid = new Grid();
+        Border ProcessGraphBorder = new Border();
+        Border ProductGraphBorder = new Border();
+        DockPanel ProcessGraphViewerPanel = new DockPanel();
+        DockPanel ProductGraphViewerPanel = new DockPanel();
+        GraphViewer ProcessGraphViewer = new GraphViewer();
+        GraphViewer ProductGraphViewer = new GraphViewer();
+        Graph ProcessGraph = new Graph();
+        Graph ProductGraph = new Graph();
+
+        ToolBar toolBar = new ToolBar();
+        ProductDataAccess ProductDAO;
+        ProductJoinDataAccess ProductJoinDAO;
+        ProcessDataAccess ProcessDAO;
+
+        List<Product> Products;
+        List<ProductJoin> ProductJoins;
+        List<Process> Processes;
+
+        StackPanel sp1 = new StackPanel();
         public ProcessView()
         {
             InitializeComponent();
+            ProductDAO = new ProductDataAccess();
+            ProductJoinDAO = new ProductJoinDataAccess();
+            ProcessDAO = new ProcessDataAccess();
+            Products = ProductDAO.GetAll(Context.ProjectId);
+            ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
+            Processes = ProcessDAO.GetAll(Context.ProjectId);
+            mainGrid.Background = Brushes.White;
+            ProcessGraphBorder.BorderBrush = Brushes.Red;
+            this.Content = mainGrid;
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            ProcessGraphViewerPanel.ClipToBounds = true;
+            ProductGraphViewerPanel.ClipToBounds = true;
+
+            mainGrid.Children.Add(toolBar);
+            //DockPanel.SetDock(toolBar, Dock.Top);
+            toolBar.VerticalAlignment = VerticalAlignment.Top;
+
+            SetupToolbar();
+
+            mainGrid.Children.Add(ProcessGraphViewerPanel);
+            mainGrid.Children.Add(ProductGraphViewerPanel);
+
+            //mainGrid.Children.Add(sp1);
+            double height = this.Width;
+
+            ProcessGraphViewer.BindToPanel(ProcessGraphViewerPanel);
+            ProductGraphViewer.BindToPanel(ProductGraphViewerPanel);
+
+            ProcessGraphViewerPanel.HorizontalAlignment = HorizontalAlignment.Left;
+            ProductGraphViewerPanel.HorizontalAlignment = HorizontalAlignment.Right;
+
+            ProcessGraphViewerPanel.Width = (this.ActualWidth/2 - 10);
+            ProductGraphViewerPanel.Width = (this.ActualWidth/2 - 10);
+
+            ProcessGraphViewerPanel.Height = this.ActualHeight - 20;
+            ProductGraphViewerPanel.Height = this.ActualHeight - 20;
+
+
+
+            // Creating the Product Graph
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProductGraphViewer.Graph = ProductGraph;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+
+        }
+
+        private void AddProductNodesInProductGraph()
+        {
+            foreach (Product product in Products)
+            {
+                ProductGraph.AddNode(product.Name);
+            }
+        }
+
+        private void AddProductNodesInProcessGraph()
+        {
+            foreach (Product product in Products)
+            {
+                ProcessGraph.AddNode(product.Name);
+                ProcessGraph.AddEdge(product.Name, GetProcessById(product.AssociatedProcessId).Name);
+            }
+        }
+
+        private void AddProductJoinNodes()
+        {
+            foreach (ProductJoin productjoin in ProductJoins)
+            {
+                ProductGraph.AddNode(productjoin.Name);
+                ProductGraph.AddEdge(GetProductById(productjoin.ChildProductId).Name, productjoin.Name);
+            }
+        }
+
+        private void AddProcessNodes()
+        {
+            foreach (Process process in Processes)
+            {
+                ProcessGraph.AddNode(process.Name);
+            }
+        }
+
+        private Product GetProductById(int Id)
+        {
+            Product selectedProduct = new Product();
+            foreach (Product product in Products)
+            {
+                if (product.Id == Id)
+                {
+                    selectedProduct = product;
+                    break;
+                }
+            }
+            return selectedProduct;
+        }
+
+        private Process GetProcessById(int Id)
+        {
+            Process selectedProcess = new Process();
+            foreach (Process process in Processes)
+            {
+                if (process.Id == Id)
+                {
+                    selectedProcess = process;
+                    break;
+                }
+            }
+            return selectedProcess;
+        }
+
+        void SetupToolbar()
+        {
+            Button addProcessButton = new Button();
+            addProcessButton.Content = "Add Process";
+            addProcessButton.Click += (s, e) => CreateProcess();
+            addProcessButton.Padding = new Thickness(5);
+            addProcessButton.FontSize = 12;
+            addProcessButton.Background = Brushes.Transparent;
+            toolBar.Items.Add(addProcessButton);
+
+            Button addProductButton = new Button();
+            addProductButton.Content = "Add Product";
+            addProductButton.Click += (s, e) => CreateProduct();
+            addProductButton.Padding = new Thickness(5);
+            addProductButton.FontSize = 12;
+            addProductButton.Background = Brushes.Transparent;
+            toolBar.Items.Add(addProductButton);
+
+            Button addProductJoinButton = new Button();
+            addProductJoinButton.Content = "Add Product Join";
+            addProductJoinButton.Click += (s, e) => CreateProductJoin();
+            addProductJoinButton.Padding = new Thickness(5);
+            addProductJoinButton.FontSize = 12;
+            addProductJoinButton.Background = Brushes.Transparent;
+            toolBar.Items.Add(addProductJoinButton);
+        }
+
+        private void CreateProcess()
+        {
+            MessageBox.Show("Create process.");
+        }
+
+        private void CreateProduct()
+        {
+            MessageBox.Show("Create product.");
+        }
+
+        private void CreateProductJoin()
+        {
+            MessageBox.Show("Create product join.");
         }
     }
 }
