@@ -170,7 +170,7 @@ namespace blockoptimiser.Views
             Button addProcessButton = new Button();
             addProcessButton.Content = "Add Process";
             addProcessButton.Click += (s, e) => CreateProcess();
-            addProcessButton.Padding = new Thickness(5);
+            addProcessButton.Padding = new Thickness(10);
             addProcessButton.FontSize = 12;
             addProcessButton.Background = Brushes.Transparent;
             toolBar.Items.Add(addProcessButton);
@@ -178,7 +178,7 @@ namespace blockoptimiser.Views
             Button addProductButton = new Button();
             addProductButton.Content = "Add Product";
             addProductButton.Click += (s, e) => CreateProduct();
-            addProductButton.Padding = new Thickness(5);
+            addProductButton.Padding = new Thickness(10);
             addProductButton.FontSize = 12;
             addProductButton.Background = Brushes.Transparent;
             toolBar.Items.Add(addProductButton);
@@ -186,7 +186,7 @@ namespace blockoptimiser.Views
             Button addProductJoinButton = new Button();
             addProductJoinButton.Content = "Add Product Join";
             addProductJoinButton.Click += (s, e) => CreateProductJoin();
-            addProductJoinButton.Padding = new Thickness(5);
+            addProductJoinButton.Padding = new Thickness(10);
             addProductJoinButton.FontSize = 12;
             addProductJoinButton.Background = Brushes.Transparent;
             toolBar.Items.Add(addProductJoinButton);
@@ -194,17 +194,21 @@ namespace blockoptimiser.Views
 
         private void CreateProcess()
         {
-            MessageBox.Show("Create process.");
+            ProcessDefinitionView processDefinitionView = new ProcessDefinitionView();
+            processDefinitionView.Show();
         }
 
         private void CreateProduct()
         {
-            MessageBox.Show("Create product.");
+            ProductDefinitionView productDefinitionView = new ProductDefinitionView();
+            productDefinitionView.Show();
         }
 
         private void CreateProductJoin()
         {
-            MessageBox.Show("Create product join.");
+            //MessageBox.Show("Create product join.");
+            ProductJoinDefinitionView productJoinDefinitionView = new ProductJoinDefinitionView();
+            productJoinDefinitionView.Show();
         }
     }
 }

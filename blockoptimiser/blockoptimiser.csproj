@@ -161,8 +161,17 @@
     <Compile Include="Views\PrimaryModelDefinitionView.xaml.cs">
       <DependentUpon>PrimaryModelDefinitionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProcessDefinitionView.xaml.cs">
+      <DependentUpon>ProcessDefinitionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProcessView.xaml.cs">
       <DependentUpon>ProcessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductDefinitionView.xaml.cs">
+      <DependentUpon>ProductDefinitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductJoinDefinitionView.xaml.cs">
+      <DependentUpon>ProductJoinDefinitionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProjectsView.xaml.cs">
       <DependentUpon>ProjectsView.xaml</DependentUpon>
@@ -202,7 +211,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ProcessDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProcessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductJoinDefinitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
