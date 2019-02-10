@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using blockoptimiser.DataAccessClasses;
+using blockoptimiser.Models;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +13,5 @@ namespace blockoptimiser.ViewModels
 {
     public class ProcessViewModel: Screen
     {
-        public ProcessViewModel()
-        {
-        }
-        public void AddProcess()
-        {
-            MessageBox.Show("add a process.");
-        }
-
-        public void AddProduct()
-        {
-            MessageBox.Show("add a product.");
-        }
-
-        public void AddProductJoin()
-        {
-            MessageBox.Show("add a product join.");
-        }
     }
 }
