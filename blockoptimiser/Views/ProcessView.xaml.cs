@@ -16,6 +16,9 @@ using System.Windows.Shapes;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.WpfGraphControl;
 using blockoptimiser.Models;
+using blockoptimiser.ViewModels;
+using Caliburn.Micro;
+using System.Dynamic;
 
 namespace blockoptimiser.Views
 {
@@ -44,6 +47,8 @@ namespace blockoptimiser.Views
         List<Process> Processes;
 
         StackPanel sp1 = new StackPanel();
+
+        IWindowManager WindowManager;
         public ProcessView()
         {
             InitializeComponent();
@@ -57,6 +62,7 @@ namespace blockoptimiser.Views
             ProcessGraphBorder.BorderBrush = Brushes.Red;
             this.Content = mainGrid;
             Loaded += MainWindow_Loaded;
+            WindowManager = new WindowManager();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -169,46 +175,54 @@ namespace blockoptimiser.Views
         {
             Button addProcessButton = new Button();
             addProcessButton.Content = "Add Process";
-            addProcessButton.Click += (s, e) => CreateProcess();
-            addProcessButton.Padding = new Thickness(10);
-            addProcessButton.FontSize = 12;
+            //addProcessButton.Padding = new Thickness(5);
+            addProcessButton.FontSize = 14;
+            //addProcessButton.Height = 30;
             addProcessButton.Background = Brushes.Transparent;
+            addProcessButton.Click += (s, e) => CreateProcess();
             toolBar.Items.Add(addProcessButton);
 
             Button addProductButton = new Button();
             addProductButton.Content = "Add Product";
-            addProductButton.Click += (s, e) => CreateProduct();
-            addProductButton.Padding = new Thickness(10);
-            addProductButton.FontSize = 12;
+            //addProductButton.Padding = new Thickness(5);
+            addProductButton.FontSize = 14;
+            //addProductButton.Height = 30;
             addProductButton.Background = Brushes.Transparent;
+            addProductButton.Click += (s, e) => CreateProduct();
             toolBar.Items.Add(addProductButton);
 
             Button addProductJoinButton = new Button();
             addProductJoinButton.Content = "Add Product Join";
-            addProductJoinButton.Click += (s, e) => CreateProductJoin();
-            addProductJoinButton.Padding = new Thickness(10);
-            addProductJoinButton.FontSize = 12;
+            //addProductJoinButton.Padding = new Thickness(5);
+            addProductJoinButton.FontSize = 14;
+            //addProductJoinButton.Height = 30;
             addProductJoinButton.Background = Brushes.Transparent;
+            addProductJoinButton.Click += (s, e) => CreateProductJoin();
             toolBar.Items.Add(addProductJoinButton);
         }
 
         private void CreateProcess()
         {
-            ProcessDefinitionView processDefinitionView = new ProcessDefinitionView();
-            processDefinitionView.Show();
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            ProcessDefinitionViewModel ProcessDefinitionViewModel = new ProcessDefinitionViewModel();
+            WindowManager.ShowWindow(ProcessDefinitionViewModel, null, settings);
         }
 
         private void CreateProduct()
         {
-            ProductDefinitionView productDefinitionView = new ProductDefinitionView();
-            productDefinitionView.Show();
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            ProductDefinitionViewModel ProductDefinitionViewModel = new ProductDefinitionViewModel();
+            WindowManager.ShowWindow(ProductDefinitionViewModel, null, settings);
         }
 
         private void CreateProductJoin()
         {
-            //MessageBox.Show("Create product join.");
-            ProductJoinDefinitionView productJoinDefinitionView = new ProductJoinDefinitionView();
-            productJoinDefinitionView.Show();
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            ProductJoinDefinitionViewModel ProductJoinDefinitionViewModel = new ProductJoinDefinitionViewModel();
+            WindowManager.ShowWindow(ProductJoinDefinitionViewModel, null, settings);
         }
     }
 }
