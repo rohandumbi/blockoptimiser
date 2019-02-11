@@ -13,11 +13,17 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <GroupBox x:Name="groupBox" 
                   Header="Create New Row" 
-                  Grid.Row="1">
+                  Grid.Row="1"
+                  Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10px" />
@@ -40,8 +46,9 @@
                     <Button x:Name="ImportData" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Import</Button>
                 </Grid>
             </GroupBox>
-            <DataGrid x:Name="CSVFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
-                  AutoGenerateColumns="False">
+            <Label Grid.Row="2" Content="Field Mapping" FontWeight="Bold"/>
+            <DataGrid x:Name="CSVFieldMappings"  Grid.Row="3" CanUserAddRows="False"
+                  AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=PrimayModelColumnName}" />
                     <DataGridTemplateColumn Header="Model Mapping">
@@ -64,8 +71,9 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="ModelDimensions"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
-                  AutoGenerateColumns="False">
+            <Label Grid.Row="2" Grid.Column="1" Content="Block Dimensions" FontWeight="Bold"/>
+            <DataGrid x:Name="ModelDimensions"  Grid.Row="3" Grid.Column="1" CanUserAddRows="False"
+                  AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}"/>
                     <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
