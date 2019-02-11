@@ -6,8 +6,33 @@
         xmlns:local="clr-namespace:blockoptimiser.Views"
         mc:Ignorable="d"
         Title="Create Product Join" Height="450" Width="800">
-    <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="241,148,0,0" TextWrapping="Wrap" Text="Product Join Definition View" VerticalAlignment="Top" Height="43" Width="289"/>
-
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label>Name:</Label>
+        <TextBox x:Name="Name" Width="200" Grid.Column="1" Margin="0,0,0,10" />
+        <Label Grid.Row="1">Products:</Label>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" Width="200" TextBoxBase.TextChanged="ddlCountry_TextChanged" Name="ddlCountry" IsEditable="True" IsTextSearchEnabled="True" 
+                  StaysOpenOnEdit="True" SelectionChanged="ddlCountry_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate >
+                    <CheckBox Name="chkCountry"  Width="220"  Checked="AllCheckbocx_CheckedAndUnchecked" Unchecked="AllCheckbocx_CheckedAndUnchecked" Content="{Binding Name}"  IsChecked="{Binding Check_Status}"  CommandParameter="{Binding Id}" ></CheckBox>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Grid.Row="3">Selected Products:</Label>
+        <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="161"/>
+        <Button x:Name="AddProduct" Click="button_Click"  Grid.Row="4" Content="Add"></Button>
     </Grid>
 </Window>
