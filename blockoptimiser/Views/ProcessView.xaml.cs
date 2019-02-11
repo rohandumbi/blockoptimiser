@@ -203,10 +203,8 @@ namespace blockoptimiser.Views
 
         private void CreateProcess()
         {
-            dynamic settings = new ExpandoObject();
-            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            ProcessDefinitionViewModel ProcessDefinitionViewModel = new ProcessDefinitionViewModel();
-            WindowManager.ShowWindow(ProcessDefinitionViewModel, null, settings);
+            ProcessDefinitionView processDefinitionView = new ProcessDefinitionView();
+            processDefinitionView.Show();
         }
 
         private void CreateProduct()

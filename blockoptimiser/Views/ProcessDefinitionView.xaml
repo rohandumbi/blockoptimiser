@@ -22,10 +22,12 @@
         <Label>Name:</Label>
         <TextBox x:Name="Name" Width="200" Grid.Column="1" Margin="0,0,0,10" />
         <Label Grid.Row="1">Field:</Label>
-        <ComboBox ItemsSource="{Binding Path=FieldNames}"  SelectedItem="{Binding Path=SelectedFieldName}" SelectedValue="{Binding Path=SelectedFieldName}" Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" Width="200" >
+        <ComboBox  Name="fieldCombo" SelectionChanged="Field_SelectionChanged" 
+                   Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" Width="200"
+                   TextBoxBase.TextChanged="Field_TextChanged" IsEditable="True" IsTextSearchEnabled="True" >
         </ComboBox>
         <Label Grid.Row="2">Filter String:</Label>
         <TextBox x:Name="FilterString" Width="200" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" />
-        <Button x:Name="AddProcess"  Grid.Row="3" Grid.Column="0" Content="Add"></Button>
+        <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="3" Grid.Column="0" Content="Add"></Button>
     </Grid>
 </Window>

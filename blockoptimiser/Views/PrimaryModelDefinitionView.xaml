@@ -22,7 +22,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GroupBox x:Name="groupBox" 
-                  Header="Create New Row" 
+                  Header="Model Data Import" 
                   Grid.Row="1"
                   Grid.ColumnSpan="2">
                 <Grid>

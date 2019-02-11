@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid>
+        <Grid  Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
                 <RowDefinition Height="auto" />
@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <GroupBox x:Name="groupBox" 
-                  Header="Create New Row" 
+                  Header="Model Data Import" 
                   Grid.Row="1"
                   Grid.ColumnSpan="2">
                 <Grid>
