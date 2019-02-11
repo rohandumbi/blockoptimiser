@@ -63,7 +63,7 @@
     </Reference>
     <Reference Include="Microsoft.Msagl.WpfGraphControl, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Microsoft.Msagl.WpfGraphControl.dll</HintPath>
+      <HintPath>Libraries\Microsoft.Msagl.WpfGraphControl.dll</HintPath>
     </Reference>
     <Reference Include="MvvmFoundation.Wpf">
       <HintPath>References\MvvmFoundation.Wpf.dll</HintPath>
@@ -270,7 +270,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Libraries\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="db\install.sql" />
   </ItemGroup>
