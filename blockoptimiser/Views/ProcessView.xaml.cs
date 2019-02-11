@@ -205,19 +205,45 @@ namespace blockoptimiser.Views
         {
             ProcessDefinitionView processDefinitionView = new ProcessDefinitionView();
             processDefinitionView.Show();
+            UpdateCollections();
+            //ProcessGraphViewer.Graph = null;
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            //ProcessGraphViewer.Graph = ProcessGraph;
         }
 
         private void CreateProduct()
         {
             ProductDefinitionView productDefinitionView = new ProductDefinitionView();
             productDefinitionView.Show();
+            UpdateCollections();
+            //ProcessGraphViewer.Graph = null;
+            //ProductGraphViewer.Graph = null;
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            //ProcessGraphViewer.Graph = ProcessGraph;
+            //ProductGraphViewer.Graph = ProductGraph;
         }
 
         private void CreateProductJoin()
         {
             ProductJoinDefinitionView productJoinDefinitionView = new ProductJoinDefinitionView();
             productJoinDefinitionView.Show();
+            UpdateCollections();
+            //ProductGraphViewer.Graph = null;
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            //ProductGraphViewer.Graph = ProductGraph;
 
+        }
+
+        private void UpdateCollections()
+        {
+            Processes = ProcessDAO.GetAll(Context.ProjectId);
+            Products = ProductDAO.GetAll(Context.ProjectId);
+            ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
         }
     }
 }
