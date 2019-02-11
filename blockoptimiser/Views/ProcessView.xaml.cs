@@ -211,18 +211,12 @@ namespace blockoptimiser.Views
 
         private void CreateProduct()
         {
-            dynamic settings = new ExpandoObject();
-            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            ProductDefinitionViewModel ProductDefinitionViewModel = new ProductDefinitionViewModel();
-            WindowManager.ShowWindow(ProductDefinitionViewModel, null, settings);
+            ProductDefinitionView productDefinitionView = new ProductDefinitionView();
+            productDefinitionView.Show();
         }
 
         private void CreateProductJoin()
         {
-            /*dynamic settings = new ExpandoObject();
-            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            ProductJoinDefinitionViewModel ProductJoinDefinitionViewModel = new ProductJoinDefinitionViewModel();
-            WindowManager.ShowWindow(ProductJoinDefinitionViewModel, null, settings);*/
             ProductJoinDefinitionView productJoinDefinitionView = new ProductJoinDefinitionView();
             productJoinDefinitionView.Show();
 

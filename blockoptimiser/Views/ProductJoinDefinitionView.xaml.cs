@@ -21,7 +21,6 @@ namespace blockoptimiser.Views
     /// </summary>
     public partial class ProductJoinDefinitionView : Window
     {
-        //List<DDL_Country> objCountryList;
         List<Product> Products;
         ProductDataAccess ProductDAO;
         ProductJoinDataAccess ProductJoinDAO;
@@ -30,9 +29,8 @@ namespace blockoptimiser.Views
             InitializeComponent();
             ProductDAO = new ProductDataAccess();
             ProductJoinDAO = new ProductJoinDataAccess();
-            //objCountryList = new List<DDL_Country>();
             Products = ProductDAO.GetAll(Context.ProjectId);
-            BindCountryDropDown();
+            BindDropDown();
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -59,18 +57,18 @@ namespace blockoptimiser.Views
             this.Close();
         }
 
-        private void BindCountryDropDown()
+        private void BindDropDown()
         {
-            ddlCountry.ItemsSource = Products;
+            productCombo.ItemsSource = Products;
         }
-        private void ddlCountry_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Product_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        private void ddlCountry_TextChanged(object sender, TextChangedEventArgs e)
+        private void Product_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ddlCountry.ItemsSource = Products.Where(x => x.Name.StartsWith(ddlCountry.Text.Trim()));
+            productCombo.ItemsSource = Products.Where(x => x.Name.StartsWith(productCombo.Text.Trim()));
         }
 
         private void AllCheckbocx_CheckedAndUnchecked(object sender, RoutedEventArgs e)
