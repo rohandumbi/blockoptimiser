@@ -137,8 +137,6 @@
     <Compile Include="ViewModels\PrimaryModelDefinitionViewModel.cs" />
     <Compile Include="ViewModels\ProcessDefinitionViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModel.cs" />
-    <Compile Include="ViewModels\ProductDefinitionViewModel.cs" />
-    <Compile Include="ViewModels\ProductJoinDefinitionViewModel.cs" />
     <Compile Include="ViewModels\ProjectsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
