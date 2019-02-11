@@ -61,16 +61,18 @@ namespace blockoptimiser.Services.DataImport
             {
                 String sql = $"select Id, { fixedFieldMapping["x"]} as X, { fixedFieldMapping["y"]} as Y, { fixedFieldMapping["z"]} as Z, { fixedFieldMapping["tonnage"]} as Tonnage " +
                 $" from BOData_{ Context.ProjectId }_{ Context.ModelId }";
-                String insertSql = $" insert into BOData_Computed_{ Context.ProjectId}_{ Context.ModelId } values ( @Bid, @I, @J, @K, @Xortho, @Yortho, @Zortho)";
                 using (IDbConnection connection = getConnection())
                 {
                     List<Row> rows = connection.Query<Row>(sql).AsList();
 
-
-                    connection.Open();
-                    IDbTransaction transaction= connection.BeginTransaction();
-                    int count = 0;
-                
+                    var dt = new DataTable();
+                    dt.Columns.Add("Bid");
+                    dt.Columns.Add("I");
+                    dt.Columns.Add("J");
+                    dt.Columns.Add("K");
+                    dt.Columns.Add("Xortho");
+                    dt.Columns.Add("Yortho");
+                    dt.Columns.Add("Zortho");
 
                     foreach(Row row in rows)
                     {
@@ -79,34 +81,20 @@ namespace blockoptimiser.Services.DataImport
                         row.I = Decimal.ToInt32((row.Xortho + xinc - xm) / xinc);
                         row.J = Decimal.ToInt32((row.Yortho + yinc - ym) / yinc);
                         row.K = Decimal.ToInt32((row.Zortho + zinc - zm) / zinc);
-
-                        IDbCommand command = connection.CreateCommand();
-                        command.CommandText = insertSql;
-                        command.Parameters.Add(new SqlParameter("@Bid", row.Bid));
-                        command.Parameters.Add(new SqlParameter("@I", row.I));
-                        command.Parameters.Add(new SqlParameter("@J",row.J));
-                        command.Parameters.Add(new SqlParameter("@K", row.K));
-                        command.Parameters.Add(new SqlParameter("@Xortho", row.Xortho));
-                        command.Parameters.Add(new SqlParameter("@Yortho", row.Yortho));
-                        command.Parameters.Add(new SqlParameter("@Zortho", row.Zortho));
-                        command.Transaction = transaction;
-                        command.ExecuteNonQuery();
-                        count++;
-
-                        if(count == 1000)
+                        dt.Rows.Add(row.Bid, row.I, row.J, row.K, row.Xortho, row.Yortho, row.Zortho);
+                    }
+                    System.Data.SqlClient.SqlBulkCopy bcp =
+                        new SqlBulkCopy(connectionString, SqlBulkCopyOptions.UseInternalTransaction)
                         {
-                            Console.WriteLine("Commiting. Count :" + count);
-                            transaction.Commit();
-                            transaction = connection.BeginTransaction();
-                            count = 0;
-                        }
-                        //connection.ExecuteAsync(insertSql , new { row.Bid, row.I, row.J, row.K, row.Xortho, row.Yortho, row.Zortho});
-                    }
-                    if(transaction != null)
+                            BatchSize = 500,
+                            DestinationTableName = "BOData_Computed_" + Context.ProjectId + "_" + Context.ModelId,
+                            NotifyAfter = 500
+                        };
+                    bcp.SqlRowsCopied += (sender, e) =>
                     {
-                        transaction.Commit();
-                    }
-                
+                        Console.WriteLine("Computed lines written: " + e.RowsCopied.ToString());
+                    };
+                    bcp.WriteToServer(dt);
                 }
             }).Start();
         }
