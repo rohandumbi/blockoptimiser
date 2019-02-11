@@ -38,8 +38,8 @@
                     Margin="200,0,0,10" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Project Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Header="Modified On" Binding="{Binding Path=CreatedDate}" />
                 <DataGridTextColumn Header="Description" Binding="{Binding Path=Description}" />
-                <DataGridTextColumn Header="Created On" Binding="{Binding Path=CreatedDate}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

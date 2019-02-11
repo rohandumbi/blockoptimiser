@@ -42,9 +42,10 @@ namespace blockoptimiser.ViewModels
                     PrimaryModelName = model.Name;
                 }
             }
-            GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
+            DataImportMenu.ChildMenuItems.Add(new MenuItem("Geotech/Process", "geotech"));
+            //GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
             ProjectMenu.ChildMenuItems.Add(DataImportMenu);
-            ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
+            //ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
 
             MenuItems = new BindableCollection<MenuItem>()
             {

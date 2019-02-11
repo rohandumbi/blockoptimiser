@@ -7,17 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid>
+        <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <GroupBox x:Name="groupBox" 
                   Header="Create New Row" 
-                  Grid.Row="1">
+                  Grid.Row="1"
+                  Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10px" />
@@ -41,8 +48,9 @@
                 </Grid>
             </GroupBox>
 
-            <DataGrid x:Name="Fields"  Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
-                  AutoGenerateColumns="False">
+            <Label Content="Data Structure" Grid.Row="2" FontWeight="Bold"></Label>
+            <DataGrid x:Name="Fields"  Grid.Row="3" Grid.Column="0" CanUserAddRows="False"
+                  AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" />
                     <DataGridTemplateColumn Header="Data type">
@@ -83,9 +91,9 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <DataGrid x:Name="RequiredFieldMappings"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" CanUserAddRows="False"
-                  AutoGenerateColumns="False">
+            <Label Content="Required Fields" Grid.Row="2" Grid.Column="2" FontWeight="Bold"></Label>
+            <DataGrid x:Name="RequiredFieldMappings"  Grid.Row="3" Grid.Column="1"  CanUserAddRows="False"
+                  AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" />
                     <DataGridTemplateColumn Header="Mapping">
@@ -108,9 +116,9 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <DataGrid x:Name="ModelDimensions"  Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="3" CanUserAddRows="False"
-                  AutoGenerateColumns="False">
+            <Label Content="Block Dimensions" Grid.Row="4" FontWeight="Bold"></Label>
+            <DataGrid x:Name="ModelDimensions"  Grid.Row="5" Grid.Column="0" CanUserAddRows="False"
+                  AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}"/>
                     <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
