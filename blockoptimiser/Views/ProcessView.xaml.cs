@@ -204,38 +204,46 @@ namespace blockoptimiser.Views
         private void CreateProcess()
         {
             ProcessDefinitionView processDefinitionView = new ProcessDefinitionView();
-            processDefinitionView.Show();
+            processDefinitionView.ShowDialog();
             UpdateCollections();
-            //ProcessGraphViewer.Graph = null;
+            ProcessGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
             AddProcessNodes();
             AddProductNodesInProcessGraph();
-            //ProcessGraphViewer.Graph = ProcessGraph;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
         }
 
         private void CreateProduct()
         {
             ProductDefinitionView productDefinitionView = new ProductDefinitionView();
-            productDefinitionView.Show();
+            productDefinitionView.ShowDialog();
             UpdateCollections();
-            //ProcessGraphViewer.Graph = null;
-            //ProductGraphViewer.Graph = null;
+            ProcessGraphViewer.Graph = null;
+            ProductGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            ProductGraph = new Graph();
             AddProductNodesInProductGraph();
             AddProductJoinNodes();
             AddProcessNodes();
             AddProductNodesInProcessGraph();
-            //ProcessGraphViewer.Graph = ProcessGraph;
-            //ProductGraphViewer.Graph = ProductGraph;
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+            ProductGraphViewer.Graph = ProductGraph;
         }
 
         private void CreateProductJoin()
         {
             ProductJoinDefinitionView productJoinDefinitionView = new ProductJoinDefinitionView();
-            productJoinDefinitionView.Show();
+            productJoinDefinitionView.ShowDialog();
             UpdateCollections();
-            //ProductGraphViewer.Graph = null;
+            ProductGraphViewer.Graph = null;
+            ProductGraph = new Graph();
             AddProductNodesInProductGraph();
             AddProductJoinNodes();
-            //ProductGraphViewer.Graph = ProductGraph;
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProductGraphViewer.Graph = ProductGraph;
 
         }
 
