@@ -8,9 +8,8 @@ namespace blockoptimiser.Models
 {
     public class ProductJoin
     {
-        public int Id { get; set; }
         public int ProjectId { get; set; }
-        public int ChildProductId { get; set; }
         public String Name { get; set; }
+        public List<String> ProductNames { get; set; }      
     }
 }

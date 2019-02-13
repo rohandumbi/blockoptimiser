@@ -22,15 +22,17 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into Product (ProjectId, Name, AssociatedProcessId)" +
+                String insertQuery = $"insert into Product (ProjectId, Name, AssociatedProcessId, UnitType, UnitId)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name, @AssociatedProcessId)";
+                    $" VALUES(@ProjectId, @Name, @AssociatedProcessId, @UnitType, @UnitId)";
 
-                newProduct.Id = connection.QuerySingle<int>(insertQuery, new
+                connection.Execute(insertQuery, new
                 {
                     newProduct.ProjectId,
                     newProduct.Name,
-                    newProduct.AssociatedProcessId
+                    newProduct.AssociatedProcessId,
+                    newProduct.UnitType,
+                    newProduct.UnitId
                 });
 
             }

@@ -10,6 +10,6 @@ namespace blockoptimiser.Models
     {
         public int ProjectId { get; set; }
         public String Name { get; set; }
-        public int ChildProcessId { get; set; }
+        public List<int> ProcessIds{ get; set; }
     }
 }
