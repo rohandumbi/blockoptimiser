@@ -91,9 +91,17 @@ CREATE TABLE Process(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
-   FieldId INT NOT NULL,
-   FilterString VARCHAR(400),
    UNIQUE (ProjectId, Name)
+);
+
+IF OBJECT_ID('ProcessModelMapping', 'U') IS NOT NULL 
+DROP TABLE ProcessModelMapping;
+
+CREATE TABLE ProcessModelMapping(
+   ProcessId INT,
+   ModelId INT NOT NULL,
+   FilterString VARCHAR(400),
+   UNIQUE (ProcessId, ModelId)
 );
 
 IF OBJECT_ID('ProcessRoute', 'U') IS NOT NULL 
@@ -111,17 +119,18 @@ DROP TABLE ProcessJoin
 CREATE TABLE ProcessJoin(
    ProjectId INT NOT NULL,
    Name  VARCHAR(100) NOT NULL,
-   ChildProcessId INT,
+   ProcessId INT,
    unique (ProjectId, Name, ChildProcessId)
 );
 IF OBJECT_ID('Product', 'U') IS NOT NULL 
 DROP TABLE Product
 
 CREATE TABLE Product(
-   Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
    AssociatedProcessId INT,
+   UnitType TINYINT,
+   UnitId INT,
    UNIQUE (ProjectId, Name, AssociatedProcessId)
 );
 
@@ -129,11 +138,10 @@ IF OBJECT_ID('ProductJoin', 'U') IS NOT NULL
 DROP TABLE ProductJoin
 
 CREATE TABLE ProductJoin(
-   Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
-   ChildProductId INT,
-   UNIQUE (ProjectId, Name, ChildProductId)
+   ProductName INT,
+   UNIQUE (ProjectId, Name, ProductName)
 );
 
 IF OBJECT_ID('Expression', 'U') IS NOT NULL 

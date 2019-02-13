@@ -11,11 +11,20 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ProcessJoinDataAccess : BaseDataAccess
     {
-        public List<ProcessJoin> GetAll(int ProjectId)
+        public List<String> GetProcessJoins(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<ProcessJoin>($"select * from processjoin where ProjectId = { ProjectId } ").ToList();
+                return connection.Query<String>($"select distinct Name from processjoin where ProjectId = { ProjectId } ").ToList();
+            }
+        }
+
+        public List<String> GetProcessesInJoin(String ProcessJoinName)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<String>($"select b.name from processjoin a, process b " +
+                    $"where a.processid = b.id  and a.name = '{ ProcessJoinName }' ").ToList();
             }
         }
 
@@ -27,22 +36,32 @@ namespace blockoptimiser.DataAccessClasses
                     $" OUTPUT INSERTED.Id  " +
                     $" VALUES(@ProjectId, @Name, @FieldId, @FilterString)";
 
-                connection.QuerySingle<int>(insertQuery, new
+                foreach(int ProcessId in newProcessJoin.ProcessIds)
                 {
-                    newProcessJoin.ProjectId,
-                    newProcessJoin.Name,
-                    newProcessJoin.ChildProcessId
-                });
-
+                    connection.QuerySingle<int>(insertQuery, new
+                    {
+                        newProcessJoin.ProjectId,
+                        newProcessJoin.Name,
+                        ProcessId
+                    });
+                }           
             }
         }
 
 
-        public void Delete(int Id)
+        public void Delete(String ProcessJoinName)
         {
             using (IDbConnection connection = getConnection())
             {
-                connection.Execute($"delete from ProcessJoin where Id = { Id }");
+                connection.Execute($"delete from ProcessJoin where name = '{ ProcessJoinName }'");
+            }
+        }
+
+        public void DeleteProcess(String ProcessJoinName, int ProcessId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute($"delete from ProcessJoin where name = '{ ProcessJoinName }' and processId = { ProcessId } ");
             }
         }
     }

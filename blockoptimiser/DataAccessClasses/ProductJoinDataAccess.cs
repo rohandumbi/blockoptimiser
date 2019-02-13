@@ -11,13 +11,23 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ProductJoinDataAccess : BaseDataAccess
     {
-        public List<ProductJoin> GetAll(int ProjectId)
+
+        public List<String> GetProductJoins(int ProjectId)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<ProductJoin>($"select * from productjoin where ProjectId = { ProjectId } ").ToList();
+                return connection.Query<String>($"select distinct Name from productjoin where ProjectId = { ProjectId } ").ToList();
             }
         }
+
+        public List<String> GetProductsInJoin(String ProductJoinName)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<String>($"select ProductName from productjoin where Name = '{ ProductJoinName }' ").ToList();
+            }
+        }
+
         public void Insert(ProductJoin newProductJoin)
         {
             using (IDbConnection connection = getConnection())
@@ -26,21 +36,33 @@ namespace blockoptimiser.DataAccessClasses
                     $" OUTPUT INSERTED.Id  " +
                     $" VALUES(@ProjectId, @Name, @ChildProductId)";
 
-                newProductJoin.Id = connection.QuerySingle<int>(insertQuery, new
+                foreach(String ProductName in newProductJoin.ProductNames)
                 {
-                    newProductJoin.ProjectId,
-                    newProductJoin.Name,
-                    newProductJoin.ChildProductId
-                });
+                    connection.Execute(insertQuery, new
+                    {
+                        newProductJoin.ProjectId,
+                        newProductJoin.Name,
+                        ProductName
+                    });
+                }
+                
 
             }
         }
 
-        public void Delete(int Id)
+        public void Delete(String ProductJoinName)
         {
             using (IDbConnection connection = getConnection())
             {
-                connection.Execute($"delete from ProductJoin where Id = { Id }");
+                connection.Execute($"delete from ProductJoin where Name = '{ ProductJoinName }'");
+            }
+        }
+
+        public void DeleteProduct(String ProductJoinName, String ProductName)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute($"delete from ProductJoin where Name = '{ ProductJoinName }' AND ProductName = '{ProductName}' ");
             }
         }
     }
