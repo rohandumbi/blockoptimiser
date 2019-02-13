@@ -52,8 +52,7 @@ namespace blockoptimiser.ViewModels
             var selectedButton = sender as Button;
             SetDefaultButtonForegrounds();
             NotifyButtonforegroundChanges();
-            //IsPeriodSelected = true;
-            //NotifyOfPropertyChange(() => IsPeriodSelected);
+            
             if (selectedButton != null)
             {
                 String keyword = selectedButton.Content.ToString();
