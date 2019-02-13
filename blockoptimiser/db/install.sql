@@ -120,7 +120,7 @@ CREATE TABLE ProcessJoin(
    ProjectId INT NOT NULL,
    Name  VARCHAR(100) NOT NULL,
    ProcessId INT,
-   unique (ProjectId, Name, ChildProcessId)
+   unique (ProjectId, Name, ProcessId)
 );
 IF OBJECT_ID('Product', 'U') IS NOT NULL 
 DROP TABLE Product
