@@ -29,16 +29,6 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
                     <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($dataContext, $eventArgs))]" Content="{Binding MenuLabel}"/>
-                    <HierarchicalDataTemplate.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
-                            <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($dataContext, $eventArgs))]" Content="{Binding MenuLabel}"/>
-                            <HierarchicalDataTemplate.ItemTemplate>
-                                <DataTemplate>
-                                    <Label cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickMenu($dataContext, $eventArgs))]" Content="{Binding MenuLabel}"/>
-                                </DataTemplate>
-                            </HierarchicalDataTemplate.ItemTemplate>
-                        </HierarchicalDataTemplate>
-                    </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

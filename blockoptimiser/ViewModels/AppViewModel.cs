@@ -24,6 +24,8 @@ namespace blockoptimiser.ViewModels
         private MenuItem ProjectMenu;
         private MenuItem DataImportMenu;
         private MenuItem GeoTechMenu;
+        private MenuItem LimitMenu;
+        private MenuItem ZoneMenu;
         private String PrimaryModelName;
         public AppViewModel()
         {
@@ -42,8 +44,12 @@ namespace blockoptimiser.ViewModels
                     PrimaryModelName = model.Name;
                 }
             }
-            DataImportMenu.ChildMenuItems.Add(new MenuItem("Geotech/Process", "geotech"));
-            //GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
+            GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
+            LimitMenu = new MenuItem("Limits", "limits");
+            ZoneMenu = new MenuItem("Zone", "zone");
+            LimitMenu.ChildMenuItems.Add(ZoneMenu);
+            GeoTechMenu.ChildMenuItems.Add(LimitMenu);
+            DataImportMenu.ChildMenuItems.Add(GeoTechMenu);
             ProjectMenu.ChildMenuItems.Add(DataImportMenu);
             //ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
 
@@ -77,9 +83,9 @@ namespace blockoptimiser.ViewModels
             }
             else if (SelectedMenuItem.Category == "model")
             {
-                foreach(var Model in Models)
+                foreach (var Model in Models)
                 {
-                    if(Model.Name.Equals(SelectedMenuItem.MenuLabel))
+                    if (Model.Name.Equals(SelectedMenuItem.MenuLabel))
                     {
                         Context.ModelId = Model.Id;
                         break;
@@ -94,6 +100,14 @@ namespace blockoptimiser.ViewModels
                 {
                     ActivateItem(new ModelDefinitionViewModel());
                 }
+            }
+            else if (SelectedMenuItem.Category == "limits")
+            {
+                ActivateItem(new LimitsViewModel());
+            }
+            else if (SelectedMenuItem.Category == "zone")
+            {
+                ActivateItem(new ZoneViewModel());
             }
             else return;
         }

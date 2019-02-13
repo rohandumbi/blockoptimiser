@@ -133,11 +133,13 @@
     <Compile Include="ViewModels\ExpressionViewModel.cs" />
     <Compile Include="ViewModels\GeotechContainerViewModel.cs" />
     <Compile Include="ViewModels\GeotechViewModel.cs" />
+    <Compile Include="ViewModels\LimitsViewModel.cs" />
     <Compile Include="ViewModels\ModelDefinitionViewModel.cs" />
     <Compile Include="ViewModels\PrimaryModelDefinitionViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModel.cs" />
     <Compile Include="ViewModels\ProjectsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
@@ -152,6 +154,9 @@
     </Compile>
     <Compile Include="Views\GeotechView.xaml.cs">
       <DependentUpon>GeotechView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LimitsView.xaml.cs">
+      <DependentUpon>LimitsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModelDefinitionView.xaml.cs">
       <DependentUpon>ModelDefinitionView.xaml</DependentUpon>
@@ -181,6 +186,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\ZoneView.xaml.cs">
+      <DependentUpon>ZoneView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\AppView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -198,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GeotechView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LimitsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,6 +244,10 @@
     <Page Include="Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ZoneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
