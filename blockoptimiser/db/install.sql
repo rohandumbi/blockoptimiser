@@ -163,3 +163,15 @@ CREATE TABLE ExprModelMapping (
    ExprString VARCHAR(400),
    UNIQUE (ExprId, ModelId)
 );
+
+IF OBJECT_ID('Scenario', 'U') IS NOT NULL 
+DROP TABLE Scenario; 
+
+CREATE TABLE Scenario (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT NOT NULL,
+   Name VARCHAR(50),
+   StartYear INT,
+   TimePeriod INT,
+   unique (ProjectId, Name)
+);
