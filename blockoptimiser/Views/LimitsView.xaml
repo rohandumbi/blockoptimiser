@@ -5,8 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:blockoptimiser.Views"
              mc:Ignorable="d" 
+             xmlns:cal="http://www.caliburnproject.org"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10">
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="196,190,0,0" TextWrapping="Wrap" Text="{Binding ScreenDescription}" VerticalAlignment="Top" Height="48" Width="353"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="FontStyle" Value="Normal" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="Foreground" Value="#189ad3" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </StackPanel.Resources>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" Content="Period" Foreground="{Binding PeriodButtonForeground}">
+            </Button>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsPeriodSelected}" Content="Finance" Foreground="{Binding FinanceButtonForeground}">
+            </Button>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsPeriodSelected}" Content="Process" Foreground="{Binding ProcessButtonForeground}">
+            </Button>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsPeriodSelected}" Content="Grade" Foreground="{Binding GradeButtonForeground}">
+            </Button>
+        </StackPanel>
+        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="1"/>
     </Grid>
 </UserControl>

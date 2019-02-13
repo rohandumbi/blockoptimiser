@@ -133,11 +133,15 @@
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\ExpressionViewModel.cs" />
+    <Compile Include="ViewModels\FinanceLimitViewModel.cs" />
     <Compile Include="ViewModels\GeotechContainerViewModel.cs" />
     <Compile Include="ViewModels\GeotechViewModel.cs" />
+    <Compile Include="ViewModels\GradeLimitViewModel.cs" />
     <Compile Include="ViewModels\LimitsViewModel.cs" />
     <Compile Include="ViewModels\ModelDefinitionViewModel.cs" />
+    <Compile Include="ViewModels\PeriodViewModel.cs" />
     <Compile Include="ViewModels\PrimaryModelDefinitionViewModel.cs" />
+    <Compile Include="ViewModels\ProcessLimitViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModel.cs" />
     <Compile Include="ViewModels\ProjectsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -151,11 +155,17 @@
     <Compile Include="Views\ExpressionView.xaml.cs">
       <DependentUpon>ExpressionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FinanceLimitView.xaml.cs">
+      <DependentUpon>FinanceLimitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GeotechContainerView.xaml.cs">
       <DependentUpon>GeotechContainerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GeotechView.xaml.cs">
       <DependentUpon>GeotechView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GradeLimitView.xaml.cs">
+      <DependentUpon>GradeLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LimitsView.xaml.cs">
       <DependentUpon>LimitsView.xaml</DependentUpon>
@@ -163,11 +173,17 @@
     <Compile Include="Views\ModelDefinitionView.xaml.cs">
       <DependentUpon>ModelDefinitionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PeriodView.xaml.cs">
+      <DependentUpon>PeriodView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PrimaryModelDefinitionView.xaml.cs">
       <DependentUpon>PrimaryModelDefinitionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessDefinitionView.xaml.cs">
       <DependentUpon>ProcessDefinitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProcessLimitView.xaml.cs">
+      <DependentUpon>ProcessLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessView.xaml.cs">
       <DependentUpon>ProcessView.xaml</DependentUpon>
@@ -203,11 +219,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\FinanceLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\GeotechContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GeotechView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GradeLimitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,11 +243,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PeriodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PrimaryModelDefinitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProcessLimitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
