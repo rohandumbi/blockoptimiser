@@ -45,6 +45,7 @@ namespace blockoptimiser.Views
         List<Product> Products;
         List<ProductJoin> ProductJoins;
         List<Process> Processes;
+        List<String> ProductJoinNames;
 
         StackPanel sp1 = new StackPanel();
 
@@ -56,7 +57,7 @@ namespace blockoptimiser.Views
             ProductJoinDAO = new ProductJoinDataAccess();
             ProcessDAO = new ProcessDataAccess();
             Products = ProductDAO.GetAll(Context.ProjectId);
-            ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
+            ProductJoinNames = ProductJoinDAO.GetProductJoins(Context.ProjectId);
             Processes = ProcessDAO.GetAll(Context.ProjectId);
             mainGrid.Background = Brushes.White;
             ProcessGraphBorder.BorderBrush = Brushes.Red;
@@ -128,10 +129,10 @@ namespace blockoptimiser.Views
 
         private void AddProductJoinNodes()
         {
-            foreach (ProductJoin productjoin in ProductJoins)
+            foreach (String productJoinName in ProductJoinNames)
             {
-                ProductGraph.AddNode(productjoin.Name);
-                ProductGraph.AddEdge(GetProductById(productjoin.ChildProductId).Name, productjoin.Name);
+                ProductGraph.AddNode(productJoinName);
+                //ProductGraph.AddEdge(GetProductById(productjoin.ChildProductId).Name, productjoin.Name);
             }
         }
 
@@ -145,7 +146,7 @@ namespace blockoptimiser.Views
 
         private Product GetProductById(int Id)
         {
-            Product selectedProduct = new Product();
+            /*Product selectedProduct = new Product();
             foreach (Product product in Products)
             {
                 if (product.Id == Id)
@@ -154,7 +155,8 @@ namespace blockoptimiser.Views
                     break;
                 }
             }
-            return selectedProduct;
+            return selectedProduct;*/
+            return new Product();
         }
 
         private Process GetProcessById(int Id)
@@ -249,9 +251,9 @@ namespace blockoptimiser.Views
 
         private void UpdateCollections()
         {
-            Processes = ProcessDAO.GetAll(Context.ProjectId);
-            Products = ProductDAO.GetAll(Context.ProjectId);
-            ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
+            //Processes = ProcessDAO.GetAll(Context.ProjectId);
+            //Products = ProductDAO.GetAll(Context.ProjectId);
+            //ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
         }
     }
 }

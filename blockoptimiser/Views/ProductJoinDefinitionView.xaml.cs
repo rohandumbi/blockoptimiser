@@ -46,14 +46,16 @@ namespace blockoptimiser.Views
                 MessageBox.Show("Select atleast one Product");
                 return;
             }
+
+            ProductJoin NewProductJoin = new ProductJoin();
+            NewProductJoin.Name = ProductJoinName;
+            NewProductJoin.ProjectId = Context.ProjectId;
+            NewProductJoin.ProductNames = new List<string>();
             foreach (String ChildProductName in testListbox.Items)
             {
-                ProductJoin NewProductJoin = new ProductJoin();
-                NewProductJoin.Name = ProductJoinName;
-                NewProductJoin.ProjectId = Context.ProjectId;
-                NewProductJoin.ChildProductId = GetProductByName(ChildProductName).Id;
-                ProductJoinDAO.Insert(NewProductJoin);
+                NewProductJoin.ProductNames.Add(ChildProductName);
             }
+            ProductJoinDAO.Insert(NewProductJoin);
             this.Close();
         }
 

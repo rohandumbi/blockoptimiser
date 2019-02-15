@@ -71,8 +71,9 @@ namespace blockoptimiser.Views
             Process newProcess = new Process();
             newProcess.ProjectId = Context.ProjectId;
             newProcess.Name = ProcessName;
-            newProcess.FilterString = FilterString.Text;
-            newProcess.FieldId = SelectedField.Id;
+            newProcess.Mapping = new List<ProcessModelMapping>();
+            //newProcess.FilterString = FilterString.Text;
+            //newProcess.FieldId = SelectedField.Id;
             ProcessDAO.Insert(newProcess);
             this.Close();
         }
