@@ -66,6 +66,7 @@ namespace blockoptimiser.Services.DataImport
                     List<Row> rows = connection.Query<Row>(sql).AsList();
 
                     var dt = new DataTable();
+                    dt.Columns.Add("Id");
                     dt.Columns.Add("Bid");
                     dt.Columns.Add("I");
                     dt.Columns.Add("J");
@@ -76,12 +77,13 @@ namespace blockoptimiser.Services.DataImport
 
                     foreach(Row row in rows)
                     {
+                        row.Bid = long.Parse($"1{Context.ModelId.ToString("D5")}{row.Id}");
                         row.Xortho = cosAngleValue * Decimal.Parse(row.X) - sinAngleValue * Decimal.Parse(row.Y) + xm - cosAngleValue * xm + sinAngleValue * ym;
                         row.Yortho = sinAngleValue * Decimal.Parse(row.X) + cosAngleValue * Decimal.Parse(row.Y) + ym - sinAngleValue * xm - cosAngleValue * ym;
                         row.I = Decimal.ToInt32((row.Xortho + xinc - xm) / xinc);
                         row.J = Decimal.ToInt32((row.Yortho + yinc - ym) / yinc);
                         row.K = Decimal.ToInt32((row.Zortho + zinc - zm) / zinc);
-                        dt.Rows.Add(row.Bid, row.I, row.J, row.K, row.Xortho, row.Yortho, row.Zortho);
+                        dt.Rows.Add(row.Id, row.Bid, row.I, row.J, row.K, row.Xortho, row.Yortho, row.Zortho);
                     }
                     System.Data.SqlClient.SqlBulkCopy bcp =
                         new SqlBulkCopy(connectionString, SqlBulkCopyOptions.UseInternalTransaction)
@@ -128,9 +130,9 @@ namespace blockoptimiser.Services.DataImport
             {
                 String ddl = "create table BOData_" + Context.ProjectId + "_" + Context.ModelId + " ( " +
                     " Id INT IDENTITY(1,1) PRIMARY KEY, ";
-                for (int i = 0; i < reader.Header.Length; i++)
+                for (int i = 1; i < reader.Header.Length; i++) // Skipping first entry as Id is supposed to be the first one
                 {
-                    if (i == 0)
+                    if (i == 1)
                     {
                         ddl += $" { reader.Header[i]} VARCHAR(100) ";
                     }
@@ -142,7 +144,8 @@ namespace blockoptimiser.Services.DataImport
                 ddl += " ) ";
 
                 String compute_ddl = "create table BOData_Computed_" + Context.ProjectId + "_" + Context.ModelId + " ( " +
-                    "Bid INT PRIMARY KEY, " +
+                    " Id INT PRIMARY KEY," +
+                    " Bid BIGINT," +
                     " I INT, " +
                     " J INT," +
                     " K INT," +
@@ -160,7 +163,7 @@ namespace blockoptimiser.Services.DataImport
     class Row
     {
         public int Id { get; set; }
-        public int Bid { get { return Id;  } }
+        public long Bid { get; set; }
         public String X { get; set; }
         public String Y { get; set; }
         public String Z { get; set; }

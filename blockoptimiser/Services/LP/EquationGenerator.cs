@@ -1,4 +1,5 @@
-﻿using System;
+﻿using blockoptimiser.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,9 +36,14 @@ namespace blockoptimiser.Services.LP
 
         private void WriteObjectiveFunction(StreamWriter sw)
         {
-            // Get List of Processes
-
-            // Get list of blocks going to process
+            List<Process> processes = ctx.getProcessList();
+            foreach(Process process in processes)
+            {
+                foreach(ProcessModelMapping mapping in process.Mapping)
+                {
+                    ctx.GetBlocks(mapping.ModelId, mapping.FilterString);
+                }
+            }
             
         }
 
@@ -63,7 +69,7 @@ namespace blockoptimiser.Services.LP
             sw.WriteLine("\\ Grade Limits");
         }
 
-
+        
 
 
     }

@@ -98,6 +98,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
+    <Compile Include="DataAccessClasses\BlockDataAccess.cs" />
     <Compile Include="DataAccessClasses\DataAccessFactory.cs" />
     <Compile Include="DataAccessClasses\ProcessRouteDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductJoinDataAccess.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="Services\DataImport\CSVDataLoader.cs" />
     <Compile Include="Services\DataImport\CSVReader.cs" />
     <Compile Include="Services\LP\EquationGenerator.cs" />
-    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\ExpressionViewModel.cs" />

@@ -47,9 +47,9 @@ namespace blockoptimiser.ViewModels
                 _inputFileName = value;
                 Console.WriteLine("Input file name is " + _inputFileName);
                 _fileReader = new CSVReader(_inputFileName);
-
+                _fileReader.AddVirtualColumn("Id", "-1");
                 CSVFields = new List<string>();
-                for(int i = 0; i< _fileReader.Header.Length; i++)
+                for(int i = 1; i< _fileReader.Header.Length; i++)
                 {
                     CSVFields.Add(_fileReader.Header[i]);
                 }
