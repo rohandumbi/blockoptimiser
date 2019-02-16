@@ -50,7 +50,7 @@
             <DataGrid x:Name="CSVFieldMappings"  Grid.Row="3" CanUserAddRows="False"
                   AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=PrimayModelColumnName}" />
+                    <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=PrimayModelColumnName}" IsReadOnly="True"/>
                     <DataGridTemplateColumn Header="Model Mapping">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -75,7 +75,7 @@
             <DataGrid x:Name="ModelDimensions"  Grid.Row="3" Grid.Column="1" CanUserAddRows="False"
                   AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
                     <DataGridTextColumn Header="Y" Binding="{Binding Path=YDim}" />
                     <DataGridTextColumn Header="Z" Binding="{Binding Path=ZDim}" />

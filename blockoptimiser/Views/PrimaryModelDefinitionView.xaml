@@ -52,7 +52,7 @@
             <DataGrid x:Name="Fields"  Grid.Row="3" Grid.Column="0" CanUserAddRows="False"
                   AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" />
+                    <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" IsReadOnly="True" />
                     <DataGridTemplateColumn Header="Data type">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -95,7 +95,7 @@
             <DataGrid x:Name="RequiredFieldMappings"  Grid.Row="3" Grid.Column="1"  CanUserAddRows="False"
                   AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" />
+                    <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" IsReadOnly="True" />
                     <DataGridTemplateColumn Header="Mapping">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -120,7 +120,7 @@
             <DataGrid x:Name="ModelDimensions"  Grid.Row="5" Grid.Column="0" CanUserAddRows="False"
                   AutoGenerateColumns="False" Margin="10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
                     <DataGridTextColumn Header="Y" Binding="{Binding Path=YDim}" />
                     <DataGridTextColumn Header="Z" Binding="{Binding Path=ZDim}" />
