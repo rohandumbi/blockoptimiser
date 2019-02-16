@@ -69,7 +69,7 @@ namespace blockoptimiser.ViewModels
             set
             {
                 menuItems = value;
-                NotifyOfPropertyChange("MenuItems");
+                NotifyOfPropertyChange(() => MenuItems);
             }
         }
 
@@ -144,7 +144,8 @@ namespace blockoptimiser.ViewModels
             }
 
             DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
-            NotifyOfPropertyChange("MenuItems");
+            //NotifyOfPropertyChange("MenuItems");
+            NotifyOfPropertyChange(() => MenuItems);
         }
 
         public void RunScheduler()
