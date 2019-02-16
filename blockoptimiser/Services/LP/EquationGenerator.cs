@@ -17,7 +17,7 @@ namespace blockoptimiser.Services.LP
 
             using (StreamWriter sw = new StreamWriter(fs))
             {
-                sw.WriteLine("minimize");
+                sw.WriteLine("maximize");
                 WriteObjectiveFunction(sw);
                 sw.WriteLine("Subject to");
                 WriteConstraints(sw);
@@ -35,6 +35,11 @@ namespace blockoptimiser.Services.LP
 
         private void WriteObjectiveFunction(StreamWriter sw)
         {
+            // Get List of Processes
+
+            // Get list of blocks going to process
+
+            // if 
             
         }
 

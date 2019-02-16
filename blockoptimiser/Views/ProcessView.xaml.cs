@@ -122,7 +122,11 @@ namespace blockoptimiser.Views
             foreach (Product product in Products)
             {
                 ProcessGraph.AddNode(product.Name);
-                ProcessGraph.AddEdge(product.Name, GetProcessById(product.AssociatedProcessId).Name);
+                foreach(int ProcessId in product.ProcessIds)
+                {
+                    ProcessGraph.AddEdge(product.Name, GetProcessById(ProcessId).Name);
+                }
+                
             }
         }
 

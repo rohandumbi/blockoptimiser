@@ -72,7 +72,8 @@ namespace blockoptimiser.Views
             Product newProduct = new Product();
             newProduct.Name = ProductName;
             newProduct.ProjectId = Context.ProjectId;
-            newProduct.AssociatedProcessId = selectedProcess.Id;
+            newProduct.ProcessIds = new List<int>();
+            newProduct.ProcessIds.Add(selectedProcess.Id);
             ProductDAO.Insert(newProduct);
             this.Close();
         }

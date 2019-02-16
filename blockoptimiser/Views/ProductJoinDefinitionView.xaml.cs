@@ -83,7 +83,7 @@ namespace blockoptimiser.Views
             testListbox.Items.Clear();
             foreach (var product in Products)
             {
-                if (product.Check_Status == true)
+                if (product.CheckStatus == true)
                 {
                     testListbox.Items.Add(product.Name);
                 }

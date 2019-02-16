@@ -122,16 +122,26 @@ CREATE TABLE ProcessJoin(
    ProcessId INT,
    unique (ProjectId, Name, ProcessId)
 );
+
 IF OBJECT_ID('Product', 'U') IS NOT NULL 
 DROP TABLE Product
 
 CREATE TABLE Product(
+   Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
-   AssociatedProcessId INT,
    UnitType TINYINT,
    UnitId INT,
-   UNIQUE (ProjectId, Name, AssociatedProcessId)
+   UNIQUE (ProjectId, Name)
+);
+
+IF OBJECT_ID('ProductProcessMapping', 'U') IS NOT NULL 
+DROP TABLE ProductProcessMapping
+
+CREATE TABLE ProductProcessMapping(
+   ProductId INT,
+   ProcessId INT,
+   UNIQUE (ProductId, ProcessId)
 );
 
 IF OBJECT_ID('ProductJoin', 'U') IS NOT NULL 

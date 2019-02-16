@@ -15,32 +15,67 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<Product>($"select * from Product where ProjectId = { ProjectId } ").ToList();
+                List<Product> Products = connection.Query<Product>($"select * from Product where ProjectId = { ProjectId } ").ToList();
+                foreach (Product product in Products)
+                {
+                    product.ProcessIds = connection.Query<int>($"select processId from ProductProcessMapping where productid = { product.Id } ").ToList();
+                }
+                return Products;
             }
         }
         public void Insert(Product newProduct)
         {
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into Product (ProjectId, Name, AssociatedProcessId, UnitType, UnitId)" +
+                String insertQuery = $"insert into Product (ProjectId, Name, UnitType, UnitId)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name, @AssociatedProcessId, @UnitType, @UnitId)";
+                    $" VALUES(@ProjectId, @Name, @UnitType, @UnitId)";
 
                 connection.Execute(insertQuery, new
                 {
                     newProduct.ProjectId,
                     newProduct.Name,
-                    newProduct.AssociatedProcessId,
                     newProduct.UnitType,
                     newProduct.UnitId
                 });
 
+                foreach (int processId in newProduct.ProcessIds)
+                {
+                    connection.Execute("insert into ProductProcessMapping (ProductId, ProcessId) VALUES (ProductId, ProcessId)", new
+                    {
+                        newProduct.Id,
+                        processId
+                    });
+                }
+
             }
         }
+
+        public void InsertProcessMapping(int ProductId, int ProcessId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute("insert into ProductProcessMapping (ProductId, ProcessId) VALUES (ProductId, ProcessId)", new
+                {
+                    ProductId,
+                    ProcessId
+                });
+            }
+        }
+
+        public void DeleteProcessMapping(int ProductId, int ProcessId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute($"delete from ProductProcessMapping where ProductId = { ProductId } AND ProcessId = {ProcessId} ");
+            }
+        }
+
         public void Delete(int Id)
         {
             using (IDbConnection connection = getConnection())
             {
+                connection.Execute($"delete from ProductProcessMapping where ProductId = { Id }");
                 connection.Execute($"delete from Product where Id = { Id }");
             }
         }

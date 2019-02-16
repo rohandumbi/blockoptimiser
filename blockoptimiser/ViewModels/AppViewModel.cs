@@ -146,5 +146,10 @@ namespace blockoptimiser.ViewModels
             DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
             NotifyOfPropertyChange("MenuItems");
         }
+
+        public void RunScheduler()
+        {
+            MessageBox.Show("Running scheduler");
+        }
     }
 }

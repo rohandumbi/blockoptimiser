@@ -99,6 +99,7 @@
     <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
     <Compile Include="DataAccessClasses\DataAccessFactory.cs" />
+    <Compile Include="DataAccessClasses\ProcessRouteDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductJoinDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProcessJoinDataAccess.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Models\ModelDimension.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\ProcessJoin.cs" />
+    <Compile Include="Models\ProcessRoute.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductJoin.cs" />
     <Compile Include="Models\Project.cs" />

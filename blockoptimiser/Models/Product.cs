@@ -8,13 +8,14 @@ namespace blockoptimiser.Models
 {
     public class Product
     {
-        public static int UNIT_TYPE_ADDITIVE = 1;
+        public static int UNIT_TYPE_FIELD = 1;
         public static int UNIT_TYPE_EXPRESSION = 2;
+        public int Id { get; set; }
         public int ProjectId { get; set; }
         public String Name { get; set; }
-        public int AssociatedProcessId { get; set; }
         public byte UnitType { get; set; }
         public int UnitId { get; set; }
-        public Boolean Check_Status { get; set; }
+        public List<int> ProcessIds { get; set; }
+        public Boolean CheckStatus { get; set; }
     }
 }
