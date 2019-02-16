@@ -10,7 +10,7 @@ namespace blockoptimiser.Services.LP
     public class EquationGenerator
     {
         Context ctx;
-        public void generate()
+        public void Generate()
         {
             ctx = new Context();
             FileStream fs = CreateFile();
@@ -38,14 +38,33 @@ namespace blockoptimiser.Services.LP
             // Get List of Processes
 
             // Get list of blocks going to process
-
-            // if 
             
         }
 
         private void WriteConstraints(StreamWriter sw)
         {
-            
+            WriteGeotechConstraints(sw);
+            WriteProcessLimitConstraints(sw);
+            WriteGradeLimitConstraints(sw);
         }
+
+        private void WriteGeotechConstraints(StreamWriter sw)
+        {
+            sw.WriteLine("\\ Geotech");
+
+        }
+        private void WriteProcessLimitConstraints(StreamWriter sw)
+        {
+            sw.WriteLine("\\Process Limits");
+        }
+
+        private void WriteGradeLimitConstraints(StreamWriter sw)
+        {
+            sw.WriteLine("\\ Grade Limits");
+        }
+
+
+
+
     }
 }

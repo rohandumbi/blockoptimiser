@@ -77,7 +77,7 @@ namespace blockoptimiser.Services.DataImport
             {
                 try
                 {
-                    int val = Int32.Parse(_line[i]);
+                    double val = Double.Parse(_line[i]);
                     if (val < 100)
                     {
                         DataTypes[i] = DATA_TYPE_GRADE;

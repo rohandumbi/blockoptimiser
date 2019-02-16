@@ -1,5 +1,6 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
+using blockoptimiser.Services.LP;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -149,7 +150,7 @@ namespace blockoptimiser.ViewModels
 
         public void RunScheduler()
         {
-            MessageBox.Show("Running scheduler");
+            new EquationGenerator().Generate();
         }
     }
 }
