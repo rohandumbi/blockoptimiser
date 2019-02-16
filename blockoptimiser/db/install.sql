@@ -140,7 +140,7 @@ DROP TABLE ProductJoin
 CREATE TABLE ProductJoin(
    ProjectId INT,
    Name VARCHAR(100),
-   ProductName INT,
+   ProductName VARCHAR(100),
    UNIQUE (ProjectId, Name, ProductName)
 );
 
