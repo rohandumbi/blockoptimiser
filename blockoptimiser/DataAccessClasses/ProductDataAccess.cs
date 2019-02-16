@@ -23,6 +23,15 @@ namespace blockoptimiser.DataAccessClasses
                 return Products;
             }
         }
+
+        public List<String> GetDistinctProductNames(int ProjectId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<String>($"select distinct Name from product where ProjectId = { ProjectId } ").ToList();
+            }
+        }
+
         public void Insert(Product newProduct)
         {
             using (IDbConnection connection = getConnection())
