@@ -8,8 +8,8 @@ namespace blockoptimiser.Models
 {
     public class Product
     {
-        public static int UNIT_TYPE_FIELD = 1;
-        public static int UNIT_TYPE_EXPRESSION = 2;
+        public static byte UNIT_TYPE_FIELD = 1;
+        public static byte UNIT_TYPE_EXPRESSION = 2;
         public int Id { get; set; }
         public int ProjectId { get; set; }
         public String Name { get; set; }

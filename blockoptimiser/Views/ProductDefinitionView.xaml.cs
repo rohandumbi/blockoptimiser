@@ -24,36 +24,79 @@ namespace blockoptimiser.Views
         private ProcessDataAccess ProcessDAO;
         private ProductDataAccess ProductDAO;
         public List<Process> Processes { get; set; }
-        public List<String> ProcessNames { get; set; }
-        private String SelectedProcessName;
+
+
+        private FieldDataAccess FieldDAO;
+        private List<Field> Fields;
+        private ExpressionDataAccess ExpressionDAO;
+        private List<Models.Expression> Expressions;
+
+        public List<UnitItem> UnitItems { get; set; }
+        public UnitItem SelectedUnit { get; set; }
 
         public ProductDefinitionView()
         {
             InitializeComponent();
             ProcessDAO = new ProcessDataAccess();
             ProductDAO = new ProductDataAccess();
+            FieldDAO = new FieldDataAccess();
+            ExpressionDAO = new ExpressionDataAccess();
             Processes = ProcessDAO.GetAll(Context.ProjectId);
-            ProcessNames = new List<string>();
-            foreach (Process process in Processes)
+            Fields = FieldDAO.GetAll(Context.ProjectId);
+            Expressions = ExpressionDAO.GetAll(Context.ProjectId);
+            UnitItems = new List<UnitItem>();
+
+            foreach (Field field in Fields)
             {
-                ProcessNames.Add(process.Name);
+                UnitItems.Add(new UnitItem(field.Name, field.Id, Product.UNIT_TYPE_FIELD));
             }
+
+            foreach (Models.Expression expression in Expressions)
+            {
+                UnitItems.Add(new UnitItem(expression.Name, expression.Id, Product.UNIT_TYPE_EXPRESSION));
+            }
+
             BindDropDown();
         }
 
+        private void BindDropDown()
+        {
+            processCombo.ItemsSource = Processes;
+            fieldsCombo.ItemsSource = UnitItems;
+        }
         private void Process_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedProcessName = processCombo.Text;
+
+        }
+
+        private void Field_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox fieldsCombo = (ComboBox)sender;
+            SelectedUnit = (UnitItem)fieldsCombo.SelectedItem;
         }
 
         private void Process_TextChanged(object sender, TextChangedEventArgs e)
         {
-            processCombo.ItemsSource = ProcessNames.Where(x => x.StartsWith(processCombo.Text.Trim()));
+            processCombo.ItemsSource = Processes.Where(x => x.Name.StartsWith(processCombo.Text.Trim()));
         }
-        private void BindDropDown()
+
+        private void AllCheckbocx_CheckedAndUnchecked(object sender, RoutedEventArgs e)
         {
-            processCombo.ItemsSource = ProcessNames;
+            BindListBOX();
         }
+
+        private void BindListBOX()
+        {
+            testListbox.Items.Clear();
+            foreach (var process in Processes)
+            {
+                if (process.CheckStatus == true)
+                {
+                    testListbox.Items.Add(process.Name);
+                }
+            }
+        }
+
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -63,8 +106,16 @@ namespace blockoptimiser.Views
                 MessageBox.Show("Enter manadatory field NAME");
                 return;
             }
-            Process selectedProcess = GetProcessByName(processCombo.Text);
-            if (selectedProcess.Id == 0)
+            List<int> selectedProcessIds = new List<int>();
+            foreach (Process process in Processes)
+            {
+                if (process.CheckStatus == true)
+                {
+                    selectedProcessIds.Add(process.Id);
+                }
+            }
+            //Process selectedProcess = GetProcessByName(processCombo.Text);
+            if (selectedProcessIds.Count == 0)
             {
                 MessageBox.Show("Select a valid PROCESS");
                 return;
@@ -72,11 +123,13 @@ namespace blockoptimiser.Views
             Product newProduct = new Product();
             newProduct.Name = ProductName;
             newProduct.ProjectId = Context.ProjectId;
-            newProduct.ProcessIds = new List<int>();
-            newProduct.ProcessIds.Add(selectedProcess.Id);
+            newProduct.ProcessIds = selectedProcessIds;
+            newProduct.UnitId = SelectedUnit.UnitId;
+            newProduct.UnitType = SelectedUnit.UnitType;
             ProductDAO.Insert(newProduct);
             this.Close();
         }
+
 
         private Process GetProcessByName(String processName)
         {

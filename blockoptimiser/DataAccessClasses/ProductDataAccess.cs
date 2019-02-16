@@ -40,7 +40,10 @@ namespace blockoptimiser.DataAccessClasses
                     $" OUTPUT INSERTED.Id  " +
                     $" VALUES(@ProjectId, @Name, @UnitType, @UnitId)";
 
-                connection.Execute(insertQuery, new
+                String insertMappingQuery = $"insert into ProductProcessMapping (ProductId, ProcessId) " +
+                    $" VALUES(@ProductId, @ProcessId)";
+
+                newProduct.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newProduct.ProjectId,
                     newProduct.Name,
@@ -50,7 +53,7 @@ namespace blockoptimiser.DataAccessClasses
 
                 foreach (int processId in newProduct.ProcessIds)
                 {
-                    connection.Execute("insert into ProductProcessMapping (ProductId, ProcessId) VALUES (ProductId, ProcessId)", new
+                    connection.Execute(insertMappingQuery, new
                     {
                         newProduct.Id,
                         processId
