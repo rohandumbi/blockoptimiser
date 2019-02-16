@@ -55,7 +55,7 @@ namespace blockoptimiser.DataAccessClasses
                 {
                     connection.Execute(insertMappingQuery, new
                     {
-                        newProduct.Id,
+                        ProductId = newProduct.Id,
                         processId
                     });
                 }
