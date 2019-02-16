@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace blockoptimiser.ViewModels
 {
@@ -16,6 +17,7 @@ namespace blockoptimiser.ViewModels
         private String _scenarioName;
         private int _startYear;
         private int _timePeriod;
+        public String DiscountFactor { get; set; }
 
         private readonly IEventAggregator _eventAggregator;
 
@@ -55,12 +57,20 @@ namespace blockoptimiser.ViewModels
 
         public void CreateScenario()
         {
+            int x = 0;
+            bool validDF =Int32.TryParse(DiscountFactor, out x);
+            if (!validDF)
+            {
+                MessageBox.Show("Please select a valid integral value for discount factor");
+                return;
+            }
             ScenarioModel newScenario = new ScenarioModel
             {
                 ProjectId = Context.ProjectId,
                 Name = _scenarioName,
                 StartYear = _startYear,
-                TimePeriod = _timePeriod
+                TimePeriod = _timePeriod,
+                DiscountFactor = x
             };
             _scenarioDataAccess.InsertScenario(newScenario);
             Scenarios.Add(newScenario);

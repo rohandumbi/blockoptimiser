@@ -183,6 +183,7 @@ CREATE TABLE Scenario (
    Name VARCHAR(50),
    StartYear INT,
    TimePeriod INT,
+   DiscountFactor INT,
    unique (ProjectId, Name)
 );
 
