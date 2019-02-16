@@ -81,7 +81,6 @@ namespace blockoptimiser.Views
             mainGrid.Children.Add(ProcessGraphViewerPanel);
             mainGrid.Children.Add(ProductGraphViewerPanel);
 
-            //mainGrid.Children.Add(sp1);
             double height = this.Width;
 
             ProcessGraphViewer.BindToPanel(ProcessGraphViewerPanel);
@@ -132,7 +131,11 @@ namespace blockoptimiser.Views
             foreach (String productJoinName in ProductJoinNames)
             {
                 ProductGraph.AddNode(productJoinName);
-                //ProductGraph.AddEdge(GetProductById(productjoin.ChildProductId).Name, productjoin.Name);
+                List<String> ProductNames = ProductJoinDAO.GetProductsInJoin(productJoinName);
+                foreach (String productName in ProductNames)
+                {
+                    ProductGraph.AddEdge(productName, productJoinName);
+                }
             }
         }
 
@@ -144,20 +147,6 @@ namespace blockoptimiser.Views
             }
         }
 
-        private Product GetProductById(int Id)
-        {
-            /*Product selectedProduct = new Product();
-            foreach (Product product in Products)
-            {
-                if (product.Id == Id)
-                {
-                    selectedProduct = product;
-                    break;
-                }
-            }
-            return selectedProduct;*/
-            return new Product();
-        }
 
         private Process GetProcessById(int Id)
         {
