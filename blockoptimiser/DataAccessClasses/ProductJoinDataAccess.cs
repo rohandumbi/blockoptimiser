@@ -32,9 +32,8 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into ProductJoin (ProjectId, Name, ChildProductId)" +
-                    $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name, @ChildProductId)";
+                String insertQuery = $"insert into ProductJoin (ProjectId, Name, ProductName)" +
+                    $" VALUES(@ProjectId, @Name, @ProductName)";
 
                 foreach(String ProductName in newProductJoin.ProductNames)
                 {

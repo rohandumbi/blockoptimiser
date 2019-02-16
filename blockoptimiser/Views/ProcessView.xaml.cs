@@ -240,9 +240,9 @@ namespace blockoptimiser.Views
 
         private void UpdateCollections()
         {
-            //Processes = ProcessDAO.GetAll(Context.ProjectId);
-            //Products = ProductDAO.GetAll(Context.ProjectId);
-            //ProductJoins = ProductJoinDAO.GetAll(Context.ProjectId);
+            Processes = ProcessDAO.GetAll(Context.ProjectId);
+            Products = ProductDAO.GetAll(Context.ProjectId);
+            ProductJoinNames = ProductJoinDAO.GetProductJoins(Context.ProjectId);
         }
     }
 }
