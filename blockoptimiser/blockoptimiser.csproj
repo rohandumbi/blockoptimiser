@@ -95,6 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedBehaviors\DataGridColumnsBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
