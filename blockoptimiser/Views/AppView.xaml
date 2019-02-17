@@ -14,7 +14,6 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -33,7 +32,6 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <Button x:Name="RunScheduler" Content="Run Scheduler" Grid.Row="3" Grid.Column="1"></Button>
         <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="3"/>
     </Grid>
 </UserControl>

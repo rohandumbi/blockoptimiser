@@ -148,10 +148,5 @@ namespace blockoptimiser.ViewModels
             //NotifyOfPropertyChange("MenuItems");
             NotifyOfPropertyChange(() => MenuItems);
         }
-
-        public void RunScheduler()
-        {
-            new EquationGenerator().Generate();
-        }
     }
 }
