@@ -229,5 +229,5 @@ CREATE TABLE GradeLimitYearMapping (
    GradeLimitId INT,
    Year INT,
    Value DECIMAL(18,10),
-   unique (ProcessLimitId,Year)
+   unique (GradeLimitId,Year)
 );
