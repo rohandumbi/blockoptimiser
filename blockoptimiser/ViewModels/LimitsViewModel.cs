@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace blockoptimiser.ViewModels
 {
-    public class LimitsViewModel: Conductor<Object>
+    public class LimitsViewModel: Conductor<Object>, IHandle<object>
     {
         public String PeriodButtonForeground { get; set; }
         public String FinanceButtonForeground { get; set; }
@@ -16,12 +16,16 @@ namespace blockoptimiser.ViewModels
         public String GradeButtonForeground { get; set; }
         public Boolean IsPeriodSelected { get; set; }
 
+        private readonly IEventAggregator _eventAggregator;
+
         public LimitsViewModel()
         {
+            _eventAggregator = new EventAggregator();
+            _eventAggregator.Subscribe(this);
             SetDisabledButtonForegrounds();
             PeriodButtonForeground = "#FF189AD3";
             IsPeriodSelected = false;
-            ActivateItem(new PeriodViewModel());
+            ActivateItem(new PeriodViewModel(_eventAggregator));
         }
 
         public void SetDefaultButtonForegrounds()
@@ -34,6 +38,7 @@ namespace blockoptimiser.ViewModels
 
         public void SetDisabledButtonForegrounds()
         {
+            PeriodButtonForeground = "#D3D3D3";
             FinanceButtonForeground = "#D3D3D3";
             ProcessButtonForeground = "#D3D3D3";
             GradeButtonForeground = "#D3D3D3";
@@ -50,7 +55,8 @@ namespace blockoptimiser.ViewModels
         public void ClickTab(object sender)
         {
             var selectedButton = sender as Button;
-            SetDefaultButtonForegrounds();
+            //SetDefaultButtonForegrounds();
+            SetDisabledButtonForegrounds();
             NotifyButtonforegroundChanges();
             
             if (selectedButton != null)
@@ -61,9 +67,7 @@ namespace blockoptimiser.ViewModels
                     case "Period":
                         PeriodButtonForeground = "#FF189AD3";
                         NotifyOfPropertyChange(() => PeriodButtonForeground);
-                        ActivateItem(new PeriodViewModel());
-                        IsPeriodSelected = true;
-                        NotifyOfPropertyChange(() => IsPeriodSelected);
+                        ActivateItem(new PeriodViewModel(_eventAggregator));
                         break;
                     case "Finance":
                         FinanceButtonForeground = "#FF189AD3";
@@ -82,9 +86,19 @@ namespace blockoptimiser.ViewModels
                         break;
                     default:
                         PeriodButtonForeground = "#FF189AD3";
-                        ActivateItem(new PeriodViewModel());
+                        ActivateItem(new PeriodViewModel(_eventAggregator));
                         break;
                 }
+            }
+        }
+
+        public void Handle(object message)
+        {
+            String EventName = message as String;
+            if (EventName == "loaded:scenario")
+            {
+                IsPeriodSelected = true;
+                NotifyOfPropertyChange(() => IsPeriodSelected);
             }
         }
     }

@@ -183,5 +183,28 @@ CREATE TABLE Scenario (
    Name VARCHAR(50),
    StartYear INT,
    TimePeriod INT,
+   DiscountFactor INT,
    unique (ProjectId, Name)
+);
+
+IF OBJECT_ID('ProcessLimit', 'U') IS NOT NULL
+DROP TABLE ProcessLimit; 
+
+CREATE TABLE ProcessLimit (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ScenarioId INT NOT NULL,
+   ItemName VARCHAR(50) NOT NULL,
+   ItemId INT NOT NULL,
+   ItemType INT NOT NULL,
+   unique (ScenarioId, ItemId, ItemType)
+);
+
+IF OBJECT_ID('ProcessLimitYearMapping', 'U') IS NOT NULL
+DROP TABLE ProcessLimitYearMapping; 
+
+CREATE TABLE ProcessLimitYearMapping (
+   ProcessLimitId INT,
+   Year INT,
+   Value DECIMAL(18,10),
+   unique (ProcessLimitId,Year)
 );

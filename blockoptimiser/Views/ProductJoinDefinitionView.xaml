@@ -27,7 +27,7 @@
                   StaysOpenOnEdit="True" SelectionChanged="Product_SelectionChanged">
             <ComboBox.ItemTemplate>
                 <DataTemplate >
-                    <CheckBox Name="chkCountry"  Width="220"  Checked="AllCheckbocx_CheckedAndUnchecked" Unchecked="AllCheckbocx_CheckedAndUnchecked" Content="{Binding Name}"  IsChecked="{Binding Check_Status}"  CommandParameter="{Binding Id}" ></CheckBox>
+                    <CheckBox Name="chkCountry"  Width="220"  Checked="AllCheckbocx_CheckedAndUnchecked" Unchecked="AllCheckbocx_CheckedAndUnchecked" Content="{Binding Name}"  IsChecked="{Binding CheckStatus}"  CommandParameter="{Binding Id}" ></CheckBox>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>

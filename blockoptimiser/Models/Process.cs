@@ -12,6 +12,7 @@ namespace blockoptimiser.Models
         public int ProjectId { get; set; }
         public String Name { get; set; }
         public List<ProcessModelMapping> Mapping { get; set; }
+        public Boolean CheckStatus { get; set; }
     }
 
     public class ProcessModelMapping

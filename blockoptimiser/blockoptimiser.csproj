@@ -95,11 +95,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedBehaviors\DataGridColumnsBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
     <Compile Include="DataAccessClasses\BlockDataAccess.cs" />
     <Compile Include="DataAccessClasses\DataAccessFactory.cs" />
+    <Compile Include="DataAccessClasses\ProcessLimitDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProcessRouteDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductJoinDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductDataAccess.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Models\ModelDimension.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\ProcessJoin.cs" />
+    <Compile Include="Models\ProcessLimitModel.cs" />
     <Compile Include="Models\ProcessRoute.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductJoin.cs" />
@@ -132,7 +135,8 @@
     <Compile Include="Services\DataImport\CSVDataLoader.cs" />
     <Compile Include="Services\DataImport\CSVReader.cs" />
     <Compile Include="Services\LP\EquationGenerator.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="UnitItem.cs" />
+    <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\ExpressionViewModel.cs" />

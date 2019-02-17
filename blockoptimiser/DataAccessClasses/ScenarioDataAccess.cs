@@ -31,15 +31,16 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into Scenario (ProjectID, Name, StartYear, TimePeriod ) " +
+                String insertQuery = $"insert into Scenario (ProjectID, Name, StartYear, TimePeriod, DiscountFactor ) " +
                     $" OUTPUT INSERTED.Id  " +
-                    $" values ( @ProjectId, @Name, @StartYear, @TimePeriod)";
+                    $" values ( @ProjectId, @Name, @StartYear, @TimePeriod, @DiscountFactor)";
                 newScenario.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newScenario.ProjectId,
                     newScenario.Name,
                     newScenario.StartYear,
-                    newScenario.TimePeriod
+                    newScenario.TimePeriod,
+                    newScenario.DiscountFactor
                 });
             }
 
