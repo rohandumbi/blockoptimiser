@@ -66,15 +66,15 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
 
-                String insertMappingQuery = $"insert into GradeLimitYearMapping (ProcessLimitId, Year, Value)" +
-                    $" VALUES(@ProcessLimitId, @Year, @Value)";
+                String insertMappingQuery = $"insert into GradeLimitYearMapping (GradeLimitId, Year, Value)" +
+                    $" VALUES(@GradeLimitId, @Year, @Value)";
 
                 foreach (GradeLimitYearMapping GradeLimitYearMapping in gradeLimit.GradeLimitYearMapping)
                 {
                     GradeLimitYearMapping.GradeLimitId = gradeLimit.Id;
                     connection.Query(insertMappingQuery, new
                     {
-                        GradeLimitYearMapping.GradeLimitId,
+                        GradeLimitId = GradeLimitYearMapping.GradeLimitId,
                         GradeLimitYearMapping.Year,
                         GradeLimitYearMapping.Value
                     });

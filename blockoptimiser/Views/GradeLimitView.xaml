@@ -4,10 +4,56 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:blockoptimiser.Views"
+             xmlns:attachedBehaviors="clr-namespace:blockoptimiser.AttachedBehaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="204,199,0,0" TextWrapping="Wrap" Text="This is Grade Limit View." VerticalAlignment="Top" Height="19" Width="366"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox x:Name="groupBox" 
+                  Header="Create New Row" 
+                  Grid.Column="1"
+                  Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10px" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="LabelAssetModel" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Product/Product Join:"/>
+                <ComboBox x:Name="AssetModels" ItemsSource="{Binding UnitItems}" Width="150" Grid.Row="2" Grid.Column="2" Margin="0 0 5 10" SelectedItem="{Binding SelectedUnit}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate >
+                            <Label Content="{Binding Name}"></Label>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <CheckBox Name="IsMax" Content="Is Max" IsChecked="{Binding IsMax}"  CommandParameter="{Binding Id}" Grid.Row="2" Grid.Column="3">
+                </CheckBox>
+                <Button x:Name="CreateProcessLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+            </Grid>
+        </GroupBox>
+        <DataGrid  Grid.Column="1"
+                   Grid.Row="2" 
+                   Margin="10,0,0,10" 
+                   ItemsSource="{Binding GradeLimits}"
+                   attachedBehaviors:DataGridColumnsBehavior.BindableColumns="{Binding GradeLimitColumns}"
+                   CanUserAddRows="False" 
+                   AutoGenerateColumns="False"/>
 
     </Grid>
 </UserControl>
