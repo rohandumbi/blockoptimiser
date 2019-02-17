@@ -20,14 +20,20 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label>Name:</Label>
-        <TextBox x:Name="Name" Width="200" Grid.Column="1" Margin="0,0,0,10" />
-        <Label Grid.Row="1">Field:</Label>
-        <ComboBox  Name="fieldCombo" SelectionChanged="Field_SelectionChanged" 
-                   Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" Width="200"
-                   TextBoxBase.TextChanged="Field_TextChanged" IsEditable="True" IsTextSearchEnabled="True" >
-        </ComboBox>
-        <Label Grid.Row="2">Filter String:</Label>
-        <TextBox x:Name="FilterString" Width="200" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" />
+        <TextBox x:Name="Name" Grid.Column="1" Margin="0 0 10 0"/>
+        <Label Grid.Row="1" Content="Model Mappings:"></Label>
+        <ItemsControl Name="ModelMapping" Grid.Row="2"  Grid.Column="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"  Margin="10 0 5 10">
+                        <CheckBox Name="UseModel" IsChecked="{Binding CheckStatus}"  CommandParameter="{Binding Id}" >
+                        </CheckBox>
+                        <TextBlock Text="{Binding Name}" Margin="10 0 5 10"/>
+                        <TextBox Text="{Binding FilterString}" Width="250px"></TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="3" Grid.Column="0" Content="Add"></Button>
     </Grid>
 </Window>

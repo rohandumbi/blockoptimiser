@@ -23,72 +23,51 @@ namespace blockoptimiser.Views
     {
         private ProcessDataAccess ProcessDAO;
         private FieldDataAccess FieldDAO;
+        private ModelDataAccess ModelDAO;
         private List<Field> Fields;
         private List<String> FieldNames;
         private String SelectedFieldName;
+        public List<Model> Models;
         public ProcessDefinitionView()
         {
             InitializeComponent();
             ProcessDAO = new ProcessDataAccess();
-            FieldDAO = new FieldDataAccess();
-            Fields = FieldDAO.GetAll(Context.ProjectId);
-            FieldNames = new List<string>();
-            foreach (Field field in Fields)
-            {
-                FieldNames.Add(field.Name);
-            }
-            BindDropDown();
+            ModelDAO = new ModelDataAccess();
+            Models = ModelDAO.GetAll(Context.ProjectId);
+            BindAllModels();
         }
 
-        private void Field_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BindAllModels()
         {
-            SelectedFieldName = fieldCombo.Text;
-        }
-
-        private void Field_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            fieldCombo.ItemsSource = FieldNames.Where(x => x.StartsWith(fieldCombo.Text.Trim()));
-        }
-        private void BindDropDown()
-        {
-            fieldCombo.ItemsSource = FieldNames;
+            ModelMapping.ItemsSource = Models;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             String ProcessName = Name.Text;
-            if (ProcessName == null)
+            if (ProcessName == null || ProcessName == "")
             {
                 MessageBox.Show("Enter manadatory field NAME");
                 return;
             }
-            Field SelectedField = GetFieldByName(fieldCombo.Text);
-            if (SelectedField.Id == 0)
-            {
-                MessageBox.Show("Please select a valid FIELD");
-                return;
-            }
+            List<Model> SelectedModels = new List<Model>();
+            //MessageBox.Show(SelectedModels.Count.ToString());
             Process newProcess = new Process();
             newProcess.ProjectId = Context.ProjectId;
             newProcess.Name = ProcessName;
             newProcess.Mapping = new List<ProcessModelMapping>();
-            //newProcess.FilterString = FilterString.Text;
-            //newProcess.FieldId = SelectedField.Id;
-            ProcessDAO.Insert(newProcess);
-            this.Close();
-        }
-
-        private Field GetFieldByName(string fieldName)
-        {
-            Field returnedField = new Field();
-            foreach (Field field in Fields)
+            foreach (Model model in Models)
             {
-                if (field.Name == fieldName)
+                if (model.CheckStatus == true)
                 {
-                    returnedField = field;
+                    newProcess.Mapping.Add(new ProcessModelMapping {
+                        ModelId = model.Id,
+                        FilterString = model.FilterString
+                    });
                 }
             }
-            return returnedField;
+            ProcessDAO.Insert(newProcess);
+            this.Close();
         }
     }
 }

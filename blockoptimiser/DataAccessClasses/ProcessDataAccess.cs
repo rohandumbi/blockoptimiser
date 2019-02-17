@@ -45,7 +45,7 @@ namespace blockoptimiser.DataAccessClasses
                 {
                     connection.Execute(insertMappingQuery, new
                     {
-                        newProcess.Id,
+                        ProcessId = newProcess.Id,
                         mapping.ModelId,
                         mapping.FilterString
                     });

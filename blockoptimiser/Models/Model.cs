@@ -13,5 +13,7 @@ namespace blockoptimiser.Models
         public String Name { get; set; }
         public Decimal Bearing { get; set; }
         public Boolean HasData { get; set; }
+        public Boolean CheckStatus { get; set; }
+        public String FilterString { get; set; }
     }
 }
