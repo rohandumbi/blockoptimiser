@@ -101,6 +101,7 @@
     <Compile Include="DataAccessClasses\BaseDataAccess.cs" />
     <Compile Include="DataAccessClasses\BlockDataAccess.cs" />
     <Compile Include="DataAccessClasses\DataAccessFactory.cs" />
+    <Compile Include="DataAccessClasses\GradeLimitDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProcessLimitDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProcessRouteDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductJoinDataAccess.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="DataAccessClasses\ModelDataAccess.cs" />
     <Compile Include="DataAccessClasses\ScenarioDataAccess.cs" />
     <Compile Include="MenuItem.cs" />
+    <Compile Include="Models\Block.cs" />
     <Compile Include="Models\CsvColumnMapping.cs" />
     <Compile Include="Models\Expression.cs" />
     <Compile Include="Models\Field.cs" />
@@ -125,7 +127,8 @@
     <Compile Include="Models\ModelDimension.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\ProcessJoin.cs" />
-    <Compile Include="Models\ProcessLimitModel.cs" />
+    <Compile Include="Models\GradeLimit.cs" />
+    <Compile Include="Models\ProcessLimit.cs" />
     <Compile Include="Models\ProcessRoute.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductJoin.cs" />

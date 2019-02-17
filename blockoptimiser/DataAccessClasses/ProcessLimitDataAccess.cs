@@ -11,24 +11,24 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ProcessLimitDataAccess : BaseDataAccess
     {
-        public List<ProcessLimitModel> GetProcessLimits()
+        public List<ProcessLimit> GetProcessLimits()
         {
             using (IDbConnection connection = getConnection())
             {
-                var ProcessLimits = connection.Query<ProcessLimitModel>($"select * " +
+                var ProcessLimits = connection.Query<ProcessLimit>($"select * " +
                     $"from ProcessLimit " +
                     $"where ScenarioID = { Context.ScenarioId }").ToList();
                 
                 foreach (var ProcessLimit in ProcessLimits)
                 {
                     ProcessLimit.ProcessLimitYearMapping
-                        = connection.Query<ProcessLimitYearMappingModel>($"select * from ProcessLimitYearMapping where ProcessLimitId = { ProcessLimit.Id }").ToList();
+                        = connection.Query<ProcessLimitYearMapping>($"select * from ProcessLimitYearMapping where ProcessLimitId = { ProcessLimit.Id }").ToList();
                 }
                 return ProcessLimits;
             }
         }
 
-        public void InsertProcessLimit(ProcessLimitModel newProcessLimit)
+        public void InsertProcessLimit(ProcessLimit newProcessLimit)
         {
 
             using (IDbConnection connection = getConnection())
@@ -48,7 +48,7 @@ namespace blockoptimiser.DataAccessClasses
                     newProcessLimit.ItemType
                 });
 
-                foreach (ProcessLimitYearMappingModel ProcessLimitYearMapping in newProcessLimit.ProcessLimitYearMapping)
+                foreach (ProcessLimitYearMapping ProcessLimitYearMapping in newProcessLimit.ProcessLimitYearMapping)
                 {
                     ProcessLimitYearMapping.ProcessLimitId = newProcessLimit.Id;
                     connection.Query(insertMappingQuery, new
@@ -61,7 +61,7 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public void InsertProcessLimitMapping(ProcessLimitModel ProcessLimit)
+        public void InsertProcessLimitMapping(ProcessLimit ProcessLimit)
         {
 
             using (IDbConnection connection = getConnection())
@@ -70,7 +70,7 @@ namespace blockoptimiser.DataAccessClasses
                 String insertMappingQuery = $"insert into ProcessLimitYearMapping (ProcessLimitId, Year, Value)" +
                     $" VALUES(@ProcessLimitId, @Year, @Value)";
 
-                foreach (ProcessLimitYearMappingModel ProcessLimitYearMapping in ProcessLimit.ProcessLimitYearMapping)
+                foreach (ProcessLimitYearMapping ProcessLimitYearMapping in ProcessLimit.ProcessLimitYearMapping)
                 {
                     ProcessLimitYearMapping.ProcessLimitId = ProcessLimit.Id;
                     connection.Query(insertMappingQuery, new

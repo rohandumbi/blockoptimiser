@@ -196,7 +196,7 @@ CREATE TABLE ProcessLimit (
    ItemName VARCHAR(50) NOT NULL,
    ItemId INT NOT NULL,
    ItemType INT NOT NULL,
-   unique (ScenarioId, ItemId, ItemType)
+   unique (ScenarioId, ItemName, ItemType)
 );
 
 IF OBJECT_ID('ProcessLimitYearMapping', 'U') IS NOT NULL
@@ -204,6 +204,29 @@ DROP TABLE ProcessLimitYearMapping;
 
 CREATE TABLE ProcessLimitYearMapping (
    ProcessLimitId INT,
+   Year INT,
+   Value DECIMAL(18,10),
+   unique (ProcessLimitId,Year)
+);
+
+IF OBJECT_ID('GradeLimit', 'U') IS NOT NULL
+DROP TABLE GradeLimit; 
+
+CREATE TABLE GradeLimit (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ScenarioId INT NOT NULL,
+   IsMax TINYINT,
+   ItemName VARCHAR(50) NOT NULL,
+   ItemId INT NOT NULL,
+   ItemType INT NOT NULL,
+   unique (ScenarioId, ItemName, ItemType)
+);
+
+IF OBJECT_ID('GradeLimitYearMapping', 'U') IS NOT NULL
+DROP TABLE GradeLimitYearMapping; 
+
+CREATE TABLE GradeLimitYearMapping (
+   GradeLimitId INT,
    Year INT,
    Value DECIMAL(18,10),
    unique (ProcessLimitId,Year)

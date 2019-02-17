@@ -32,18 +32,18 @@ namespace blockoptimiser.ViewModels
         public List<String> ProductJoins;
         public List<Process> Processes;
 
-        public BindableCollection<ProcessLimitModel> ProcessLimits { get; set; }
+        public BindableCollection<ProcessLimit> ProcessLimits { get; set; }
 
 
         public ProcessLimitViewModel()
         {
             ProcessLimitDAO = new ProcessLimitDataAccess();
-            ProcessLimits = new BindableCollection<ProcessLimitModel>(ProcessLimitDAO.GetProcessLimits());
+            ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetProcessLimits());
 
-            foreach (ProcessLimitModel processLimitmodel in ProcessLimits)
+            foreach (ProcessLimit processLimitmodel in ProcessLimits)
             {
                 processLimitmodel.PropertyChanged += processLimit_PropertyChanged;
-                foreach (ProcessLimitYearMappingModel processLimitYearMapping in processLimitmodel.ProcessLimitYearMapping)
+                foreach (ProcessLimitYearMapping processLimitYearMapping in processLimitmodel.ProcessLimitYearMapping)
                 {
                     processLimitYearMapping.PropertyChanged += processLimitYearMapping_PropertyChanged;
                 }
@@ -65,17 +65,17 @@ namespace blockoptimiser.ViewModels
 
             foreach (Process process in Processes)
             {
-                UnitItems.Add(new UnitItem(process.Name, process.Id, ProcessLimitModel.ITEM_TYPE_PROCESS));
+                UnitItems.Add(new UnitItem(process.Name, process.Id, ProcessLimit.ITEM_TYPE_PROCESS));
             }
 
             foreach (Product product in Products)
             {
-                UnitItems.Add(new UnitItem(product.Name, product.Id, ProcessLimitModel.ITEM_TYPE_PRODUCT));
+                UnitItems.Add(new UnitItem(product.Name, product.Id, ProcessLimit.ITEM_TYPE_PRODUCT));
             }
 
             foreach (String productJoin in ProductJoins)
             {
-                UnitItems.Add(new UnitItem(productJoin, 0, ProcessLimitModel.ITEM_TYPE_PRODUCT_JOIN));
+                UnitItems.Add(new UnitItem(productJoin, 0, ProcessLimit.ITEM_TYPE_PRODUCT_JOIN));
             }
 
             this.ProcessLimitColumns = new ObservableCollection<DataGridColumn>();
@@ -97,8 +97,8 @@ namespace blockoptimiser.ViewModels
             //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
             //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
             //NotifyOfPropertyChange(() => TruckHubPriorities);
-            ProcessLimitYearMappingModel UpdatedProcessLimitYearMappingModel = (ProcessLimitYearMappingModel)sender;
-            ProcessLimitModel UpdatedProcessLimitModel = GetProcessLimitById(UpdatedProcessLimitYearMappingModel.ProcessLimitId);
+            ProcessLimitYearMapping UpdatedProcessLimitYearMappingModel = (ProcessLimitYearMapping)sender;
+            ProcessLimit UpdatedProcessLimitModel = GetProcessLimitById(UpdatedProcessLimitYearMappingModel.ProcessLimitId);
             if (UpdatedProcessLimitModel == null)
             {
                 MessageBox.Show("Could not find process limit to update. Contact administrator");
@@ -111,10 +111,10 @@ namespace blockoptimiser.ViewModels
             NotifyOfPropertyChange(() => ProcessLimits);
         }
 
-        private ProcessLimitModel GetProcessLimitById(int id)
+        private ProcessLimit GetProcessLimitById(int id)
         {
-            ProcessLimitModel model = null;
-            foreach (ProcessLimitModel processLimit in ProcessLimits)
+            ProcessLimit model = null;
+            foreach (ProcessLimit processLimit in ProcessLimits)
             {
                 if (processLimit.Id == id)
                 {
@@ -145,17 +145,17 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a valid Item.");
                 return;
             }
-            ProcessLimitModel newProcessLimitModel = new ProcessLimitModel
+            ProcessLimit newProcessLimitModel = new ProcessLimit
             {
                 ScenarioId = Context.ScenarioId,
                 ItemName = SelectedUnit.Name,
                 ItemId = SelectedUnit.UnitId,
                 ItemType = SelectedUnit.UnitType
             };
-            List<ProcessLimitYearMappingModel> NewProcessLimitYearMapping = new List<ProcessLimitYearMappingModel>();
+            List<ProcessLimitYearMapping> NewProcessLimitYearMapping = new List<ProcessLimitYearMapping>();
             for (int i = 0; i < Scenario.TimePeriod; i++)
             {
-                ProcessLimitYearMappingModel TempModel = new ProcessLimitYearMappingModel();
+                ProcessLimitYearMapping TempModel = new ProcessLimitYearMapping();
                 int CurrentYear = Scenario.StartYear + i;
                 TempModel.Year = CurrentYear;
                 TempModel.Value = 0;

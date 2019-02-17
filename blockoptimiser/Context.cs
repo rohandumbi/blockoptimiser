@@ -39,7 +39,7 @@ namespace blockoptimiser
             return processes;
         }
 
-        public List<Object> GetBlocks(int modelId, String condition)
+        public List<Block> GetBlocks(int modelId, String condition)
         {
             return new BlockDataAccess().GetBlocks(ProjectId, modelId, condition);
         }
