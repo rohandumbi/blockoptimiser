@@ -130,9 +130,15 @@ CREATE TABLE Product(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
-   UnitType TINYINT,
-   UnitId INT,
    UNIQUE (ProjectId, Name)
+);
+
+CREATE TABLE ProductModelMapping(
+   ProductId INT,
+   ModelId INT NOT NULL,
+   UnitId INT NOT NULL,
+   UnitType INT NOT NULL,
+   UNIQUE (ProductId, ModelId)
 );
 
 IF OBJECT_ID('ProductProcessMapping', 'U') IS NOT NULL 

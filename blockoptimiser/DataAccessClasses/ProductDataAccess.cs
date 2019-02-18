@@ -36,19 +36,20 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into Product (ProjectId, Name, UnitType, UnitId)" +
+                String insertQuery = $"insert into Product (ProjectId, Name)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name, @UnitType, @UnitId)";
+                    $" VALUES(@ProjectId, @Name)";
 
                 String insertMappingQuery = $"insert into ProductProcessMapping (ProductId, ProcessId) " +
                     $" VALUES(@ProductId, @ProcessId)";
 
+                String insertModelMappingQuery = $"insert into ProductModelMapping (ProductId, ModelId, UnitId, UnitType) " +
+                    $" VALUES(@ProductId, @ModelId, @UnitId, @UnitType)";
+
                 newProduct.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newProduct.ProjectId,
-                    newProduct.Name,
-                    newProduct.UnitType,
-                    newProduct.UnitId
+                    newProduct.Name
                 });
 
                 foreach (int processId in newProduct.ProcessIds)
@@ -57,6 +58,17 @@ namespace blockoptimiser.DataAccessClasses
                     {
                         ProductId = newProduct.Id,
                         processId
+                    });
+                }
+
+                foreach (ProductModelMapping mapping in newProduct.Mapping)
+                {
+                    connection.Execute(insertModelMappingQuery, new
+                    {
+                        ProductId = newProduct.Id,
+                        mapping.ModelId,
+                        mapping.Unitid,
+                        mapping.UnitType
                     });
                 }
 
@@ -88,6 +100,7 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
                 connection.Execute($"delete from ProductProcessMapping where ProductId = { Id }");
+                connection.Execute($"delete from ProductModelMapping where ProductId = { Id }");
                 connection.Execute($"delete from Product where Id = { Id }");
             }
         }

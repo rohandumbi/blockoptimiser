@@ -2,12 +2,75 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:attachedBehaviors="clr-namespace:blockoptimiser.AttachedBehaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:blockoptimiser.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="196,199,0,0" TextWrapping="Wrap" Text="This is Finance Limit View." VerticalAlignment="Top" Height="26" Width="266"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox x:Name="groupBox" 
+                  Header="Create New Row" 
+                  Grid.Column="1"
+                  Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10px" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="LabelCostType" Grid.Row="2" Margin="0 0 5 10" Text="Cost"/>
+                <ComboBox x:Name="CostTypeCombo" ItemsSource="{Binding CostTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="2" Margin="0 0 5 10" SelectedItem="{Binding SelectedCostTypeUnit}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate >
+                            <Label Content="{Binding Name}"></Label>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock x:Name="LabelFilterType" Grid.Row="2" Grid.Column="3" Margin="0 0 5 10" Text="Product/Product Join:"/>
+                <ComboBox x:Name="FilterTypeCombo" ItemsSource="{Binding FilterTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="4" Margin="0 0 5 10" SelectedItem="{Binding SelectedFilterTypeUnit}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate >
+                            <Label Content="{Binding Name}"></Label>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock x:Name="LabelUnit" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Unit:"/>
+                <ComboBox x:Name="UnitCombo" ItemsSource="{Binding UnitTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="6" Margin="0 0 5 10" SelectedItem="{Binding SelectedUnitTypeUnit}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate >
+                            <Label Content="{Binding Name}"></Label>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <CheckBox Name="InUse" Content="In Use" IsChecked="{Binding IsUsed}"  CommandParameter="{Binding Id}" Grid.Row="2" Grid.Column="7">
+                </CheckBox>
+                <Button x:Name="CreateOpex" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+            </Grid>
+        </GroupBox>
+        <DataGrid  Grid.Column="1"
+                   Grid.Row="2" 
+                   Margin="10,0,0,10" 
+                   ItemsSource="{Binding Opex}"
+                   attachedBehaviors:DataGridColumnsBehavior.BindableColumns="{Binding OpexColumns}"
+                   CanUserAddRows="False" 
+                   AutoGenerateColumns="False"/>
 
     </Grid>
 </UserControl>
