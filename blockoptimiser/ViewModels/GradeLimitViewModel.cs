@@ -18,7 +18,7 @@ namespace blockoptimiser.ViewModels
     {
         private GradeLimitDataAccess GradeLimitDAO;
         private ScenarioDataAccess ScenarioDAO;
-        private ScenarioModel Scenario;
+        private Scenario Scenario;
 
         public UnitItem SelectedUnit { get; set; }
         public List<UnitItem> UnitItems { get; set; }
@@ -51,7 +51,7 @@ namespace blockoptimiser.ViewModels
             }
 
             ScenarioDAO = new ScenarioDataAccess();
-            Scenario = ScenarioDAO.GetScenario(Context.ScenarioId);
+            Scenario = ScenarioDAO.Get(Context.ScenarioId);
 
             ProcessDAO = new ProcessDataAccess();
             ProductDAO = new ProductDataAccess();

@@ -47,7 +47,8 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Label Grid.Row="3">Selected Processes:</Label>
-        <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="161"/>
-        <Button x:Name="AddProduct"  Click="button_Click" Grid.Row="4" Grid.Column="0" Content="Add"></Button>
+        <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="120"/>
+        <Label Grid.Row="4">Model Mapping:</Label>
+        <Button x:Name="AddProduct"  Click="button_Click" Grid.Row="5" Grid.Column="0" Content="Add"></Button>
     </Grid>
 </Window>
