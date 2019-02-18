@@ -61,10 +61,10 @@
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding Path=DataTypeOptions}" SelectedItem="{Binding Path=DataType}">
+                                <ComboBox ItemsSource="{Binding DataTypeUnitItems}" SelectedItem="{Binding SelectedDataTypeUnitItem}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" />
+                                            <TextBlock Text="{Binding Name}" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -79,10 +79,10 @@
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding Path=MappingOptions}" SelectedItem="{Binding Path=AssociatedField}">
+                                <ComboBox ItemsSource="{Binding AssocitedFieldUnitItems}" SelectedItem="{Binding SelectedAssocitedFieldUnitItem}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" />
+                                            <TextBlock Text="{Binding Name}" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>

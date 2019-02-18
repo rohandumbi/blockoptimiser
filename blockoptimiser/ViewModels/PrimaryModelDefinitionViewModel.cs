@@ -32,6 +32,7 @@ namespace blockoptimiser.ViewModels
         public BindableCollection<RequiredFieldMapping> RequiredFieldMappings { get; set; }
         public BindableCollection<ModelDimension> ModelDimensions { get; set; }
 
+
         public Decimal ModelBearing
         {
             get { return _model.Bearing; }
@@ -101,6 +102,31 @@ namespace blockoptimiser.ViewModels
             Fields = new BindableCollection<Field>(_fieldDAO.GetAll(Context.ProjectId));
             CSVFieldMappings = new BindableCollection<CsvColumnMapping>(_csvColumnMappingDAO.GetAll(Context.ModelId));
             CSVFields = new List<string>();
+
+            foreach (Field field in Fields)
+            {
+                field.DataTypeUnitItems = new List<UnitItem> {
+                    new UnitItem("groupby", 0, Field.DATA_TYPE_GROUP_BY),
+                    new UnitItem("additive", 0, Field.DATA_TYPE_ADDITIVE),
+                    new UnitItem("grade", 0, Field.DATA_TYPE_GRADE)
+                };
+
+                List<UnitItem> AssocitedFieldUnitItems = new List<UnitItem>();
+                foreach (Field associatedField in Fields)
+                {
+                    AssocitedFieldUnitItems.Add(new UnitItem(associatedField.Name, associatedField.Id, (byte)associatedField.DataType));
+                }
+                field.AssocitedFieldUnitItems = AssocitedFieldUnitItems;
+                field.PropertyChanged += Field_PropertyChanged;
+
+                Field AssociatedField = GetFieldById(field.AssociatedField);
+                if (AssociatedField != null)
+                {
+                    field.AssociatedFieldName = AssociatedField.Name;
+                }
+            }
+
+
             foreach(var CSVFieldMapping in CSVFieldMappings)
             {
                 CSVFields.Add(CSVFieldMapping.ColumnName);
@@ -116,6 +142,37 @@ namespace blockoptimiser.ViewModels
                 RequiredFieldMapping.PropertyChanged += RequiredFieldMapping_PropertyChanged;
                 RequiredFieldMapping.mappingOptions = CSVFields;
             }
+        }
+
+        private Field GetFieldById(int id)
+        {
+            Field returnedField = null;
+            foreach (Field field in Fields)
+            {
+                if (field.Id == id)
+                {
+                    returnedField = field;
+                    break;
+                }
+            }
+            return returnedField;
+        }
+
+        private void Field_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Field updatedField = (Field)sender;
+            if (updatedField.SelectedDataTypeUnitItem != null)
+            {
+                updatedField.DataTypeName = updatedField.SelectedDataTypeUnitItem.Name;
+                updatedField.DataType = updatedField.SelectedDataTypeUnitItem.UnitType;
+            }
+            if (updatedField.SelectedAssocitedFieldUnitItem != null)
+            {
+                updatedField.AssociatedFieldName = updatedField.SelectedAssocitedFieldUnitItem.Name;
+                updatedField.AssociatedField = updatedField.SelectedAssocitedFieldUnitItem.UnitId;
+            }
+            _fieldDAO.Update(updatedField);
+            NotifyOfPropertyChange(() => Fields);
         }
 
         private void RequiredFieldMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
