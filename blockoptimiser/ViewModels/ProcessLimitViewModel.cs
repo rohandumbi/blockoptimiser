@@ -84,19 +84,11 @@ namespace blockoptimiser.ViewModels
 
         private void processLimit_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //Do stuff with fleet here
-            //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
-            //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
-            //NotifyOfPropertyChange(() => TruckHubPriorities);
             MessageBox.Show("detected change");
         }
 
         private void processLimitYearMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //Do stuff with fleet here
-            //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
-            //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
-            //NotifyOfPropertyChange(() => TruckHubPriorities);
             ProcessLimitYearMapping UpdatedProcessLimitYearMappingModel = (ProcessLimitYearMapping)sender;
             ProcessLimit UpdatedProcessLimitModel = GetProcessLimitById(UpdatedProcessLimitYearMappingModel.ProcessLimitId);
             if (UpdatedProcessLimitModel == null)
@@ -104,10 +96,14 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Could not find process limit to update. Contact administrator");
                 return;
             }
-            //ProcessLimitDAO.DeleteTruckHourMapping(UpdatedTruckHourModel.Id);
             ProcessLimitDAO.DeleteProcessLimitMapping(UpdatedProcessLimitModel.Id);
-            //da.InsertTruckHourMapping(UpdatedTruckHourModel);
             ProcessLimitDAO.InsertProcessLimitMapping(UpdatedProcessLimitModel);
+            UpdateCollection();
+        }
+
+        public void UpdateCollection()
+        {
+            ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetProcessLimits());
             NotifyOfPropertyChange(() => ProcessLimits);
         }
 
@@ -164,7 +160,7 @@ namespace blockoptimiser.ViewModels
             newProcessLimitModel.ProcessLimitYearMapping = NewProcessLimitYearMapping;
             ProcessLimitDAO.InsertProcessLimit(newProcessLimitModel);
             ProcessLimits.Add(newProcessLimitModel);
-            NotifyOfPropertyChange("ProcessLimits");
+            UpdateCollection();
         }
     }
 }

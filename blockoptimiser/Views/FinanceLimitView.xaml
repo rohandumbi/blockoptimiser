@@ -43,7 +43,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <TextBlock x:Name="LabelFilterType" Grid.Row="2" Grid.Column="3" Margin="0 0 5 10" Text="Product/Product Join:"/>
+                <TextBlock x:Name="LabelFilterType" Grid.Row="2" Grid.Column="3" Margin="0 0 5 10" Text="Process/Product:"/>
                 <ComboBox x:Name="FilterTypeCombo" ItemsSource="{Binding FilterTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="4" Margin="0 0 5 10" SelectedItem="{Binding SelectedFilterTypeUnit}" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate >
@@ -52,7 +52,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBlock x:Name="LabelUnit" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Unit:"/>
-                <ComboBox x:Name="UnitCombo" ItemsSource="{Binding UnitTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="6" Margin="0 0 5 10" SelectedItem="{Binding SelectedUnitTypeUnit}" >
+                <ComboBox x:Name="UnitCombo" ItemsSource="{Binding UnitTypeUnitItems}"  Width="150" Grid.Row="2" Grid.Column="6" Margin="0 0 5 10" SelectedItem="{Binding SelectedUnitTypeUnit}" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate >
                             <Label Content="{Binding Name}"></Label>
@@ -67,7 +67,7 @@
         <DataGrid  Grid.Column="1"
                    Grid.Row="2" 
                    Margin="10,0,0,10" 
-                   ItemsSource="{Binding Opex}"
+                   ItemsSource="{Binding OpexList}"
                    attachedBehaviors:DataGridColumnsBehavior.BindableColumns="{Binding OpexColumns}"
                    CanUserAddRows="False" 
                    AutoGenerateColumns="False"/>

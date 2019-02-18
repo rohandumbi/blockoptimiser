@@ -245,10 +245,12 @@ CREATE TABLE Opex (
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ScenarioId INT NOT NULL,
    CostType TINYINT,
+   CostName VARCHAR(50),
    FilterType TINYINT,
    FilterName VARCHAR(50),
    UnitType TINYINT,
    UnitId INT,
+   UnitName VARCHAR(50),
    IsUsed TINYINT,
    unique (ScenarioId, CostType, FilterType, FilterName)
 );

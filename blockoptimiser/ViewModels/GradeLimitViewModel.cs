@@ -96,12 +96,12 @@ namespace blockoptimiser.ViewModels
             GradeLimit UpdatedGradeLimitModel = GetGradeLimitById(UpdatedGradeLimitYearMappingModel.GradeLimitId);
             if (UpdatedGradeLimitModel == null)
             {
-                MessageBox.Show("Could not find process limit to update. Contact administrator");
+                MessageBox.Show("Could not find grade limit to update. Contact administrator");
                 return;
             }
             GradeLimitDAO.DeleteGradeLimitMapping(UpdatedGradeLimitModel.Id);
             GradeLimitDAO.InsertGradeLimitMapping(UpdatedGradeLimitModel);
-            NotifyOfPropertyChange(() => GradeLimits);
+            UpdateCollection();
         }
 
         private GradeLimit GetGradeLimitById(int id)
@@ -133,6 +133,12 @@ namespace blockoptimiser.ViewModels
             }
         }
 
+        private void UpdateCollection()
+        {
+            GradeLimits = new BindableCollection<GradeLimit>(GradeLimitDAO.GetGradeLimits());
+            NotifyOfPropertyChange("GradeLimits");
+        }
+
         public void CreateProcessLimit()
         {
             if (SelectedUnit == null)
@@ -162,7 +168,7 @@ namespace blockoptimiser.ViewModels
 
             GradeLimitDAO.Insert(newGradeLimitModel);
             GradeLimits.Add(newGradeLimitModel);
-            NotifyOfPropertyChange("GradeLimits");
+            UpdateCollection();
         }
     }
 }
