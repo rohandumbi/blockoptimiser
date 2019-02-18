@@ -81,6 +81,14 @@ namespace blockoptimiser.ViewModels
             List<CsvColumnMapping> _csvColumns = _csvColumnMappingDAO.GetAll(Context.ModelId);
             CSVFieldMappings = new BindableCollection<CSVFieldMapping>();
             _columnFieldIdMapping = new Dictionary<string, int>();
+            /* 
+             * temp fix by Rohan on Arpan's code. Needs verification.
+             */
+            CSVFields = new List<string>();
+            foreach (CsvColumnMapping csvColumn in _csvColumns)
+            {
+                CSVFields.Add(csvColumn.ColumnName);
+            }
             foreach (CsvColumnMapping _primaryModelCsvColumn in _primaryModelColumns)
             {
                 _columnFieldIdMapping.Add(_primaryModelCsvColumn.ColumnName, _primaryModelCsvColumn.FieldId);
@@ -100,6 +108,10 @@ namespace blockoptimiser.ViewModels
                 mapping.CSVFields = CSVFields;
                 CSVFieldMappings.Add(mapping);
             }
+            foreach (var CSVFieldMapping in CSVFieldMappings)
+            {
+                CSVFieldMapping.PropertyChanged += CSVFieldMapping_PropertyChanged;
+            }
         }
 
         private void ModelDimension_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -108,6 +120,14 @@ namespace blockoptimiser.ViewModels
             ModelDimension modelDimension = (ModelDimension)sender;
             _modelDimensionDAO.Update(modelDimension);
             NotifyOfPropertyChange(() => ModelDimensions);
+        }
+
+        private void CSVFieldMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //Do stuff with fleet here
+            CSVFieldMapping updatedMapping = (CSVFieldMapping)sender;
+            //_modelDimensionDAO.Update(modelDimension);
+            NotifyOfPropertyChange(() => CSVFieldMappings);
         }
 
         public void ImportData()
@@ -172,11 +192,26 @@ namespace blockoptimiser.ViewModels
         }
     }
 
-    public class CSVFieldMapping
+    public class CSVFieldMapping : INotifyPropertyChanged
     {
+        private String _columnName;
         public String PrimayModelColumnName { get; set; }
-        public String ColumnName { get; set; }
+        public String ColumnName {
+            get {
+                return _columnName;
+            }
+            set {
+                _columnName = value;
+                OnPropertyChanged("ColumnName");
+            }
+        }
         public String DefaultValue { get; set; }
         public List<String> CSVFields { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }
