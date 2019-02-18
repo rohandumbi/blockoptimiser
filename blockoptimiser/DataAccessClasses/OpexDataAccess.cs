@@ -15,7 +15,7 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                var OpexList = connection.Query<Opex>($"select from Opex where ScenarioID = { ScenarioId }").ToList();
+                var OpexList = connection.Query<Opex>($"select * from Opex where ScenarioID = { ScenarioId }").ToList();
                 
                 foreach (var opex in OpexList)
                 {

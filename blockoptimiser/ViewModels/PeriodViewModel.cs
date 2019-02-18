@@ -95,7 +95,14 @@ namespace blockoptimiser.ViewModels
         }
         public void RunScheduler()
         {
-            new EquationGenerator().Generate();
+            if(Context.ScenarioId > 0)
+            {
+                new CplexSolver().Solve(Context.ProjectId, Context.ScenarioId);
+            } else
+            {
+                MessageBox.Show("Please select a scenario.");
+            }
+            
         }
     }
 }

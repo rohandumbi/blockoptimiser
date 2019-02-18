@@ -32,5 +32,13 @@ namespace blockoptimiser.DataAccessClasses
                 return blocks;
             }
         }
+        public String GetAngle(int ProjectId, int ModelId, String selectstr)
+        {
+            using (IDbConnection connection = getConnection())
+            {             
+                return connection.QuerySingle<String>($"select { selectstr} from BOData_{ ProjectId }_{ ModelId } ");
+                
+            }
+        }
     }
 }

@@ -46,13 +46,15 @@ namespace blockoptimiser.ViewModels
                 if (!isEntryPresent)
                 {
                     //creating default geotech against model, type field and first field selected by default
-                    Geotech NewGeotech = new Geotech();
-                    NewGeotech.ModelId = model.Id;
-                    NewGeotech.Script = "";
-                    NewGeotech.Type = 1;
-                    NewGeotech.UseScript = false;
-                    NewGeotech.FieldId = Fields.First().Id;
-                    NewGeotech.ProjectId = Context.ProjectId;
+                    Geotech NewGeotech = new Geotech
+                    {
+                        ModelId = model.Id,
+                        Script = "",
+                        Type = 1,
+                        UseScript = false,
+                        FieldId = Fields.First().Id,
+                        ProjectId = Context.ProjectId
+                    };
                     GeotechDAO.Insert(NewGeotech);
                 } 
             }

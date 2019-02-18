@@ -139,7 +139,9 @@
     <Compile Include="Models\Scenario.cs" />
     <Compile Include="Services\DataImport\CSVDataLoader.cs" />
     <Compile Include="Services\DataImport\CSVReader.cs" />
+    <Compile Include="Services\LP\CplexSolver.cs" />
     <Compile Include="Services\LP\EquationGenerator.cs" />
+    <Compile Include="Services\LP\ExecutionContext.cs" />
     <Compile Include="UnitItem.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
