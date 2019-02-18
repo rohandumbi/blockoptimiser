@@ -102,6 +102,7 @@
     <Compile Include="DataAccessClasses\BlockDataAccess.cs" />
     <Compile Include="DataAccessClasses\DataAccessFactory.cs" />
     <Compile Include="DataAccessClasses\GradeLimitDataAccess.cs" />
+    <Compile Include="DataAccessClasses\OpexDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProcessLimitDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProcessRouteDataAccess.cs" />
     <Compile Include="DataAccessClasses\ProductJoinDataAccess.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Models\Geotech.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\ModelDimension.cs" />
+    <Compile Include="Models\Opex.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\ProcessJoin.cs" />
     <Compile Include="Models\GradeLimit.cs" />

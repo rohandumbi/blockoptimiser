@@ -231,3 +231,28 @@ CREATE TABLE GradeLimitYearMapping (
    Value DECIMAL(18,10),
    unique (GradeLimitId,Year)
 );
+
+IF OBJECT_ID('Opex', 'U') IS NOT NULL
+DROP TABLE Opex; 
+
+CREATE TABLE Opex (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ScenarioId INT NOT NULL,
+   CostType TINYINT,
+   FilterType TINYINT,
+   FilterName VARCHAR(50),
+   UnitType TINYINT,
+   UnitId INT,
+   IsUsed TINYINT,
+   unique (ScenarioId, CostType, FilterType, FilterName)
+);
+
+IF OBJECT_ID('OpexYearMapping', 'U') IS NOT NULL
+DROP TABLE OpexYearMapping; 
+
+CREATE TABLE OpexYearMapping (
+   OpexId INT,
+   Year INT,
+   Value DECIMAL(18,10),
+   unique (OpexDataId, Year)
+);
