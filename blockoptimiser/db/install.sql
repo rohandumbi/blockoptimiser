@@ -260,5 +260,5 @@ CREATE TABLE OpexYearMapping (
    OpexId INT,
    Year INT,
    Value DECIMAL(18,10),
-   unique (OpexDataId, Year)
+   unique (OpexId, Year)
 );
