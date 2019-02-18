@@ -13,7 +13,7 @@ namespace blockoptimiser.ViewModels
 {
     public class PeriodViewModel: Screen
     {
-        public BindableCollection<ScenarioModel> Scenarios { get; set; }
+        public BindableCollection<Scenario> Scenarios { get; set; }
         private ScenarioDataAccess _scenarioDataAccess;
         private String _scenarioName;
         private int _startYear;
@@ -24,7 +24,7 @@ namespace blockoptimiser.ViewModels
 
         private void LoadScenarios()
         {
-            Scenarios = new BindableCollection<ScenarioModel>(_scenarioDataAccess.GetScenarios());
+            Scenarios = new BindableCollection<Scenario>(_scenarioDataAccess.GetAll());
         }
 
         public PeriodViewModel(IEventAggregator eventAggregator)
@@ -65,7 +65,7 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a valid integral value for discount factor");
                 return;
             }
-            ScenarioModel newScenario = new ScenarioModel
+            Scenario newScenario = new Scenario
             {
                 ProjectId = Context.ProjectId,
                 Name = _scenarioName,
@@ -73,12 +73,12 @@ namespace blockoptimiser.ViewModels
                 TimePeriod = _timePeriod,
                 DiscountFactor = x
             };
-            _scenarioDataAccess.InsertScenario(newScenario);
+            _scenarioDataAccess.Insert(newScenario);
             Scenarios.Add(newScenario);
             NotifyOfPropertyChange("Scenarios");
         }
 
-        public ScenarioModel SelectedItem
+        public Scenario SelectedItem
         {
             set
             {

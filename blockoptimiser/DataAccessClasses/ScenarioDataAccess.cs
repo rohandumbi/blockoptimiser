@@ -11,23 +11,23 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ScenarioDataAccess : BaseDataAccess
     {
-        public List<ScenarioModel> GetScenarios()
+        public List<Scenario> GetAll()
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<ScenarioModel>($"select * from Scenario where ProjectId = { Context.ProjectId } ").ToList();
+                return connection.Query<Scenario>($"select * from Scenario where ProjectId = { Context.ProjectId } ").ToList();
             }
         }
 
-        public ScenarioModel GetScenario(int Id)
+        public Scenario Get(int Id)
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.QuerySingle<ScenarioModel>($"select * from Scenario where Id = { Id } ");
+                return connection.QuerySingle<Scenario>($"select * from Scenario where Id = { Id } ");
             }
         }
 
-        public void InsertScenario(ScenarioModel newScenario)
+        public void Insert(Scenario newScenario)
         {
             using (IDbConnection connection = getConnection())
             {

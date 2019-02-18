@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace blockoptimiser.Models
 {
-    public class ScenarioModel
+    public class Scenario
     {
         public int Id { get; set; }
         public int ProjectId { get; set; }

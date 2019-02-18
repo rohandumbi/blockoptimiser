@@ -1,4 +1,5 @@
-﻿using blockoptimiser.Models;
+﻿using blockoptimiser.DataAccessClasses;
+using blockoptimiser.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,7 @@ namespace blockoptimiser.Services.LP
         public void Generate()
         {
             ctx = new Context();
+            //Scenario scenario = new ScenarioDataAccess().Get(Context.ScenarioId);
             FileStream fs = CreateFile();
 
             using (StreamWriter sw = new StreamWriter(fs))
@@ -37,12 +39,20 @@ namespace blockoptimiser.Services.LP
         private void WriteObjectiveFunction(StreamWriter sw)
         {
             List<Process> processes = ctx.getProcessList();
+            int count = 1;
             foreach(Process process in processes)
             {
                 foreach(ProcessModelMapping mapping in process.Mapping)
                 {
-                    ctx.GetBlocks(mapping.ModelId, mapping.FilterString);
+                    List<Block> blocks = ctx.GetBlocks(mapping.ModelId, mapping.FilterString);
+
+                    foreach(Block block in blocks)
+                    {
+                        sw.Write(" + B" + block.Id + "p" + count);
+                        sw.Write(" + B" + block.Id + "s" + count);
+                    }
                 }
+                count++;
             }
             
         }
