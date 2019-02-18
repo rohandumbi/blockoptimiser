@@ -14,6 +14,10 @@ namespace blockoptimiser.Models
         public Decimal Bearing { get; set; }
         public Boolean HasData { get; set; }
         public Boolean CheckStatus { get; set; }
+
+        /* temp hack. additional fields for product/process mapping */
+        public UnitItem AssociatedUnit {get;set;}
         public String FilterString { get; set; }
+        public List<UnitItem> AssociatedUnitItems { get; set; }
     }
 }
