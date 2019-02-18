@@ -8,7 +8,7 @@ namespace blockoptimiser.Models
 {
     public class Block
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public IDictionary<string, object> data { get; set; }
     }
 }

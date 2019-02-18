@@ -25,7 +25,7 @@ namespace blockoptimiser.Services.LP
         private List<String> productJoins;
         private List<Opex> opexList;
         private Dictionary<String, String> requiredFields;
-        public Dictionary<int, List<int>> processBlockMapping;
+        public Dictionary<int, List<long>> processBlockMapping;
 
 
         public ExecutionContext(int ProjectId, int ScenarioId, int DiscountFactor)
@@ -40,7 +40,7 @@ namespace blockoptimiser.Services.LP
             {
                 requiredFields.Add(mapping.RequiredFieldName, mapping.MappedColumnName);
             }
-            processBlockMapping = new Dictionary<int, List<int>>();
+            processBlockMapping = new Dictionary<int, List<long>>();
             LoadData();
         }
 
@@ -103,6 +103,11 @@ namespace blockoptimiser.Services.LP
         public List<Block> GetBlocks(int modelId, String condition)
         {
             return new BlockDataAccess().GetBlocks(ProjectId, modelId, condition);
+        }
+
+        public List<Block> GetGeotechBlocks(int modelId)
+        {
+            return new BlockDataAccess().GetBlocksByFields(ProjectId, modelId, new List<String> { requiredFields["tonnage"] });
         }
 
         public List<Opex> getOpexList()

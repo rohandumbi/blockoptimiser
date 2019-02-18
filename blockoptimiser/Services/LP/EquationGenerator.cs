@@ -35,7 +35,7 @@ namespace blockoptimiser.Services.LP
         private FileStream CreateFile()
         {
             Directory.CreateDirectory(@"C:\\blockoptimizor");
-            String fileName = @"C:\\blockoptimizor\\blockoptimizor-dump.lp";
+            String fileName = @"C:\\blockoptimizor\\blockoptimizor-dump_"+context.Period+".lp";
 
             return File.Create(fileName);
         }
@@ -51,25 +51,23 @@ namespace blockoptimiser.Services.LP
             {
                 foreach(ProcessModelMapping mapping in process.Mapping)
                 {
-                    String condition = modelProcessFilterMap[mapping.ModelId];
-                    if(condition == null)
+                    if(!modelProcessFilterMap.ContainsKey(mapping.ModelId))
                     {
                         modelProcessFilterMap.Add(mapping.ModelId, " not ( " + mapping.FilterString + ") ");
                     } else
                     {
-                        condition = condition + " AND not(" + mapping.FilterString + ") ";
+                        String condition = modelProcessFilterMap[mapping.ModelId] + " AND not(" + mapping.FilterString + ") ";
                         modelProcessFilterMap.Add(mapping.ModelId, condition);
                     }
                     List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
 
                     foreach(Block block in blocks)
                     {
-                        List<int> blockIds = context.processBlockMapping[process.Id];
-                        if(blockIds == null)
+                        if(!context.processBlockMapping.ContainsKey(process.Id))
                         {
-                            blockIds = new List<int>();
-                            context.processBlockMapping.Add(process.Id, blockIds);
+                            context.processBlockMapping.Add(process.Id, new List<long>());
                         }
+                        List<long> blockIds = context.processBlockMapping[process.Id];
                         blockIds.Add(block.Id);
                         Decimal minigCost = GetMiningCost(block, context.Year);
                         Decimal processValue = GetProcessValue(block, process, context.Year) - minigCost;
@@ -140,22 +138,32 @@ namespace blockoptimiser.Services.LP
                 
                 Geotech geotech = context.GetGeotechByModel(model.Id);
                 String selectstr = "max ( ";
-                if (geotech.Type == 1)
+                if (!geotech.UseScript)
                 {
                     String columnName = context.GetColumnNameById(geotech.Id, model.Id);
                     if(columnName == null)
                     {
                         throw new Exception("Please check your geotech configuration.");
                     }
-                    selectstr = context.GetColumnNameById(geotech.Id, model.Id) + ") as angle";
+                    selectstr = selectstr +  context.GetColumnNameById(geotech.Id, model.Id) + ") as angle";
                 } else
                 {
-                    selectstr = geotech.Script + ") as angle";
+                    selectstr = selectstr + geotech.Script + ") as angle";
                 }
 
                 double max_ira = context.GetIRA(selectstr, model.Id) * Math.PI / 180; ;
 
                 int nbenches = (int)Math.Ceiling(max_dim / (zinc / Math.Tan(max_ira)));
+                
+                List<Block> blocks = context.GetGeotechBlocks(model.Id);
+                foreach (Block b in blocks)
+                {
+                    for(int i = 0; i < nbenches - 1; i++)
+                    {
+
+                    }
+                }
+
             }
 
         }
