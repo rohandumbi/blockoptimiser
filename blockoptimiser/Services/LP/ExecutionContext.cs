@@ -24,6 +24,8 @@ namespace blockoptimiser.Services.LP
         private List<String> processJoins;
         private List<String> productJoins;
         private List<Opex> opexList;
+        private List<ProcessLimit> processLimits;
+        private List<GradeLimit> gradeLimits;
         private Dictionary<String, String> requiredFields;
         public Dictionary<int, List<long>> processBlockMapping;
 
@@ -54,6 +56,8 @@ namespace blockoptimiser.Services.LP
             processJoins = new ProcessJoinDataAccess().GetProcessJoins(ProjectId);
             productJoins = new ProductJoinDataAccess().GetProductJoins(ProjectId);
             opexList = new OpexDataAccess().GetAll(ScenarioId);
+            processLimits = new ProcessLimitDataAccess().GetProcessLimits();
+            gradeLimits = new GradeLimitDataAccess().GetGradeLimits();
         }
 
         public List<Model> GetModels()
@@ -65,7 +69,27 @@ namespace blockoptimiser.Services.LP
         {
             return processes;
         }
+        public Process GetProcessById(int Id)
+        {
+            foreach(Process process in processes)
+            {
+                if(process.Id == Id)
+                {
+                    return process;
+                }
+            }
+            return null;
+        }
+        
+        public List<ProcessLimit> GetProcessLimtis()
+        {
+            return processLimits;
+        }
 
+        public List<GradeLimit> GetGradeLimtis()
+        {
+            return gradeLimits;
+        }
         public String GetColumnNameById(int fieldId, int modelId)
         {
             List<CsvColumnMapping> mappings = new CsvColumnMappingDataAccess().GetAll(modelId);

@@ -170,6 +170,24 @@ namespace blockoptimiser.Services.LP
         private void WriteProcessLimitConstraints(StreamWriter sw)
         {
             sw.WriteLine("\\Process Limits");
+            foreach(ProcessLimit processLimit in context.GetProcessLimtis())
+            {
+                if(processLimit.ItemType == ProcessLimit.ITEM_TYPE_PROCESS)
+                {
+                    Process process = context.GetProcessById(processLimit.ItemId);
+                    foreach(var mapping in process.Mapping)
+                    {
+                        List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
+                        foreach (Block b in blocks)
+                        {
+                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " +B" + b.Id + "s1", sw);
+                        }
+
+                    }
+                    Write(" < 0 ", sw);
+                    Write("", sw);
+                }
+            }
         }
 
         private void WriteGradeLimitConstraints(StreamWriter sw)

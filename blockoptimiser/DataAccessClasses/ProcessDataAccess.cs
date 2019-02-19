@@ -15,7 +15,7 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                List<Process> Processes =  connection.Query<Process>($"select * from process where ProjectId = { ProjectId } ").ToList();
+                List<Process> Processes =  connection.Query<Process>($"select ROW_NUMBER() OVER( ORDER BY Id asc ) AS 'ProcessNumber', * from process where ProjectId = { ProjectId } ").ToList();
                 foreach(Process process in Processes)
                 {
                     process.Mapping = connection.Query<ProcessModelMapping>($"select * from processmodelmapping where Processid = { process.Id } ").ToList();

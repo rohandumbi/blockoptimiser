@@ -11,6 +11,7 @@ namespace blockoptimiser.Models
         public int Id { get; set; }
         public int ProjectId { get; set; }
         public String Name { get; set; }
+        public int ProcessNumber { get; set; }
         public List<ProcessModelMapping> Mapping { get; set; }
         public Boolean CheckStatus { get; set; }
     }
