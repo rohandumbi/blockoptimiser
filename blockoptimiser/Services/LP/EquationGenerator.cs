@@ -63,11 +63,11 @@ namespace blockoptimiser.Services.LP
 
                     foreach(Block block in blocks)
                     {
-                        if(!context.processBlockMapping.ContainsKey(process.Id))
+                        if(!context.processBlockMapping.ContainsKey(process.ProcessNumber))
                         {
-                            context.processBlockMapping.Add(process.Id, new List<long>());
+                            context.processBlockMapping.Add(process.ProcessNumber, new List<long>());
                         }
-                        List<long> blockIds = context.processBlockMapping[process.Id];
+                        List<long> blockIds = context.processBlockMapping[process.ProcessNumber];
                         blockIds.Add(block.Id);
                         Decimal minigCost = GetMiningCost(block, context.Year);
                         Decimal processValue = GetProcessValue(block, process, context.Year) - minigCost;
@@ -118,10 +118,17 @@ namespace blockoptimiser.Services.LP
             foreach(Model model in models)
             {
                 double xinc = 0, yinc = 0, zinc = 0, max_dim = 0;
+                double xm = 0, ym = 0, zm = 0;
                 List<ModelDimension> modelDimensions = context.GetModelDimension(model.Id);
                 foreach(ModelDimension dimension in modelDimensions)
                 {
-                    if(dimension.Type.Equals("Dimensions"))
+                    if (dimension.Type.Equals("Origin"))
+                    {
+                        xm = (double)dimension.XDim;
+                        ym = (double)dimension.YDim;
+                        zm = (double)dimension.ZDim;
+                    }
+                    else if (dimension.Type.Equals("Dimensions"))
                     {
                         xinc = (double)dimension.XDim;
                         yinc = (double)dimension.YDim;
@@ -158,9 +165,54 @@ namespace blockoptimiser.Services.LP
                 List<Block> blocks = context.GetGeotechBlocks(model.Id);
                 foreach (Block b in blocks)
                 {
-                    for(int i = 0; i < nbenches - 1; i++)
+                    double dist = (int)(zinc / Math.Tan(max_ira));
+                    double xorth = Double.Parse((string)b.data["xorth"]);
+                    double yorth = Double.Parse((string)b.data["yorth"]);
+                    int imin = (int)((xorth - dist + xinc - xm)/xinc );
+                    int imax = (int)((xorth + dist + xinc - xm) / xinc);
+                    int jmin = (int)((yorth + dist + yinc - xm) / yinc);
+                    int jmax = (int)((yorth + dist + yinc - xm) / yinc);
+                    if (imin <= 0) imin = 1;
+                    if (jmin <= 0) jmin = 1;
+                    for (int i = imin; i < imax ; i++)
                     {
+                        for (int j = jmin; j < jmax ; j++)
+                        {
+                            for(int k = 1; k < nbenches -1; k++)
+                            {
+                                foreach(var bb in blocks)
+                                {
+                                    if(((int)bb.data["I"] == (int)b.data["I"]+i) 
+                                        && ((int)bb.data["J"] == (int)b.data["J"] + i) 
+                                        && ((int)bb.data["K"] == (int)b.data["K"] + i))
+                                    {                                 
+                                        decimal tonneswt = context.GetTonnesWtForBlock(b);
+                                        decimal tonneswtba = context.GetTonnesWtForBlock(bb);
+                                        var ratio = tonneswt / tonneswtba;
+                                        int processNo = context.GetProcessNo(b);
+                                        if (processNo == -1)
+                                        {
+                                            Write(" + B" + b.Id + "p" + processNo + " +B" + b.Id + "s1", sw);
+                                        } else
+                                        {
+                                            Write(" + B" + b.Id + "w1", sw);
+                                        }
+                                        processNo = context.GetProcessNo(bb);
+                                        if (processNo == -1)
+                                        {
+                                            Write(" + B" + bb.Id + "p" + processNo + " +B" + bb.Id + "s1", sw);
+                                        }
+                                        else
+                                        {
+                                            Write(" + B" + bb.Id + "w1", sw);
+                                        }
 
+                                        Write(" < 0", sw);
+                                        Write("", sw);
+                                    } 
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -193,6 +245,24 @@ namespace blockoptimiser.Services.LP
         private void WriteGradeLimitConstraints(StreamWriter sw)
         {
             sw.WriteLine("\\ Grade Limits");
+            foreach (GradeLimit gradeLimit in context.GetGradeLimtis())
+            {
+                if (gradeLimit.ItemType == GradeLimit.ITEM_TYPE_PROCESS)
+                {
+                    Process process = context.GetProcessById(gradeLimit.ItemId);
+                    foreach (var mapping in process.Mapping)
+                    {
+                        List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
+                        foreach (Block b in blocks)
+                        {
+                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " +B" + b.Id + "s1", sw);
+                        }
+
+                    }
+                    Write(" < 0 ", sw);
+                    Write("", sw);
+                }
+            }
         }
 
         private Decimal GetProcessValue(Block b, Process process, int year)

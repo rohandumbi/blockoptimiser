@@ -238,5 +238,16 @@ namespace blockoptimiser.Services.LP
                 return Decimal.Parse(value);
             }
         }
+        public int GetProcessNo(Block b)
+        {
+            foreach(var key in processBlockMapping.Keys)
+            {
+                if(processBlockMapping[key].Contains(b.Id))
+                {
+                    return key;
+                }
+            }
+            return -1;
+        }
     }
 }
