@@ -126,7 +126,8 @@ namespace blockoptimiser.ViewModels
         {
             //Do stuff with fleet here
             CSVFieldMapping updatedMapping = (CSVFieldMapping)sender;
-            //_modelDimensionDAO.Update(modelDimension);
+
+            _csvColumnMappingDAO.UpdateByColumnName(_columnFieldIdMapping[updatedMapping.PrimayModelColumnName], updatedMapping.DefaultValue, updatedMapping.ColumnName, Context.ModelId);
             NotifyOfPropertyChange(() => CSVFieldMappings);
         }
 

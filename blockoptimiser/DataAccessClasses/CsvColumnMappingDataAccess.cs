@@ -38,6 +38,36 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void Update(CsvColumnMapping csvColumnMapping)
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update CsvColumnMapping set FieldId = @FieldId,  DefaultValue = @DefaultValue where Id = @Id ";
+                connection.QuerySingle<int>(updateQuery, new
+                {
+                    csvColumnMapping.FieldId,
+                    csvColumnMapping.DefaultValue,
+                    csvColumnMapping.Id
+                });
+            }
+        }
+
+        public void UpdateByColumnName(int FieldId, String DefaultValue, String ColumnName, int ModelId )
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update CsvColumnMapping set ColumnName = @ColumnName,  DefaultValue = @DefaultValue where ModelId = @ModelId and FieldId = @FieldId ";
+                connection.Execute(updateQuery, new
+                {
+                    ColumnName,
+                    DefaultValue,
+                    ModelId,
+                    FieldId
+                });
+            }
+        }
         public void DeleteAll(int ModelId)
         {
             using (IDbConnection connection = getConnection())
