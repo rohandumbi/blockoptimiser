@@ -112,6 +112,7 @@ namespace blockoptimiser.ViewModels
                 };
 
                 List<UnitItem> AssocitedFieldUnitItems = new List<UnitItem>();
+                AssocitedFieldUnitItems.Add(new UnitItem("NONE", 0, 0));
                 foreach (Field associatedField in Fields)
                 {
                     AssocitedFieldUnitItems.Add(new UnitItem(associatedField.Name, associatedField.Id, (byte)associatedField.DataType));
@@ -168,8 +169,15 @@ namespace blockoptimiser.ViewModels
             }
             if (updatedField.SelectedAssocitedFieldUnitItem != null)
             {
-                updatedField.AssociatedFieldName = updatedField.SelectedAssocitedFieldUnitItem.Name;
-                updatedField.AssociatedField = updatedField.SelectedAssocitedFieldUnitItem.UnitId;
+                if (updatedField.SelectedAssocitedFieldUnitItem.Name == "NONE")
+                {
+                    updatedField.AssociatedFieldName = null;
+                    updatedField.AssociatedField = 0;
+                }
+                else {
+                    updatedField.AssociatedFieldName = updatedField.SelectedAssocitedFieldUnitItem.Name;
+                    updatedField.AssociatedField = updatedField.SelectedAssocitedFieldUnitItem.UnitId;
+                }
             }
             _fieldDAO.Update(updatedField);
             NotifyOfPropertyChange(() => Fields);
