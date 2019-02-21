@@ -160,6 +160,16 @@ CREATE TABLE ProductJoin(
    UNIQUE (ProjectId, Name, ProductName)
 );
 
+IF OBJECT_ID('ProductJoinGradeAliasing', 'U') IS NOT NULL 
+DROP TABLE ProductJoinGradeAliasing
+
+CREATE TABLE ProductJoinGradeAliasing(
+   ProductJoinId INT,
+   GradeAliasName VARCHAR(100),
+   GradeAliasNameIndex INT,
+   UNIQUE (ProductJoinId, GradeAliasName)
+);
+
 IF OBJECT_ID('Expression', 'U') IS NOT NULL 
 DROP TABLE Expression
 
