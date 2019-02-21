@@ -10,7 +10,8 @@ namespace blockoptimiser.Models
     {
         public int ProjectId { get; set; }
         public String Name { get; set; }
-        public List<String> ProductNames { get; set; }      
+        public List<String> ProductNames { get; set; }
+        public List<String> ProductJoinGradeAliasings { get; set; }
     }
 
     public class ProductJoinGradeAliasing

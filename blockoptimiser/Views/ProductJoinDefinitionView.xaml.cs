@@ -24,12 +24,14 @@ namespace blockoptimiser.Views
         List<Product> Products;
         ProductDataAccess ProductDAO;
         ProductJoinDataAccess ProductJoinDAO;
+        public List<String> ProductJoinGradeAliasNames;
         public ProductJoinDefinitionView()
         {
             InitializeComponent();
             ProductDAO = new ProductDataAccess();
             ProductJoinDAO = new ProductJoinDataAccess();
             Products = ProductDAO.GetAll(Context.ProjectId);
+            ProductJoinGradeAliasNames = new List<string>();
             BindDropDown();
         }
 
@@ -67,7 +69,10 @@ namespace blockoptimiser.Views
                 MessageBox.Show("Enter manadatory field Grade Name");
                 return;
             }
-            MessageBox.Show(GradeName);
+            ProductJoinGradeAliasNames.Add(GradeName);
+
+            BindGradeListBox();
+
             //if (testListbox.Items.Count == 0)
             //{
             //    MessageBox.Show("Select atleast one Product");
@@ -83,7 +88,6 @@ namespace blockoptimiser.Views
             //    NewProductJoin.ProductNames.Add(ChildProductName);
             //}
             //ProductJoinDAO.Insert(NewProductJoin);
-            this.Close();
         }
 
         private void BindDropDown()
@@ -114,6 +118,15 @@ namespace blockoptimiser.Views
                 {
                     testListbox.Items.Add(product.Name);
                 }
+            }
+        }
+
+        private void BindGradeListBox()
+        {
+            gradeListbox.Items.Clear();
+            foreach (String aliasName in ProductJoinGradeAliasNames)
+            {
+                gradeListbox.Items.Add(aliasName);
             }
         }
 
