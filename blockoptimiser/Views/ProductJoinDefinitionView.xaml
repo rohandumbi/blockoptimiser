@@ -10,9 +10,13 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -32,7 +36,11 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Label Grid.Row="3">Selected Products:</Label>
-        <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="161"/>
-        <Button x:Name="AddProduct" Click="button_Click"  Grid.Row="4" Content="Add"></Button>
+        <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="100"/>
+        <Label Grid.Row="4">Associated Grades:</Label>
+        <TextBox x:Name="GradeAliasName" Width="200" Grid.Row="4" Grid.Column="1" Margin="0,5,0,10" />
+        <Button x:Name="AddGradeAlias" Click="button_grade_Click"  Grid.Row="4" Grid.Column="2" Content="Add Grade"  Width="100" Margin="10,5,0,10" ></Button>
+        <ListBox Name="gradeListbox" Grid.Row="5" Grid.Column="1" Height="100"/>
+        <Button x:Name="AddProduct" Click="button_Click"  Grid.Row="6" Content="Add"></Button>
     </Grid>
 </Window>

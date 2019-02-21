@@ -15,7 +15,8 @@ namespace blockoptimiser.Models
 
     public class ProductJoinGradeAliasing
     {
-        public int ProductJoinId { get; set; }
+        public int ProjectId { get; set; }
+        public String ProductJoinName { get; set; }
         public String GradeAliasName { get; set; }
         public int GradeAliasNameIndex { get; set; }
     }

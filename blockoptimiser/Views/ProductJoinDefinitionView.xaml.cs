@@ -36,7 +36,7 @@ namespace blockoptimiser.Views
         private void button_Click(object sender, RoutedEventArgs e)
         {
             String ProductJoinName = Name.Text;
-            if (ProductJoinName == null)
+            if (ProductJoinName == null || ProductJoinName == "")
             {
                 MessageBox.Show("Enter manadatory field NAME");
                 return;
@@ -56,6 +56,33 @@ namespace blockoptimiser.Views
                 NewProductJoin.ProductNames.Add(ChildProductName);
             }
             ProductJoinDAO.Insert(NewProductJoin);
+            this.Close();
+        }
+
+        private void button_grade_Click(object sender, RoutedEventArgs e)
+        {
+            String GradeName = GradeAliasName.Text;
+            if (GradeName == null || GradeName == "")
+            {
+                MessageBox.Show("Enter manadatory field Grade Name");
+                return;
+            }
+            MessageBox.Show(GradeName);
+            //if (testListbox.Items.Count == 0)
+            //{
+            //    MessageBox.Show("Select atleast one Product");
+            //    return;
+            //}
+
+            //ProductJoin NewProductJoin = new ProductJoin();
+            //NewProductJoin.Name = ProductJoinName;
+            //NewProductJoin.ProjectId = Context.ProjectId;
+            //NewProductJoin.ProductNames = new List<string>();
+            //foreach (String ChildProductName in testListbox.Items)
+            //{
+            //    NewProductJoin.ProductNames.Add(ChildProductName);
+            //}
+            //ProductJoinDAO.Insert(NewProductJoin);
             this.Close();
         }
 
