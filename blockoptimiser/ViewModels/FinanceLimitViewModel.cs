@@ -85,10 +85,6 @@ namespace blockoptimiser.ViewModels
 
         private void costData_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //Do stuff with fleet here
-            //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
-            //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
-            //NotifyOfPropertyChange(() => TruckHubPriorities);
             OpexYearMapping UpdatedOpexYearMappingModel = (OpexYearMapping)sender;
             Opex UpdatedOpex = GetOpexById(UpdatedOpexYearMappingModel.OpexId);
             if (UpdatedOpex == null)
@@ -115,7 +111,8 @@ namespace blockoptimiser.ViewModels
             //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
             //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
             //NotifyOfPropertyChange(() => TruckHubPriorities);
-            MessageBox.Show("detected change");
+            Opex UpdatedOpex = (Opex)sender;
+            OpexDAO.Update(UpdatedOpex);
         }
 
         private Opex GetOpexById(int id)
@@ -141,8 +138,9 @@ namespace blockoptimiser.ViewModels
                 new DataGridTextColumn { Header = "Process/Product", Binding = new Binding("FilterName") });
             this.OpexColumns.Add(
                 new DataGridTextColumn { Header = "Expression", Binding = new Binding("UnitName") });
+
             this.OpexColumns.Add(
-                new DataGridTextColumn { Header = "Is Used", Binding = new Binding("IsUsed") });
+                new DataGridCheckBoxColumn { Header = "Is Used", Binding = new Binding("IsUsed") });
 
             for (int i = 0; i < Scenario.TimePeriod; i++)
             {
@@ -197,7 +195,6 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a valid Cost.");
                 return;
             }
-            //MessageBox.Show("On the right track");
             Opex newOpex = new Opex
             {
                 ScenarioId = Context.ScenarioId,

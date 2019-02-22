@@ -22,6 +22,7 @@ namespace blockoptimiser.Models
         public static byte UNIT_EXPRESSION = 2;
 
         private List<OpexYearMapping> _costData;
+        private Boolean _isUsed;
         public int Id { get; set; }
         public int ScenarioId { get; set; }
         public byte CostType { get; set; }
@@ -31,7 +32,14 @@ namespace blockoptimiser.Models
         public Byte UnitType { get; set; }
         public int UnitId { get; set; }
         public String UnitName { get; set; }
-        public Boolean IsUsed { get; set; }
+        public Boolean IsUsed {
+            get { return _isUsed; }
+            set
+            {
+                _isUsed = value;
+                OnPropertyChanged("IsUsed");
+            }
+        }
         public List<OpexYearMapping> CostData {
             get { return _costData; }
             set

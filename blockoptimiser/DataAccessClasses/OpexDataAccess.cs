@@ -64,6 +64,27 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void Update(Opex updatedOpex)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update Opex set ScenarioId = @ScenarioId, CostType = @CostType, CostName = @CostName, FilterType = @FilterType, FilterName = @FilterName, UnitType = @UnitType, UnitId = @UnitId, UnitName = @UnitName, IsUsed= @IsUsed  where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    updatedOpex.ScenarioId,
+                    updatedOpex.CostType,
+                    updatedOpex.CostName,
+                    updatedOpex.FilterType,
+                    updatedOpex.FilterName,
+                    updatedOpex.UnitType,
+                    updatedOpex.UnitId,
+                    updatedOpex.UnitName,
+                    updatedOpex.IsUsed,
+                    updatedOpex.Id
+                });
+            }
+        }
+
         public void InsertOpexMapping(Opex opex)
         {
 

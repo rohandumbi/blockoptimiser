@@ -64,7 +64,7 @@ namespace blockoptimiser.Views
                 NewProductJoinGradeAliasing.ProjectId = Context.ProjectId;
                 NewProductJoinGradeAliasing.ProductJoinName = NewProductJoin.Name;
                 NewProductJoinGradeAliasing.GradeAliasName = gradeListbox.Items[i].ToString();
-                NewProductJoinGradeAliasing.GradeAliasNameIndex = i;
+                NewProductJoinGradeAliasing.GradeAliasNameIndex = (i + 1);
                 ProductJoinGradeAliasings.Add(NewProductJoinGradeAliasing);
             }
             NewProductJoin.ProductJoinGradeAliasings = ProductJoinGradeAliasings;
@@ -83,22 +83,6 @@ namespace blockoptimiser.Views
             ProductJoinGradeAliasNames.Add(GradeName);
 
             BindGradeListBox();
-
-            //if (testListbox.Items.Count == 0)
-            //{
-            //    MessageBox.Show("Select atleast one Product");
-            //    return;
-            //}
-
-            //ProductJoin NewProductJoin = new ProductJoin();
-            //NewProductJoin.Name = ProductJoinName;
-            //NewProductJoin.ProjectId = Context.ProjectId;
-            //NewProductJoin.ProductNames = new List<string>();
-            //foreach (String ChildProductName in testListbox.Items)
-            //{
-            //    NewProductJoin.ProductNames.Add(ChildProductName);
-            //}
-            //ProductJoinDAO.Insert(NewProductJoin);
         }
 
         private void BindDropDown()

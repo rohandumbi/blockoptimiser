@@ -19,6 +19,6 @@ namespace blockoptimiser.Models
         public int ProjectId { get; set; }
         public String ProductJoinName { get; set; }
         public String GradeAliasName { get; set; }
-        public int GradeAliasNameIndex { get; set; } // 0 - based
+        public int GradeAliasNameIndex { get; set; } // 1 - based
     }
 }
