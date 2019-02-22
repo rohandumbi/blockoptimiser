@@ -14,10 +14,18 @@ namespace blockoptimiser.Models
         public static byte ITEM_TYPE_PRODUCT_JOIN = 3;
 
         private List<GradeLimitYearMapping> _gradeLimitYearMapping;
+        private Boolean _isMax;
         public event PropertyChangedEventHandler PropertyChanged;
         public int Id { get; set; }
         public int ScenarioId { get; set; }
-        public Boolean IsMax { get; set; }
+        public Boolean IsMax {
+            get { return _isMax; }
+            set
+            {
+                _isMax = value;
+                OnPropertyChanged("IsMax");
+            }
+        }
         public String ItemName { get; set; }
         public int ItemId { get; set; }
         public byte ItemType { get; set; }

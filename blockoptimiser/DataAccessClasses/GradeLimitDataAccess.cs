@@ -25,6 +25,22 @@ namespace blockoptimiser.DataAccessClasses
                 return GradeLimits;
             }
         }
+        public void Update(GradeLimit updatedGradeLimit)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update GradeLimit set ScenarioId = @ScenarioId, IsMax = @IsMax, ItemName = @ItemName, ItemId = @ItemId, ItemType = @ItemType  where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    updatedGradeLimit.ScenarioId,
+                    updatedGradeLimit.IsMax,
+                    updatedGradeLimit.ItemName,
+                    updatedGradeLimit.ItemId,
+                    updatedGradeLimit.ItemType,
+                    updatedGradeLimit.Id
+                });
+            }
+        }
 
         public void Insert(GradeLimit newGradeLimit)
         {

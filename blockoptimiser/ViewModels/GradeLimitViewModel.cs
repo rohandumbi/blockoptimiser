@@ -79,19 +79,12 @@ namespace blockoptimiser.ViewModels
 
         private void gradeLimit_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //Do stuff with fleet here
-            //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
-            //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
-            //NotifyOfPropertyChange(() => TruckHubPriorities);
-            MessageBox.Show("detected change");
+            GradeLimit UpdatedGradeLimit = (GradeLimit)sender;
+            GradeLimitDAO.Update(UpdatedGradeLimit);
         }
 
         private void gradeLimitYearMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //Do stuff with fleet here
-            //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
-            //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
-            //NotifyOfPropertyChange(() => TruckHubPriorities);
             GradeLimitYearMapping UpdatedGradeLimitYearMappingModel = (GradeLimitYearMapping)sender;
             GradeLimit UpdatedGradeLimitModel = GetGradeLimitById(UpdatedGradeLimitYearMappingModel.GradeLimitId);
             if (UpdatedGradeLimitModel == null)
@@ -123,7 +116,7 @@ namespace blockoptimiser.ViewModels
             this.GradeLimitColumns.Add(
                 new DataGridTextColumn { Header = "Product/Product Join", Binding = new Binding("ItemName") });
             this.GradeLimitColumns.Add(
-                new DataGridTextColumn { Header = "Is Max", Binding = new Binding("IsMax") });
+                new DataGridCheckBoxColumn { Header = "Is Max", Binding = new Binding("IsMax") });
 
             for (int i = 0; i < Scenario.TimePeriod; i++)
             {
