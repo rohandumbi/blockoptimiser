@@ -35,7 +35,10 @@ namespace blockoptimiser.DataAccessClasses
                 String insertQuery = $"insert into ProductJoin (ProjectId, Name, ProductName)" +
                     $" VALUES(@ProjectId, @Name, @ProductName)";
 
-                foreach(String ProductName in newProductJoin.ProductNames)
+                String insertGradeQuery = $"insert into ProductJoinGradeAliasing (ProjectId, ProductJoinName, GradeAliasName, GradeAliasNameIndex)" +
+                    $" VALUES(@ProjectId, @ProductJoinName, @GradeAliasName, @GradeAliasNameIndex)";
+
+                foreach (String ProductName in newProductJoin.ProductNames)
                 {
                     connection.Execute(insertQuery, new
                     {
@@ -44,7 +47,16 @@ namespace blockoptimiser.DataAccessClasses
                         ProductName
                     });
                 }
-                
+                foreach (ProductJoinGradeAliasing gradeAliasing in newProductJoin.ProductJoinGradeAliasings)
+                {
+                    connection.Execute(insertGradeQuery, new
+                    {
+                        gradeAliasing.ProjectId,
+                        gradeAliasing.ProductJoinName,
+                        gradeAliasing.GradeAliasName,
+                        gradeAliasing.GradeAliasNameIndex
+                    });
+                }
 
             }
         }
@@ -54,6 +66,7 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
                 connection.Execute($"delete from ProductJoin where Name = '{ ProductJoinName }'");
+                connection.Execute($"delete from ProductJoinGradeAliasing where Name = '{ ProductJoinName }'");
             }
         }
 

@@ -57,6 +57,17 @@ namespace blockoptimiser.Views
             {
                 NewProductJoin.ProductNames.Add(ChildProductName);
             }
+            List<ProductJoinGradeAliasing> ProductJoinGradeAliasings = new List<ProductJoinGradeAliasing>();
+            for (int i=0; i< gradeListbox.Items.Count; i++)
+            {
+                ProductJoinGradeAliasing NewProductJoinGradeAliasing = new ProductJoinGradeAliasing();
+                NewProductJoinGradeAliasing.ProjectId = Context.ProjectId;
+                NewProductJoinGradeAliasing.ProductJoinName = NewProductJoin.Name;
+                NewProductJoinGradeAliasing.GradeAliasName = gradeListbox.Items[i].ToString();
+                NewProductJoinGradeAliasing.GradeAliasNameIndex = i;
+                ProductJoinGradeAliasings.Add(NewProductJoinGradeAliasing);
+            }
+            NewProductJoin.ProductJoinGradeAliasings = ProductJoinGradeAliasings;
             ProductJoinDAO.Insert(NewProductJoin);
             this.Close();
         }
