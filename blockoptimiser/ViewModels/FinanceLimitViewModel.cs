@@ -102,6 +102,14 @@ namespace blockoptimiser.ViewModels
         private void UpdateCollection()
         {
             OpexList = new BindableCollection<Opex>(OpexDAO.GetAll(Context.ScenarioId));
+            foreach (Opex opexModel in OpexList)
+            {
+                opexModel.PropertyChanged += opexModel_PropertyChanged;
+                foreach (OpexYearMapping costData in opexModel.CostData)
+                {
+                    costData.PropertyChanged += costData_PropertyChanged;
+                }
+            }
             NotifyOfPropertyChange(() => OpexList);
         }
 

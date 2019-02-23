@@ -24,7 +24,7 @@ namespace blockoptimiser.ViewModels
             _eventAggregator.Subscribe(this);
             SetDisabledButtonForegrounds();
             PeriodButtonForeground = "#FF189AD3";
-            IsPeriodSelected = false;
+            IsPeriodSelected = (Context.ScenarioId != -1);
             ActivateItem(new PeriodViewModel(_eventAggregator));
         }
 

@@ -33,12 +33,6 @@ namespace blockoptimiser.ViewModels
             _scenarioDataAccess = new ScenarioDataAccess();
             LoadScenarios();
         }
-        /*public PeriodViewModel()
-        {
-            //_eventAggregator = eventAggregator;
-            _scenarioDataAccess = new ScenarioDataAccess();
-            LoadScenarios();
-        }*/
 
 
         public String ScenarioName

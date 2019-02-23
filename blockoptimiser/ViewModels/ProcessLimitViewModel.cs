@@ -105,6 +105,14 @@ namespace blockoptimiser.ViewModels
         public void UpdateCollection()
         {
             ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetProcessLimits());
+            foreach (ProcessLimit processLimitmodel in ProcessLimits)
+            {
+                processLimitmodel.PropertyChanged += processLimit_PropertyChanged;
+                foreach (ProcessLimitYearMapping processLimitYearMapping in processLimitmodel.ProcessLimitYearMapping)
+                {
+                    processLimitYearMapping.PropertyChanged += processLimitYearMapping_PropertyChanged;
+                }
+            }
             NotifyOfPropertyChange(() => ProcessLimits);
         }
 

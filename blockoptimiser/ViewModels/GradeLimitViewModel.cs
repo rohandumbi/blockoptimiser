@@ -131,6 +131,14 @@ namespace blockoptimiser.ViewModels
         private void UpdateCollection()
         {
             GradeLimits = new BindableCollection<GradeLimit>(GradeLimitDAO.GetGradeLimits());
+            foreach (GradeLimit gradeLimitModel in GradeLimits)
+            {
+                gradeLimitModel.PropertyChanged += gradeLimit_PropertyChanged;
+                foreach (GradeLimitYearMapping gradeLimitYearMapping in gradeLimitModel.GradeLimitYearMapping)
+                {
+                    gradeLimitYearMapping.PropertyChanged += gradeLimitYearMapping_PropertyChanged;
+                }
+            }
             NotifyOfPropertyChange("GradeLimits");
         }
 
