@@ -28,14 +28,31 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void Update(ProcessLimit updatedProcessLimit)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update ProcessLimit set ScenarioId = @ScenarioId, ItemName = @ItemName, ItemId = @ItemId, ItemType = @ItemType, IsUsed = @IsUsed  where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    updatedProcessLimit.ScenarioId,
+                    updatedProcessLimit.ItemName,
+                    updatedProcessLimit.ItemId,
+                    updatedProcessLimit.ItemType,
+                    updatedProcessLimit.IsUsed,
+                    updatedProcessLimit.Id
+                });
+            }
+        }
+
         public void InsertProcessLimit(ProcessLimit newProcessLimit)
         {
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into ProcessLimit (ScenarioId, ItemName, ItemId, ItemType)" +
+                String insertQuery = $"insert into ProcessLimit (ScenarioId, ItemName, ItemId, ItemType, IsUsed)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ScenarioId, @ItemName, @ItemId, @ItemType)";
+                    $" VALUES(@ScenarioId, @ItemName, @ItemId, @ItemType, @IsUsed)";
 
                 String insertMappingQuery = $"insert into ProcessLimitYearMapping (ProcessLimitId, Year, Value)" +
                     $" VALUES(@ProcessLimitId, @Year, @Value)";
@@ -45,7 +62,8 @@ namespace blockoptimiser.DataAccessClasses
                     newProcessLimit.ScenarioId,
                     newProcessLimit.ItemName,
                     newProcessLimit.ItemId,
-                    newProcessLimit.ItemType
+                    newProcessLimit.ItemType,
+                    newProcessLimit.IsUsed
                 });
 
                 foreach (ProcessLimitYearMapping ProcessLimitYearMapping in newProcessLimit.ProcessLimitYearMapping)

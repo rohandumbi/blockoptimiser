@@ -14,12 +14,23 @@ namespace blockoptimiser.Models
         public static byte ITEM_TYPE_PRODUCT_JOIN = 3;
 
         private List<ProcessLimitYearMapping> _processLimitYearMapping;
+        private Boolean _isUsed;
         public event PropertyChangedEventHandler PropertyChanged;
         public int Id { get; set; }
         public int ScenarioId { get; set; }
         public String ItemName { get; set; }
         public int ItemId { get; set; }
         public byte ItemType { get; set; }
+
+        public Boolean IsUsed
+        {
+            get { return _isUsed; }
+            set
+            {
+                _isUsed = value;
+                OnPropertyChanged("IsUsed");
+            }
+        }
 
         public List<ProcessLimitYearMapping> ProcessLimitYearMapping
         {

@@ -117,6 +117,8 @@ namespace blockoptimiser.ViewModels
                 new DataGridTextColumn { Header = "Product/Product Join", Binding = new Binding("ItemName") });
             this.GradeLimitColumns.Add(
                 new DataGridCheckBoxColumn { Header = "Is Max", Binding = new Binding("IsMax") });
+            this.GradeLimitColumns.Add(
+                new DataGridCheckBoxColumn { Header = "Is Used", Binding = new Binding("IsUsed") });
 
             for (int i = 0; i < Scenario.TimePeriod; i++)
             {
@@ -132,7 +134,7 @@ namespace blockoptimiser.ViewModels
             NotifyOfPropertyChange("GradeLimits");
         }
 
-        public void CreateProcessLimit()
+        public void CreateGradeLimit()
         {
             if (SelectedUnit == null)
             {
@@ -146,7 +148,8 @@ namespace blockoptimiser.ViewModels
                 ItemName = SelectedUnit.Name,
                 ItemId = SelectedUnit.UnitId,
                 ItemType = SelectedUnit.UnitType,
-                IsMax = IsMax
+                IsMax = IsMax,
+                IsUsed = true
             };
             List<GradeLimitYearMapping> NewGradeLimitYearMapping = new List<GradeLimitYearMapping>();
             for (int i = 0; i < Scenario.TimePeriod; i++)

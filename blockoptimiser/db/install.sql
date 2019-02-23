@@ -213,6 +213,7 @@ CREATE TABLE ProcessLimit (
    ItemName VARCHAR(50) NOT NULL,
    ItemId INT NOT NULL,
    ItemType INT NOT NULL,
+   IsUsed TINYINT,
    unique (ScenarioId, ItemName, ItemType)
 );
 
@@ -236,6 +237,7 @@ CREATE TABLE GradeLimit (
    ItemName VARCHAR(50) NOT NULL,
    ItemId INT NOT NULL,
    ItemType INT NOT NULL,
+   IsUsed TINYINT,
    unique (ScenarioId, ItemName, ItemType)
 );
 

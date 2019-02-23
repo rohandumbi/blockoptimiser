@@ -108,9 +108,6 @@ namespace blockoptimiser.ViewModels
         private void opexModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //Do stuff with fleet here
-            //TruckHubPriorityModel updatedTruckHubPriorityModel = (TruckHubPriorityModel)sender;
-            //_truckHubPriorityDataAccess.UpdateTruckHubPriority(updatedTruckHubPriorityModel);
-            //NotifyOfPropertyChange(() => TruckHubPriorities);
             Opex UpdatedOpex = (Opex)sender;
             OpexDAO.Update(UpdatedOpex);
         }

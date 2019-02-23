@@ -84,7 +84,8 @@ namespace blockoptimiser.ViewModels
 
         private void processLimit_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            MessageBox.Show("detected change");
+            ProcessLimit UpdatedProcessLimit = (ProcessLimit)sender;
+            ProcessLimitDAO.Update(UpdatedProcessLimit);
         }
 
         private void processLimitYearMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -125,7 +126,9 @@ namespace blockoptimiser.ViewModels
         {
             this.ProcessLimitColumns.Add(
                 new DataGridTextColumn { Header = "Item", Binding = new Binding("ItemName") });
-            
+            this.ProcessLimitColumns.Add(
+                new DataGridCheckBoxColumn { Header = "Is Used", Binding = new Binding("IsUsed") });
+
             for (int i = 0; i < Scenario.TimePeriod; i++)
             {
                 int CurrentYear = Scenario.StartYear + i;
@@ -146,7 +149,8 @@ namespace blockoptimiser.ViewModels
                 ScenarioId = Context.ScenarioId,
                 ItemName = SelectedUnit.Name,
                 ItemId = SelectedUnit.UnitId,
-                ItemType = SelectedUnit.UnitType
+                ItemType = SelectedUnit.UnitType,
+                IsUsed = true
             };
             List<ProcessLimitYearMapping> NewProcessLimitYearMapping = new List<ProcessLimitYearMapping>();
             for (int i = 0; i < Scenario.TimePeriod; i++)

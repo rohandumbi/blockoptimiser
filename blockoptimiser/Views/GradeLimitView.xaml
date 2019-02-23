@@ -44,7 +44,7 @@
                 </ComboBox>
                 <CheckBox Name="IsMax" Content="Is Max" IsChecked="{Binding IsMax}"  CommandParameter="{Binding Id}" Grid.Row="2" Grid.Column="3">
                 </CheckBox>
-                <Button x:Name="CreateProcessLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+                <Button x:Name="CreateGradeLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
             </Grid>
         </GroupBox>
         <DataGrid  Grid.Column="1"
