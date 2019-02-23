@@ -82,6 +82,30 @@ namespace blockoptimiser.ViewModels
                     }
                     Fields.Add(field);
                 }
+
+                foreach (Field field in Fields)
+                {
+                    field.DataTypeUnitItems = new List<UnitItem> {
+                        new UnitItem("groupby", 0, Field.DATA_TYPE_GROUP_BY),
+                        new UnitItem("additive", 0, Field.DATA_TYPE_ADDITIVE),
+                        new UnitItem("grade", 0, Field.DATA_TYPE_GRADE)
+                    };
+
+                    List<UnitItem> AssocitedFieldUnitItems = new List<UnitItem>();
+                    AssocitedFieldUnitItems.Add(new UnitItem("NONE", 0, 0));
+                    foreach (Field associatedField in Fields)
+                    {
+                        AssocitedFieldUnitItems.Add(new UnitItem(associatedField.Name, associatedField.Id, (byte)associatedField.DataType));
+                    }
+                    field.AssocitedFieldUnitItems = AssocitedFieldUnitItems;
+                    field.PropertyChanged += Field_PropertyChanged;
+
+                    Field AssociatedField = GetFieldById(field.AssociatedField);
+                    if (AssociatedField != null)
+                    {
+                        field.AssociatedFieldName = AssociatedField.Name;
+                    }
+                }
                 foreach (var RequiredFieldMapping in RequiredFieldMappings)
                 {
                     RequiredFieldMapping.mappingOptions = CSVFields;
