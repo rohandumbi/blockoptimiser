@@ -133,6 +133,9 @@ CREATE TABLE Product(
    UNIQUE (ProjectId, Name)
 );
 
+IF OBJECT_ID('ProductModelMapping', 'U') IS NOT NULL 
+DROP TABLE ProductModelMapping
+
 CREATE TABLE ProductModelMapping(
    ProductId INT,
    ModelId INT NOT NULL,
