@@ -28,6 +28,14 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public List<String> GetGradeAliasNames(String ProductJoinName, int ProjectId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<String>($"select GradeAliasName from ProductJoinGradeAliasing where ProductJoinName = '{ ProductJoinName }' AND ProjectId = { ProjectId } ").ToList();
+            }
+        }
+
         public void Insert(ProductJoin newProductJoin)
         {
             using (IDbConnection connection = getConnection())

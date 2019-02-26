@@ -40,6 +40,8 @@ namespace blockoptimiser.Models
         public int ItemId { get; set; }
         public byte ItemType { get; set; }
 
+        public String GradeName { get; set; }
+
         public List<GradeLimitYearMapping> GradeLimitYearMapping
         {
             get { return _gradeLimitYearMapping; }

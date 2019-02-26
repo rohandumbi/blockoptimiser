@@ -239,7 +239,8 @@ CREATE TABLE GradeLimit (
    ItemId INT NOT NULL,
    ItemType INT NOT NULL,
    IsUsed TINYINT,
-   unique (ScenarioId, ItemName, ItemType)
+   GradeName VARCHAR(50) NOT NULL,
+   unique (ScenarioId, ItemName, ItemType, GradeName)
 );
 
 IF OBJECT_ID('GradeLimitYearMapping', 'U') IS NOT NULL

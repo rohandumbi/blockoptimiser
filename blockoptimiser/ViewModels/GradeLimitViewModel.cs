@@ -34,6 +34,8 @@ namespace blockoptimiser.ViewModels
         public BindableCollection<GradeLimit> GradeLimits { get; set; }
         public Boolean IsMax { get; set; }
 
+        public String SelectedGradeName { get; set; }
+
 
         public GradeLimitViewModel()
         {
@@ -116,6 +118,8 @@ namespace blockoptimiser.ViewModels
             this.GradeLimitColumns.Add(
                 new DataGridTextColumn { Header = "Product/Product Join", Binding = new Binding("ItemName") });
             this.GradeLimitColumns.Add(
+               new DataGridTextColumn { Header = "Grade", Binding = new Binding("GradeName") });
+            this.GradeLimitColumns.Add(
                 new DataGridCheckBoxColumn { Header = "Is Max", Binding = new Binding("IsMax") });
             this.GradeLimitColumns.Add(
                 new DataGridCheckBoxColumn { Header = "Is Used", Binding = new Binding("IsUsed") });
@@ -149,6 +153,11 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("Please select a valid Item.");
                 return;
             }
+            if (SelectedGradeName == null || SelectedGradeName == "")
+            {
+                MessageBox.Show("Please select a valid Grade.");
+                return;
+            }
             //MessageBox.Show("On the right track");
             GradeLimit newGradeLimitModel = new GradeLimit
             {
@@ -157,6 +166,7 @@ namespace blockoptimiser.ViewModels
                 ItemId = SelectedUnit.UnitId,
                 ItemType = SelectedUnit.UnitType,
                 IsMax = IsMax,
+                GradeName = SelectedGradeName,
                 IsUsed = true
             };
             List<GradeLimitYearMapping> NewGradeLimitYearMapping = new List<GradeLimitYearMapping>();

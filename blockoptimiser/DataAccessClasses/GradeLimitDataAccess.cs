@@ -29,7 +29,7 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String updateQuery = $"update GradeLimit set ScenarioId = @ScenarioId, IsMax = @IsMax, ItemName = @ItemName, ItemId = @ItemId, ItemType = @ItemType, IsUsed = @IsUsed  where Id = @Id ";
+                String updateQuery = $"update GradeLimit set ScenarioId = @ScenarioId, IsMax = @IsMax, ItemName = @ItemName, ItemId = @ItemId, ItemType = @ItemType, IsUsed = @IsUsed, GradeName = @GradeName  where Id = @Id ";
                 connection.Execute(updateQuery, new
                 {
                     updatedGradeLimit.ScenarioId,
@@ -38,7 +38,8 @@ namespace blockoptimiser.DataAccessClasses
                     updatedGradeLimit.ItemId,
                     updatedGradeLimit.ItemType,
                     updatedGradeLimit.IsUsed,
-                    updatedGradeLimit.Id
+                    updatedGradeLimit.Id,
+                    updatedGradeLimit.GradeName
                 });
             }
         }
@@ -48,9 +49,9 @@ namespace blockoptimiser.DataAccessClasses
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into GradeLimit (ScenarioId, IsMax, ItemName, ItemId, ItemType, IsUsed)" +
+                String insertQuery = $"insert into GradeLimit (ScenarioId, IsMax, ItemName, ItemId, ItemType, IsUsed, GradeName)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ScenarioId, @IsMax, @ItemName, @ItemId, @ItemType, @IsUsed)";
+                    $" VALUES(@ScenarioId, @IsMax, @ItemName, @ItemId, @ItemType, @IsUsed, @GradeName)";
 
                 String insertMappingQuery = $"insert into GradeLimitYearMapping (GradeLimitId, Year, Value)" +
                     $" VALUES(@GradeLimitId, @Year, @Value)";
@@ -62,7 +63,8 @@ namespace blockoptimiser.DataAccessClasses
                     newGradeLimit.ItemName,
                     newGradeLimit.ItemId,
                     newGradeLimit.ItemType,
-                    newGradeLimit.IsUsed
+                    newGradeLimit.IsUsed,
+                    newGradeLimit.GradeName
                 });
 
                 foreach (GradeLimitYearMapping GradeLimitYearMapping in newGradeLimit.GradeLimitYearMapping)
