@@ -21,6 +21,7 @@ namespace blockoptimiser.Models
         public int Id { get; set; }
         public int ProjectId { get; set; }
         public String Name { get; set; }
+        public Boolean CheckStatus { get; set; }
         public int DataType {
             get {
                 return _dataType;

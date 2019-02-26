@@ -19,6 +19,7 @@ namespace blockoptimiser.DataAccessClasses
                 foreach (Product product in Products)
                 {
                     product.ProcessIds = connection.Query<int>($"select processId from ProductProcessMapping where productid = { product.Id } ").ToList();
+                    product.GradeNames = connection.Query<String>($"select GradeName from ProductGradeMapping where productid = { product.Id } ").ToList();
                 }
                 return Products;
             }
@@ -43,8 +44,8 @@ namespace blockoptimiser.DataAccessClasses
                 String insertMappingQuery = $"insert into ProductProcessMapping (ProductId, ProcessId) " +
                     $" VALUES(@ProductId, @ProcessId)";
 
-                String insertModelMappingQuery = $"insert into ProductModelMapping (ProductId, ModelId, UnitId, UnitType) " +
-                    $" VALUES(@ProductId, @ModelId, @UnitId, @UnitType)";
+                String insertGradeMappingQuery = $"insert into ProductGradeMapping (ProductId, GradeName) " +
+                    $" VALUES(@ProductId, @GradeName)";
 
                 newProduct.Id = connection.QuerySingle<int>(insertQuery, new
                 {
@@ -61,14 +62,12 @@ namespace blockoptimiser.DataAccessClasses
                     });
                 }
 
-                foreach (ProductModelMapping mapping in newProduct.Mapping)
+                foreach (String GradeName in newProduct.GradeNames)
                 {
-                    connection.Execute(insertModelMappingQuery, new
+                    connection.Execute(insertGradeMappingQuery, new
                     {
                         ProductId = newProduct.Id,
-                        mapping.ModelId,
-                        mapping.Unitid,
-                        mapping.UnitType
+                        GradeName
                     });
                 }
 
@@ -95,12 +94,32 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void InsertGradeMapping(int ProductId, String GradeName)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute("insert into ProductGradeMapping (ProductId, GradeName) VALUES (ProductId, GradeName)", new
+                {
+                    ProductId,
+                    GradeName
+                });
+            }
+        }
+
+        public void DeleteGradeMapping(int ProductId, String GradeName)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute($"delete from ProductGradeMapping where ProductId = { ProductId } AND GradeName = {GradeName} ");
+            }
+        }
+
         public void Delete(int Id)
         {
             using (IDbConnection connection = getConnection())
             {
                 connection.Execute($"delete from ProductProcessMapping where ProductId = { Id }");
-                connection.Execute($"delete from ProductModelMapping where ProductId = { Id }");
+                connection.Execute($"delete from ProductGradeMapping where ProductId = { Id }");
                 connection.Execute($"delete from Product where Id = { Id }");
             }
         }

@@ -133,15 +133,13 @@ CREATE TABLE Product(
    UNIQUE (ProjectId, Name)
 );
 
-IF OBJECT_ID('ProductModelMapping', 'U') IS NOT NULL 
-DROP TABLE ProductModelMapping
+IF OBJECT_ID('ProductGradeMapping', 'U') IS NOT NULL 
+DROP TABLE ProductGradeMapping
 
-CREATE TABLE ProductModelMapping(
+CREATE TABLE ProductGradeMapping(
    ProductId INT,
-   ModelId INT NOT NULL,
-   UnitId INT NOT NULL,
-   UnitType INT NOT NULL,
-   UNIQUE (ProductId, ModelId)
+   GradeName VARCHAR(100),
+   UNIQUE (ProductId, GradeName)
 );
 
 IF OBJECT_ID('ProductProcessMapping', 'U') IS NOT NULL 

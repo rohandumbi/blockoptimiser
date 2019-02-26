@@ -79,39 +79,49 @@ namespace blockoptimiser.Views
             }
 
             BindDropDown();
-            BindAllModels();
+            //BindAllModels();
         }
 
         private void BindDropDown()
         {
             processCombo.ItemsSource = Processes;
-            //fieldsCombo.ItemsSource = UnitItems;
+            gradeCombo.ItemsSource = Fields;
         }
 
-        private void BindAllModels()
-        {
-            ModelMapping.ItemsSource = Models;
-        }
+        //private void BindAllModels()
+        //{
+        //    ModelMapping.ItemsSource = Models;
+        //}
 
         private void Process_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        private void Field_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Grade_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox fieldsCombo = (ComboBox)sender;
-            SelectedUnit = (UnitItem)fieldsCombo.SelectedItem;
+
         }
+
 
         private void Process_TextChanged(object sender, TextChangedEventArgs e)
         {
             processCombo.ItemsSource = Processes.Where(x => x.Name.StartsWith(processCombo.Text.Trim()));
         }
 
+        private void Grade_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            gradeCombo.ItemsSource = Fields.Where(x => x.Name.StartsWith(gradeCombo.Text.Trim()));
+        }
+
         private void AllCheckbocx_CheckedAndUnchecked(object sender, RoutedEventArgs e)
         {
             BindListBOX();
+        }
+
+        private void AllCheckbocx_CheckedAndUnchecked_Grade(object sender, RoutedEventArgs e)
+        {
+            BindListBOXGrade();
         }
 
         private void BindListBOX()
@@ -122,6 +132,17 @@ namespace blockoptimiser.Views
                 if (process.CheckStatus == true)
                 {
                     testListbox.Items.Add(process.Name);
+                }
+            }
+        }
+        private void BindListBOXGrade()
+        {
+            gradeListbox.Items.Clear();
+            foreach (var field in Fields)
+            {
+                if (field.CheckStatus == true)
+                {
+                    gradeListbox.Items.Add(field.Name);
                 }
             }
         }
@@ -149,24 +170,34 @@ namespace blockoptimiser.Views
                 MessageBox.Show("Select a valid PROCESS");
                 return;
             }
+
+            List<String> selectedGradeNames = new List<String>();
+            foreach (Field field in Fields)
+            {
+                if (field.CheckStatus == true)
+                {
+                    selectedGradeNames.Add(field.Name);
+                }
+            }
+            //Process selectedProcess = GetProcessByName(processCombo.Text);
+            if (selectedProcessIds.Count == 0)
+            {
+                MessageBox.Show("Select a valid PROCESS");
+                return;
+            }
+
+            if (selectedGradeNames.Count == 0)
+            {
+                MessageBox.Show("Select a valid Grade");
+                return;
+            }
+
             Product newProduct = new Product();
             newProduct.Name = ProductName;
             newProduct.ProjectId = Context.ProjectId;
             newProduct.ProcessIds = selectedProcessIds;
-            newProduct.Mapping = new List<ProductModelMapping>();
-           
-            foreach (Model model in Models)
-            {
-                if (model.CheckStatus == true)
-                {
-                    newProduct.Mapping.Add(new ProductModelMapping
-                    {
-                        ModelId = model.Id,
-                        Unitid = model.AssociatedUnit.UnitId,
-                        UnitType = model.AssociatedUnit.UnitType
-                    });
-                }
-            }
+            newProduct.GradeNames = selectedGradeNames;
+            
             ProductDAO.Insert(newProduct);
 
             this.Close();
