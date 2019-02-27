@@ -130,17 +130,19 @@ CREATE TABLE Product(
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(100),
-   UNIQUE (ProjectId, Name)
+   UnitId INT,
+   UnitName VARCHAR(100),
+   UNIQUE (ProjectId, Name, UnitId)
 );
 
-IF OBJECT_ID('ProductGradeMapping', 'U') IS NOT NULL 
-DROP TABLE ProductGradeMapping
+--IF OBJECT_ID('ProductGradeMapping', 'U') IS NOT NULL 
+--DROP TABLE ProductGradeMapping
 
-CREATE TABLE ProductGradeMapping(
-   ProductId INT,
-   GradeName VARCHAR(100),
-   UNIQUE (ProductId, GradeName)
-);
+--CREATE TABLE ProductGradeMapping(
+--   ProductId INT,
+--   GradeName VARCHAR(100),
+--   UNIQUE (ProductId, GradeName)
+--);
 
 IF OBJECT_ID('ProductProcessMapping', 'U') IS NOT NULL 
 DROP TABLE ProductProcessMapping

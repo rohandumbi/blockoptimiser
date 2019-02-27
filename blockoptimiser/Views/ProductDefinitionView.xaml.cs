@@ -55,13 +55,16 @@ namespace blockoptimiser.Views
 
             foreach (Field field in Fields)
             {
-                UnitItems.Add(new UnitItem(field.Name, field.Id, Product.UNIT_TYPE_FIELD));
+                if (field.DataType == Field.DATA_TYPE_ADDITIVE)
+                {
+                    UnitItems.Add(new UnitItem(field.Name, field.Id, Product.UNIT_TYPE_FIELD));
+                }
             }
 
-            foreach (Models.Expression expression in Expressions)
-            {
-                UnitItems.Add(new UnitItem(expression.Name, expression.Id, Product.UNIT_TYPE_EXPRESSION));
-            }
+            //foreach (Models.Expression expression in Expressions)
+            //{
+            //    UnitItems.Add(new UnitItem(expression.Name, expression.Id, Product.UNIT_TYPE_EXPRESSION));
+            //}
 
             foreach (Model model in Models)
             {
@@ -85,7 +88,13 @@ namespace blockoptimiser.Views
         private void BindDropDown()
         {
             processCombo.ItemsSource = Processes;
-            gradeCombo.ItemsSource = Fields;
+            fieldsCombo.ItemsSource = UnitItems;
+        }
+
+        private void Field_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox fieldsCombo = (ComboBox)sender;
+            SelectedUnit = (UnitItem)fieldsCombo.SelectedItem;
         }
 
         //private void BindAllModels()
@@ -100,6 +109,7 @@ namespace blockoptimiser.Views
 
         private void Grade_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
 
         }
 
@@ -111,7 +121,7 @@ namespace blockoptimiser.Views
 
         private void Grade_TextChanged(object sender, TextChangedEventArgs e)
         {
-            gradeCombo.ItemsSource = Fields.Where(x => x.Name.StartsWith(gradeCombo.Text.Trim()));
+            //gradeCombo.ItemsSource = Fields.Where(x => x.Name.StartsWith(gradeCombo.Text.Trim()));
         }
 
         private void AllCheckbocx_CheckedAndUnchecked(object sender, RoutedEventArgs e)
@@ -121,7 +131,7 @@ namespace blockoptimiser.Views
 
         private void AllCheckbocx_CheckedAndUnchecked_Grade(object sender, RoutedEventArgs e)
         {
-            BindListBOXGrade();
+            //BindListBOXGrade();
         }
 
         private void BindListBOX()
@@ -135,17 +145,17 @@ namespace blockoptimiser.Views
                 }
             }
         }
-        private void BindListBOXGrade()
-        {
-            gradeListbox.Items.Clear();
-            foreach (var field in Fields)
-            {
-                if (field.CheckStatus == true)
-                {
-                    gradeListbox.Items.Add(field.Name);
-                }
-            }
-        }
+        //private void BindListBOXGrade()
+        //{
+        //    gradeListbox.Items.Clear();
+        //    foreach (var field in Fields)
+        //    {
+        //        if (field.CheckStatus == true)
+        //        {
+        //            gradeListbox.Items.Add(field.Name);
+        //        }
+        //    }
+        //}
 
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -171,14 +181,14 @@ namespace blockoptimiser.Views
                 return;
             }
 
-            List<String> selectedGradeNames = new List<String>();
-            foreach (Field field in Fields)
-            {
-                if (field.CheckStatus == true)
-                {
-                    selectedGradeNames.Add(field.Name);
-                }
-            }
+            //List<String> selectedGradeNames = new List<String>();
+            //foreach (Field field in Fields)
+            //{
+            //    if (field.CheckStatus == true)
+            //    {
+            //        selectedGradeNames.Add(field.Name);
+            //    }
+            //}
             //Process selectedProcess = GetProcessByName(processCombo.Text);
             if (selectedProcessIds.Count == 0)
             {
@@ -186,18 +196,25 @@ namespace blockoptimiser.Views
                 return;
             }
 
-            if (selectedGradeNames.Count == 0)
+            //if (selectedGradeNames.Count == 0)
+            //{
+            //    MessageBox.Show("Select a valid Grade");
+            //    return;
+            //}
+            //SelectedUnit = (UnitItem)gradeCombo.SelectedItem;
+            if (SelectedUnit == null)
             {
-                MessageBox.Show("Select a valid Grade");
-                return;
+                MessageBox.Show("Select a valid Field");
             }
 
             Product newProduct = new Product();
             newProduct.Name = ProductName;
             newProduct.ProjectId = Context.ProjectId;
             newProduct.ProcessIds = selectedProcessIds;
-            newProduct.GradeNames = selectedGradeNames;
-            
+            newProduct.UnitId = SelectedUnit.UnitId;
+            newProduct.UnitName = SelectedUnit.Name;
+            //newProduct.GradeNames = selectedGradeNames;
+
             ProductDAO.Insert(newProduct);
 
             this.Close();

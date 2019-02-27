@@ -35,17 +35,17 @@
         </ComboBox>
         <Label Grid.Row="3">Selected Processes:</Label>
         <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="120"/>
-        <Label Grid.Row="4" Margin="0 10 0 10">Grades:</Label>
-        <ComboBox Grid.Row="4" Grid.Column="1" Margin="0 10 0 10" Width="200" TextBoxBase.TextChanged="Grade_TextChanged" Name="gradeCombo" IsEditable="True" IsTextSearchEnabled="True" 
-                  StaysOpenOnEdit="True" SelectionChanged="Grade_SelectionChanged">
+        <Label Grid.Row="4" Margin="0 10 0 10">Field:</Label>
+        <ComboBox Name="fieldsCombo" ItemsSource="{Binding UnitItems}"  SelectedItem="{Binding Path=SelectedUnit}" SelectedValue="{Binding Path=SelectedUnit}"
+                  Grid.Row="4" Grid.Column="1"  Margin="0 10 0 10" Width="200" SelectionChanged="Field_SelectionChanged">
             <ComboBox.ItemTemplate>
                 <DataTemplate >
-                    <CheckBox Name="chkCountry"  Width="220"  Checked="AllCheckbocx_CheckedAndUnchecked_Grade" Unchecked="AllCheckbocx_CheckedAndUnchecked_Grade" Content="{Binding Name}"  IsChecked="{Binding CheckStatus}"  CommandParameter="{Binding Id}" ></CheckBox>
+                    <Label Content="{Binding Name}"></Label>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Label Grid.Row="5">Selected Grades:</Label>
-        <ListBox Name="gradeListbox" Grid.Row="5" Grid.Column="1" Height="120"/>
+        <!--<Label Grid.Row="5">Selected Grades:</Label>-->
+        <!--<ListBox Name="gradeListbox" Grid.Row="5" Grid.Column="1" Height="120"/>-->
         <!--<Label Grid.Row="4">Model Mapping:</Label>
         <ItemsControl Name="ModelMapping" Grid.Row="5"  Grid.Column="1">
             <ItemsControl.ItemTemplate>

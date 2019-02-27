@@ -44,7 +44,7 @@ namespace blockoptimiser.Views
                 Product SelectedProduct = GetProductById(SelectedItem.UnitId);
                 if (SelectedProduct != null)
                 {
-                    GradeCombo.ItemsSource = SelectedProduct.GradeNames;
+                    GradeCombo.ItemsSource = SelectedProduct.UnitName;
                 }
             } else if (SelectedItem.UnitType == GradeLimit.ITEM_TYPE_PRODUCT_JOIN)
             {

@@ -14,7 +14,8 @@ namespace blockoptimiser.Models
         public int ProjectId { get; set; }
         public String Name { get; set; }
         public List<int> ProcessIds { get; set; }
-        public List<String> GradeNames { get; set; }
+        public int UnitId { get; set; }
+        public String UnitName { get; set; }
         public Boolean CheckStatus { get; set; }
     }
 

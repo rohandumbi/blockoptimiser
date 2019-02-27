@@ -19,7 +19,7 @@ namespace blockoptimiser.DataAccessClasses
                 foreach (Product product in Products)
                 {
                     product.ProcessIds = connection.Query<int>($"select processId from ProductProcessMapping where productid = { product.Id } ").ToList();
-                    product.GradeNames = connection.Query<String>($"select GradeName from ProductGradeMapping where productid = { product.Id } ").ToList();
+                    //product.GradeNames = connection.Query<String>($"select GradeName from ProductGradeMapping where productid = { product.Id } ").ToList();
                 }
                 return Products;
             }
@@ -37,9 +37,9 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into Product (ProjectId, Name)" +
+                String insertQuery = $"insert into Product (ProjectId, Name, UnitId, UnitName)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @Name)";
+                    $" VALUES(@ProjectId, @Name, @UnitId, @UnitName)";
 
                 String insertMappingQuery = $"insert into ProductProcessMapping (ProductId, ProcessId) " +
                     $" VALUES(@ProductId, @ProcessId)";
@@ -50,7 +50,9 @@ namespace blockoptimiser.DataAccessClasses
                 newProduct.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newProduct.ProjectId,
-                    newProduct.Name
+                    newProduct.Name,
+                    newProduct.UnitId,
+                    newProduct.UnitName
                 });
 
                 foreach (int processId in newProduct.ProcessIds)
@@ -62,14 +64,14 @@ namespace blockoptimiser.DataAccessClasses
                     });
                 }
 
-                foreach (String GradeName in newProduct.GradeNames)
-                {
-                    connection.Execute(insertGradeMappingQuery, new
-                    {
-                        ProductId = newProduct.Id,
-                        GradeName
-                    });
-                }
+                //foreach (String GradeName in newProduct.GradeNames)
+                //{
+                //    connection.Execute(insertGradeMappingQuery, new
+                //    {
+                //        ProductId = newProduct.Id,
+                //        GradeName
+                //    });
+                //}
 
             }
         }
