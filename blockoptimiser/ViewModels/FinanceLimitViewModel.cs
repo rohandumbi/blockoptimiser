@@ -38,11 +38,27 @@ namespace blockoptimiser.ViewModels
         public List<UnitItem> FilterTypeUnitItems { get; set; }
         public List<UnitItem> UnitTypeUnitItems { get; set; }
 
-        public UnitItem SelectedCostTypeUnit { get; set; }
+        private UnitItem _selectedCostTypeUnit;
+
+        public UnitItem SelectedCostTypeUnit {
+            get { return _selectedCostTypeUnit; }
+            set {
+                _selectedCostTypeUnit = value;
+                NotifyOfPropertyChange("SelectedCostTypeUnit");
+                SelectedUnitTypeUnit = null;
+                SelectedFilterTypeUnit = null;
+                CostType_SelectionChanged();
+                NotifyOfPropertyChange("SelectedUnitTypeUnit");
+                NotifyOfPropertyChange("SelectedFilterTypeUnit");
+            }
+        }
         public UnitItem SelectedFilterTypeUnit { get; set; }
         public UnitItem SelectedUnitTypeUnit { get; set; }
 
         public Boolean IsUsed { get; set; }
+
+        public Boolean isFilterComboEnabled { get; set; }
+        public Boolean isUnitComboEnabled { get; set; }
 
         public FinanceLimitViewModel()
         {
@@ -180,6 +196,26 @@ namespace blockoptimiser.ViewModels
             }
         }
 
+        private void CostType_SelectionChanged() {
+            int CostType = SelectedCostTypeUnit.UnitType;
+            DisableCombos();
+            if (CostType == Opex.MINING_COST)
+            {
+                isUnitComboEnabled = true;
+            }
+            else if (CostType == Opex.PROCESS_COST)
+            {
+                isFilterComboEnabled = true;
+            }
+            else if (CostType == Opex.REVENUE)
+            {
+                isFilterComboEnabled = true;
+                isUnitComboEnabled = true;
+            }
+            NotifyOfPropertyChange("isFilterComboEnabled");
+            NotifyOfPropertyChange("isUnitComboEnabled");
+        }
+
         private void PopulateUnitTypeUnitItems()
         {
             UnitTypeUnitItems = new List<UnitItem>();
@@ -191,6 +227,14 @@ namespace blockoptimiser.ViewModels
             {
                 UnitTypeUnitItems.Add(new UnitItem(expression.Name, expression.Id, Opex.UNIT_EXPRESSION));
             }
+        }
+
+        private void DisableCombos()
+        {
+            isFilterComboEnabled = false;
+            isUnitComboEnabled = false;
+            NotifyOfPropertyChange("isFilterComboEnabled");
+            NotifyOfPropertyChange("isUnitComboEnabled");
         }
 
         public void CreateOpex()

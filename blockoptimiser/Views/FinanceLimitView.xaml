@@ -36,7 +36,8 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="LabelCostType" Grid.Row="2" Margin="0 0 5 10" Text="Cost"/>
-                <ComboBox x:Name="CostTypeCombo" ItemsSource="{Binding CostTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="2" Margin="0 0 5 10" SelectedItem="{Binding SelectedCostTypeUnit}" >
+                <ComboBox x:Name="CostTypeCombo" ItemsSource="{Binding CostTypeUnitItems}" 
+                          Width="150" Grid.Row="2" Grid.Column="2" Margin="0 0 5 10" SelectedItem="{Binding SelectedCostTypeUnit}" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate >
                             <Label Content="{Binding Name}"></Label>
@@ -44,7 +45,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBlock x:Name="LabelFilterType" Grid.Row="2" Grid.Column="3" Margin="0 0 5 10" Text="Process/Product:"/>
-                <ComboBox x:Name="FilterTypeCombo" ItemsSource="{Binding FilterTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="4" Margin="0 0 5 10" SelectedItem="{Binding SelectedFilterTypeUnit}" >
+                <ComboBox x:Name="FilterTypeCombo" IsEnabled="{Binding isFilterComboEnabled}" ItemsSource="{Binding FilterTypeUnitItems}" Width="150" Grid.Row="2" Grid.Column="4" Margin="0 0 5 10" SelectedItem="{Binding SelectedFilterTypeUnit}" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate >
                             <Label Content="{Binding Name}"></Label>
@@ -52,7 +53,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBlock x:Name="LabelUnit" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Unit:"/>
-                <ComboBox x:Name="UnitCombo" ItemsSource="{Binding UnitTypeUnitItems}"  Width="150" Grid.Row="2" Grid.Column="6" Margin="0 0 5 10" SelectedItem="{Binding SelectedUnitTypeUnit}" >
+                <ComboBox x:Name="UnitCombo" IsEnabled="{Binding isUnitComboEnabled}" ItemsSource="{Binding UnitTypeUnitItems}"  Width="150" Grid.Row="2" Grid.Column="6" Margin="0 0 5 10" SelectedItem="{Binding SelectedUnitTypeUnit}" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate >
                             <Label Content="{Binding Name}"></Label>
