@@ -24,13 +24,17 @@ namespace blockoptimiser.Views
     {
         ProductDataAccess ProductDAO;
         ProductJoinDataAccess ProductJoinDAO;
+        FieldDataAccess FieldDAO;
         List<Product> Products;
         List<ProductJoin> ProductJoins;
+        List<Field> Fields;
         public GradeLimitView()
         {
             ProductDAO = new ProductDataAccess();
             ProductJoinDAO = new ProductJoinDataAccess();
+            FieldDAO = new FieldDataAccess();
             Products = ProductDAO.GetAll(Context.ProjectId);
+            Fields = FieldDAO.GetAll(Context.ProjectId);
             ProductJoins = new List<ProductJoin>();
             InitializeComponent();
         }
@@ -44,12 +48,25 @@ namespace blockoptimiser.Views
                 Product SelectedProduct = GetProductById(SelectedItem.UnitId);
                 if (SelectedProduct != null)
                 {
-                    GradeCombo.ItemsSource = SelectedProduct.UnitName;
+                    GradeCombo.ItemsSource = GetAssociatedGrades(SelectedProduct);
                 }
             } else if (SelectedItem.UnitType == GradeLimit.ITEM_TYPE_PRODUCT_JOIN)
             {
                 GradeCombo.ItemsSource = ProductJoinDAO.GetGradeAliasNames(SelectedItem.Name, Context.ProjectId);
             }
+        }
+
+        private List<String> GetAssociatedGrades (Product selectedProduct)
+        {
+            List<String> associatedGradeNames = new List<string>();
+            foreach (Field field in Fields)
+            {
+                if (field.DataType == Field.DATA_TYPE_GRADE && field.AssociatedField == selectedProduct.UnitId)
+                {
+                    associatedGradeNames.Add(field.Name);
+                }
+            }
+            return associatedGradeNames;
         }
 
         private Product GetProductById(int id)
