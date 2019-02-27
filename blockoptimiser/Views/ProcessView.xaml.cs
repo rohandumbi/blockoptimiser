@@ -19,6 +19,9 @@ using blockoptimiser.Models;
 using blockoptimiser.ViewModels;
 using Caliburn.Micro;
 using System.Dynamic;
+using Microsoft.Msagl.GraphViewerGdi;
+using Point = Microsoft.Msagl.Core.Geometry.Point;
+using System.Collections;
 
 namespace blockoptimiser.Views
 {
@@ -33,7 +36,9 @@ namespace blockoptimiser.Views
         DockPanel ProcessGraphViewerPanel = new DockPanel();
         DockPanel ProductGraphViewerPanel = new DockPanel();
         GraphViewer ProcessGraphViewer = new GraphViewer();
+        //GViewer ProcessGraphViewer = new GViewer();
         GraphViewer ProductGraphViewer = new GraphViewer();
+        //GViewer ProductGraphViewer = new GViewer();
         Graph ProcessGraph = new Graph();
         Graph ProductGraph = new Graph();
 
@@ -48,6 +53,8 @@ namespace blockoptimiser.Views
         List<String> ProductJoinNames;
 
         StackPanel sp1 = new StackPanel();
+        protected Point m_MouseRightButtonDownPoint;
+        protected ArrayList m_NodeTypes = new ArrayList();
 
         IWindowManager WindowManager;
         public ProcessView()
@@ -107,6 +114,28 @@ namespace blockoptimiser.Views
             ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
             ProcessGraphViewer.Graph = ProcessGraph;
 
+            //(ProcessGraphViewer as IViewer).MouseDown += ProcessGraph_MouseDown;
+            //(ProcessGraphViewer as IViewer).MouseUp += ProcessGraph_MouseUp;
+            ContextMenu processGraphContextMenu = new ContextMenu();
+            ProcessGraphViewerPanel.ContextMenu = processGraphContextMenu;
+
+            System.Windows.Controls.MenuItem editMenu = new System.Windows.Controls.MenuItem();
+            editMenu.Header = "Edit";
+            System.Windows.Controls.MenuItem deleteMenu = new System.Windows.Controls.MenuItem();
+            deleteMenu.Header = "Delete";
+            processGraphContextMenu.Items.Add(editMenu);
+            processGraphContextMenu.Items.Add(deleteMenu);
+
+
+            ContextMenu productGraphContextMenu = new ContextMenu();
+            ProductGraphViewerPanel.ContextMenu = productGraphContextMenu;
+
+            System.Windows.Controls.MenuItem editMenu1 = new System.Windows.Controls.MenuItem();
+            editMenu1.Header = "Edit";
+            System.Windows.Controls.MenuItem deleteMenu1 = new System.Windows.Controls.MenuItem();
+            deleteMenu1.Header = "Delete";
+            productGraphContextMenu.Items.Add(editMenu1);
+            productGraphContextMenu.Items.Add(deleteMenu1);
         }
 
         private void AddProductNodesInProductGraph()
