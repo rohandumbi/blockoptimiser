@@ -79,11 +79,11 @@ namespace blockoptimiser.Views
             ProcessGraphViewerPanel.ClipToBounds = true;
             ProductGraphViewerPanel.ClipToBounds = true;
 
-            mainGrid.Children.Add(toolBar);
+            //mainGrid.Children.Add(toolBar);
             //DockPanel.SetDock(toolBar, Dock.Top);
             toolBar.VerticalAlignment = VerticalAlignment.Top;
 
-            SetupToolbar();
+            //SetupToolbar();
 
             mainGrid.Children.Add(ProcessGraphViewerPanel);
             mainGrid.Children.Add(ProductGraphViewerPanel);
@@ -119,21 +119,32 @@ namespace blockoptimiser.Views
             ContextMenu processGraphContextMenu = new ContextMenu();
             ProcessGraphViewerPanel.ContextMenu = processGraphContextMenu;
 
+            System.Windows.Controls.MenuItem addProcessMenu = new System.Windows.Controls.MenuItem();
+            addProcessMenu.Header = "Add Process";
+            addProcessMenu.Click += (s, newevent) => CreateProcess();
+            System.Windows.Controls.MenuItem addProductMenu = new System.Windows.Controls.MenuItem();
+            addProductMenu.Header = "Add Product";
+            addProductMenu.Click += (s, newevent) => CreateProduct();
             System.Windows.Controls.MenuItem editMenu = new System.Windows.Controls.MenuItem();
             editMenu.Header = "Edit";
             System.Windows.Controls.MenuItem deleteMenu = new System.Windows.Controls.MenuItem();
             deleteMenu.Header = "Delete";
+            processGraphContextMenu.Items.Add(addProcessMenu);
+            processGraphContextMenu.Items.Add(addProductMenu);
             processGraphContextMenu.Items.Add(editMenu);
             processGraphContextMenu.Items.Add(deleteMenu);
 
 
             ContextMenu productGraphContextMenu = new ContextMenu();
             ProductGraphViewerPanel.ContextMenu = productGraphContextMenu;
-
+            System.Windows.Controls.MenuItem addProductJoinMenu = new System.Windows.Controls.MenuItem();
+            addProductJoinMenu.Header = "Add Product Join";
+            addProductJoinMenu.Click += (s, newevent) => CreateProductJoin();
             System.Windows.Controls.MenuItem editMenu1 = new System.Windows.Controls.MenuItem();
             editMenu1.Header = "Edit";
             System.Windows.Controls.MenuItem deleteMenu1 = new System.Windows.Controls.MenuItem();
             deleteMenu1.Header = "Delete";
+            productGraphContextMenu.Items.Add(addProductJoinMenu);
             productGraphContextMenu.Items.Add(editMenu1);
             productGraphContextMenu.Items.Add(deleteMenu1);
         }
