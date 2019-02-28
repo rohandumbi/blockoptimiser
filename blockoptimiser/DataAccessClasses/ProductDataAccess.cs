@@ -116,13 +116,14 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public void Delete(int Id)
+        public void Delete(Product product)
         {
             using (IDbConnection connection = getConnection())
             {
-                connection.Execute($"delete from ProductProcessMapping where ProductId = { Id }");
-                connection.Execute($"delete from ProductGradeMapping where ProductId = { Id }");
-                connection.Execute($"delete from Product where Id = { Id }");
+                connection.Execute($"delete from ProductProcessMapping where ProductId = { product.Id }");
+                connection.Execute($"delete from ProductGradeMapping where ProductId = { product.Id }");
+                connection.Execute($"delete from ProductJoin where ProductName = '{ product.Name }'");
+                connection.Execute($"delete from Product where Id = { product.Id }");
             }
         }
     }
