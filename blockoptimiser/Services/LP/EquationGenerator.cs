@@ -63,18 +63,18 @@ namespace blockoptimiser.Services.LP
 
                     foreach(Block block in blocks)
                     {
-                        if(!context.processBlockMapping.ContainsKey(process.ProcessNumber))
+                        if(block.ProcessNos == null)
                         {
-                            context.processBlockMapping.Add(process.ProcessNumber, new List<long>());
+                            block.ProcessNos = new List<int>();
                         }
-                        List<long> blockIds = context.processBlockMapping[process.ProcessNumber];
-                        blockIds.Add(block.Id);
+                        block.ProcessNos.Add(process.ProcessNumber);
                         Decimal minigCost = GetMiningCost(block, context.Year);
                         Decimal processValue = GetProcessValue(block, process, context.Year) - minigCost;
-                        processValue = processValue * (Decimal)F;
+                        
                         if (processValue != 0 )
                         {
-                            if(processValue < 0)
+                            processValue = processValue * (Decimal)F;
+                            if (processValue < 0)
                             {
                                 Write( processValue +" B" + block.Id + "p" + count, sw);
                             } else
@@ -82,8 +82,8 @@ namespace blockoptimiser.Services.LP
                                 Write(" + " + processValue +" B" + block.Id + "p" + count, sw);
                             }
                         }
-                        
-                        Write(" - "+ minigCost + " B" + block.Id + "s" + count, sw);
+                        if(minigCost != 0) 
+                            Write(" - "+ minigCost * (Decimal)F  + " B" + block.Id + "s" + count, sw);
                     }
                 }
                 count++;
@@ -95,7 +95,8 @@ namespace blockoptimiser.Services.LP
                 foreach (Block block in blocks)
                 {
                     Decimal minigCost = GetMiningCost(block, context.Year);
-                    Write(" - " + minigCost + " B" + block.Id + "w" + count, sw);
+                    if (minigCost > 0)
+                        Write(" - " + minigCost * (Decimal)F + " B" + block.Id + "w" + count, sw);
                 }
             }
             
@@ -117,22 +118,22 @@ namespace blockoptimiser.Services.LP
             List<Model> models = context.GetModels();
             foreach(Model model in models)
             {
-                double xinc = 0, yinc = 0, zinc = 0, max_dim = 0;
-                double xm = 0, ym = 0, zm = 0;
+                decimal xinc = 0, yinc = 0, zinc = 0, max_dim = 0;
+                decimal xm = 0, ym = 0, zm = 0;
                 List<ModelDimension> modelDimensions = context.GetModelDimension(model.Id);
                 foreach(ModelDimension dimension in modelDimensions)
                 {
                     if (dimension.Type.Equals("Origin"))
                     {
-                        xm = (double)dimension.XDim;
-                        ym = (double)dimension.YDim;
-                        zm = (double)dimension.ZDim;
+                        xm = dimension.XDim;
+                        ym = dimension.YDim;
+                        zm = dimension.ZDim;
                     }
                     else if (dimension.Type.Equals("Dimensions"))
                     {
-                        xinc = (double)dimension.XDim;
-                        yinc = (double)dimension.YDim;
-                        zinc = (double)dimension.ZDim;
+                        xinc = dimension.XDim;
+                        yinc = dimension.YDim;
+                        zinc = dimension.ZDim;
                         if(xinc > yinc)
                         {
                             max_dim = xinc;
@@ -160,54 +161,75 @@ namespace blockoptimiser.Services.LP
 
                 double max_ira = context.GetIRA(selectstr, model.Id) * Math.PI / 180; ;
 
-                int nbenches = (int)Math.Ceiling(max_dim / (zinc / Math.Tan(max_ira)));
+                int nbenches = (int)Math.Ceiling(max_dim / (zinc / (decimal)Math.Tan(max_ira)));
                 
                 List<Block> blocks = context.GetGeotechBlocks(model.Id);
                 foreach (Block b in blocks)
                 {
-                    double dist = (int)(zinc / Math.Tan(max_ira));
-                    double xorth = Double.Parse((string)b.data["xorth"]);
-                    double yorth = Double.Parse((string)b.data["yorth"]);
+                    decimal dist = zinc / (decimal)Math.Tan(max_ira);
+                    decimal xorth =(decimal) b.data["xortho"];
+                    decimal yorth = (decimal) b.data["yortho"];
                     int imin = (int)((xorth - dist + xinc - xm)/xinc );
                     int imax = (int)((xorth + dist + xinc - xm) / xinc);
-                    int jmin = (int)((yorth + dist + yinc - xm) / yinc);
-                    int jmax = (int)((yorth + dist + yinc - xm) / yinc);
+                    int jmin = (int)((yorth + dist + yinc - ym) / yinc);
+                    int jmax = (int)((yorth + dist + yinc - ym) / yinc);
                     if (imin <= 0) imin = 1;
                     if (jmin <= 0) jmin = 1;
-                    for (int i = imin; i < imax ; i++)
+                    
+                    for (int k = 1; k <= nbenches - 1; k++)
                     {
-                        for (int j = jmin; j < jmax ; j++)
+                        for (int i = imin; i <= imax; i++)
                         {
-                            for(int k = 1; k < nbenches -1; k++)
+                            for(int j = jmin; j <= jmax; j++)
                             {
                                 foreach(var bb in blocks)
                                 {
-                                    if(((int)bb.data["I"] == (int)b.data["I"]+i) 
-                                        && ((int)bb.data["J"] == (int)b.data["J"] + i) 
-                                        && ((int)bb.data["K"] == (int)b.data["K"] + i))
-                                    {                                 
-                                        decimal tonneswt = context.GetTonnesWtForBlock(b);
-                                        decimal tonneswtba = context.GetTonnesWtForBlock(bb);
-                                        var ratio = tonneswt / tonneswtba;
-                                        int processNo = context.GetProcessNo(b);
-                                        if (processNo == -1)
+                                    if(((int)bb.data["i"] >= imin && (int)bb.data["i"] <= imax ) 
+                                        && ((int)bb.data["j"] >= jmin && (int)bb.data["j"] <= jmax)
+                                        && ((int)bb.data["k"] <= (int)b.data["k"] + k - 1))
+                                    {
+                                        Block upperblock = null;
+                                        foreach (var bi in blocks)
                                         {
-                                            Write(" + B" + b.Id + "p" + processNo + " +B" + b.Id + "s1", sw);
+                                            if (((int)bb.data["i"] == (int)bi.data["i"])
+                                                && ((int)bb.data["j"] == (int)bi.data["j"])
+                                                && ((int)bb.data["k"] == (int)bi.data["k"] + 1))
+                                            {
+                                                upperblock = bi;
+                                                break;
+                                            }
+                                        }
+                                        if (upperblock == null) continue;
+                                        decimal tonneswt = context.GetTonnesWtForBlock(bb);
+                                        decimal tonneswtba = context.GetTonnesWtForBlock(upperblock);
+                                        if (tonneswtba == 0) continue;
+                                        decimal ratio = tonneswt / tonneswtba;
+                                        List<int> processNos = bb.ProcessNos;
+                                        if (processNos != null && processNos.Count > 0 )
+                                        {
+                                            foreach(int processNo in processNos)
+                                            {
+                                                Write(" + B" + bb.Id + "p" + processNo + " + B" + bb.Id + "s1", sw);
+                                            }
+                                           
                                         } else
-                                        {
-                                            Write(" + B" + b.Id + "w1", sw);
-                                        }
-                                        processNo = context.GetProcessNo(bb);
-                                        if (processNo == -1)
-                                        {
-                                            Write(" + B" + bb.Id + "p" + processNo + " +B" + bb.Id + "s1", sw);
-                                        }
-                                        else
                                         {
                                             Write(" + B" + bb.Id + "w1", sw);
                                         }
+                                        List<int> ubprocessNos = upperblock.ProcessNos;
+                                        if (ubprocessNos != null && ubprocessNos.Count > 0)
+                                        {
+                                            foreach (int processNo in ubprocessNos)
+                                            {
+                                                Write(" - " + ratio + "B" + upperblock.Id + "p" + processNo + " - " + ratio + "B" + upperblock.Id + "s1", sw);
+                                            }                                           
+                                        }
+                                        else
+                                        {
+                                            Write(" - " + ratio + "B" + upperblock.Id + "w1", sw);
+                                        }
 
-                                        Write(" < 0", sw);
+                                        Write(" <= 0", sw);
                                         Write("", sw);
                                     } 
                                 }
@@ -232,7 +254,7 @@ namespace blockoptimiser.Services.LP
                         List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                         foreach (Block b in blocks)
                         {
-                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " +B" + b.Id + "s1", sw);
+                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                         }
 
                     }
@@ -255,7 +277,7 @@ namespace blockoptimiser.Services.LP
                         List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                         foreach (Block b in blocks)
                         {
-                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " +B" + b.Id + "s1", sw);
+                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                         }
 
                     }
@@ -328,6 +350,8 @@ namespace blockoptimiser.Services.LP
         {
             foreach (Opex opex in context.getOpexList())
             {
+                if (!opex.IsUsed) continue;
+
                 if (opex.CostType == Opex.MINING_COST)
                 {
                     Decimal miningCost = 0;
@@ -339,8 +363,13 @@ namespace blockoptimiser.Services.LP
                             break;
                         }
                     }
-                    Decimal revExprValue = context.GetUnitValueforBlock(b, opex.UnitType, opex.UnitId);
-                    return miningCost * revExprValue;
+                    if( opex.UnitType > 0 )
+                    {
+                        Decimal revExprValue = context.GetUnitValueforBlock(b, opex.UnitType, opex.UnitId);
+                        miningCost = miningCost* revExprValue;
+                    }
+                    
+                    return miningCost;
                 }
             }
             return 0;

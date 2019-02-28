@@ -53,6 +53,7 @@ namespace blockoptimiser.DataAccessClasses
                     sql = sql + ","+ column;
                 }
                 sql = sql + $" from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id ";
+                Console.WriteLine("Sql :>"+ sql);
                 List<object> rows = connection.Query(sql).ToList();
                 foreach (Object row in rows)
                 {

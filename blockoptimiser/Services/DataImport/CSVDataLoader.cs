@@ -80,6 +80,7 @@ namespace blockoptimiser.Services.DataImport
                         row.Bid = long.Parse($"1{Context.ModelId.ToString("D5")}{row.Id}");
                         row.Xortho = cosAngleValue * Decimal.Parse(row.X) - sinAngleValue * Decimal.Parse(row.Y) + xm - cosAngleValue * xm + sinAngleValue * ym;
                         row.Yortho = sinAngleValue * Decimal.Parse(row.X) + cosAngleValue * Decimal.Parse(row.Y) + ym - sinAngleValue * xm - cosAngleValue * ym;
+                        row.Zortho = Decimal.Parse(row.Z);
                         row.I = Decimal.ToInt32((row.Xortho + xinc - xm) / xinc);
                         row.J = Decimal.ToInt32((row.Yortho + yinc - ym) / yinc);
                         row.K = Decimal.ToInt32((row.Zortho + zinc - zm) / zinc);
