@@ -269,7 +269,7 @@ CREATE TABLE Opex (
    UnitId INT,
    UnitName VARCHAR(50),
    IsUsed TINYINT,
-   unique (ScenarioId, CostType, FilterType, FilterName)
+   unique (ScenarioId, CostType, FilterType, FilterName, UnitType, UnitId)
 );
 
 IF OBJECT_ID('OpexYearMapping', 'U') IS NOT NULL
