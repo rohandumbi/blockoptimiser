@@ -119,6 +119,7 @@ namespace blockoptimiser.Views
             ContextMenu processGraphContextMenu = new ContextMenu();
             ProcessGraphViewerPanel.ContextMenu = processGraphContextMenu;
 
+
             System.Windows.Controls.MenuItem addProcessMenu = new System.Windows.Controls.MenuItem();
             addProcessMenu.Header = "Add Process";
             addProcessMenu.Click += (s, newevent) => CreateProcess();
@@ -127,8 +128,10 @@ namespace blockoptimiser.Views
             addProductMenu.Click += (s, newevent) => CreateProduct();
             System.Windows.Controls.MenuItem editMenu = new System.Windows.Controls.MenuItem();
             editMenu.Header = "Edit";
+            editMenu.Click += (s, newevent) => ProcessGraph_EditClick();
             System.Windows.Controls.MenuItem deleteMenu = new System.Windows.Controls.MenuItem();
             deleteMenu.Header = "Delete";
+            deleteMenu.Click += (s, newevent) => ProcessGraph_DeleteClick();
             processGraphContextMenu.Items.Add(addProcessMenu);
             processGraphContextMenu.Items.Add(addProductMenu);
             processGraphContextMenu.Items.Add(editMenu);
@@ -142,12 +145,91 @@ namespace blockoptimiser.Views
             addProductJoinMenu.Click += (s, newevent) => CreateProductJoin();
             System.Windows.Controls.MenuItem editMenu1 = new System.Windows.Controls.MenuItem();
             editMenu1.Header = "Edit";
+            editMenu1.Click += (s, newevent) => ProductGraph_EditClick();
             System.Windows.Controls.MenuItem deleteMenu1 = new System.Windows.Controls.MenuItem();
             deleteMenu1.Header = "Delete";
+            deleteMenu1.Click += (s, newevent) => ProductGraph_DeleteClick();
             productGraphContextMenu.Items.Add(addProductJoinMenu);
             productGraphContextMenu.Items.Add(editMenu1);
             productGraphContextMenu.Items.Add(deleteMenu1);
         }
+
+        private void ProcessGraph_EditClick()
+        {
+            MessageBox.Show("ProcessGraph Edit click");
+        }
+
+        private void ProcessGraph_DeleteClick()
+        {
+            List<Microsoft.Msagl.WpfGraphControl.VNode> nodesToDelete = new List<Microsoft.Msagl.WpfGraphControl.VNode>();
+            foreach (var en in ProcessGraphViewer.Entities)
+            {
+                if (en.MarkedForDragging && en is IViewerNode)
+                { //got a selected node}
+                    Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
+                    nodesToDelete.Add(ViewerNode);
+                }
+            }
+            foreach (var node in nodesToDelete)
+            {
+                if (node.Node.OutEdges.Count() > 0)
+                {
+                    Product product = GetProductByName(node.Node.LabelText);
+                    if (product != null) DeleteProduct(product);
+                }
+                else
+                {
+                    Process process = GetProcessByName(node.Node.LabelText);
+                    if (process != null) DeleteProcess(process);
+                }
+                //ViewerNode.Node.IsVisible = false;
+            }
+        }
+
+        private void ProductGraph_EditClick()
+        {
+            MessageBox.Show("ProductGraph Edit click");
+        }
+
+        private void ProductGraph_DeleteClick()
+        {
+            List<Microsoft.Msagl.WpfGraphControl.VNode> nodesToDelete = new List<Microsoft.Msagl.WpfGraphControl.VNode>();
+            foreach (var en in ProductGraphViewer.Entities)
+            {
+                if (en.MarkedForDragging && en is IViewerNode)
+                { //got a selected node}
+                    Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
+                    nodesToDelete.Add(ViewerNode);
+                }
+            }
+            foreach (var node in nodesToDelete)
+            {
+                if (node.Node.OutEdges.Count() > 0)
+                {
+                    Product product = GetProductByName(node.Node.LabelText);
+                    if (product != null) DeleteProduct(product);
+
+                }
+                else
+                {
+                    DeleteProductJoin(node.Node.LabelText);
+                    Product product = GetProductByName(node.Node.LabelText);
+                    if (product != null) DeleteProduct(product);
+                }
+                //ViewerNode.Node.IsVisible = false;
+                //ProductGraphViewer.RemoveNode(ViewerNode, false);
+            }
+        }
+        //private void ProcessGraph_MouseDown(object sender, EventArgs e)
+        //{
+        //    //GraphViewer viewer = sender as GraphViewer;
+        //    //if (viewer. is Node)
+        //    //{
+        //    //    Node node = viewer.SelectedObject as Node;
+        //    //    //...do works here
+        //    //}
+        //    ProcessGraphViewer.Graph.
+        //}
 
         private void AddProductNodesInProductGraph()
         {
@@ -287,6 +369,75 @@ namespace blockoptimiser.Views
             Processes = ProcessDAO.GetAll(Context.ProjectId);
             Products = ProductDAO.GetAll(Context.ProjectId);
             ProductJoinNames = ProductJoinDAO.GetProductJoins(Context.ProjectId);
+        }
+
+        private void DeleteProcess(Process process)
+        {
+            ProcessDAO.Delete(process.Id);
+             UpdateCollections();
+            ProcessGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+        }
+
+        private void DeleteProduct(Product product)
+        {
+            ProductDAO.Delete(product);
+            UpdateCollections();
+            ProcessGraphViewer.Graph = null;
+            ProductGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            ProductGraph = new Graph();
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+            ProductGraphViewer.Graph = ProductGraph;
+        }
+        private void DeleteProductJoin(String name)
+        {
+            ProductJoinDAO.Delete(name);
+            UpdateCollections();
+            ProductGraphViewer.Graph = null;
+            ProductGraph = new Graph();
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProductGraphViewer.Graph = ProductGraph;
+        }
+
+        private Product GetProductByName (String name)
+        {
+            Product returnedProduct = null;
+            foreach (Product product in Products)
+            {
+                if (product.Name == name)
+                {
+                    returnedProduct = product;
+                    break;
+                }
+            }
+            return returnedProduct;
+        }
+
+        private Process GetProcessByName(String name)
+        {
+            Process returnedProcess = null;
+            foreach (Process process in Processes)
+            {
+                if (process.Name == name)
+                {
+                    returnedProcess = process;
+                    break;
+                }
+            }
+            return returnedProcess;
         }
     }
 }
