@@ -170,6 +170,11 @@ namespace blockoptimiser.Views
                     nodesToDelete.Add(ViewerNode);
                 }
             }
+            if (nodesToDelete.Count < 1)
+            {
+                MessageBox.Show("Select atleast one node to delete.");
+                return;
+            }
             foreach (var node in nodesToDelete)
             {
                 if (node.Node.OutEdges.Count() > 0)
@@ -201,6 +206,11 @@ namespace blockoptimiser.Views
                     Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
                     nodesToDelete.Add(ViewerNode);
                 }
+            }
+            if (nodesToDelete.Count < 1)
+            {
+                MessageBox.Show("Select atleast one node to delete.");
+                return;
             }
             foreach (var node in nodesToDelete)
             {
