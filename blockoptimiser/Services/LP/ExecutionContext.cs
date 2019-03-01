@@ -78,7 +78,36 @@ namespace blockoptimiser.Services.LP
             }
             return null;
         }
-        
+
+        public Product GetProductById(int Id)
+        {
+            foreach (Product product in products)
+            {
+                if (product.Id == Id)
+                {
+                    return product;
+                }
+            }
+            return null;
+        }
+
+        public Product GetProductByName(String name)
+        {
+            foreach (Product product in products)
+            {
+                if (product.Name.Equals(name))
+                {
+                    return product;
+                }
+            }
+            return null;
+        }
+
+        public List<String> GetProductsInProductJoin(String productJoinName)
+        {       
+            return new ProductJoinDataAccess().GetProductsInJoin(productJoinName);
+        }
+
         public List<ProcessLimit> GetProcessLimtis()
         {
             return processLimits;

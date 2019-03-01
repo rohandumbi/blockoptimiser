@@ -19,7 +19,6 @@ namespace blockoptimiser.DataAccessClasses
                 foreach (Product product in Products)
                 {
                     product.ProcessIds = connection.Query<int>($"select processId from ProductProcessMapping where productid = { product.Id } ").ToList();
-                    //product.GradeNames = connection.Query<String>($"select GradeName from ProductGradeMapping where productid = { product.Id } ").ToList();
                 }
                 return Products;
             }

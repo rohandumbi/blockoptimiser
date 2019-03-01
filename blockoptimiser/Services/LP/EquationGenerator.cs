@@ -246,7 +246,9 @@ namespace blockoptimiser.Services.LP
             sw.WriteLine("\\Process Limits");
             foreach(ProcessLimit processLimit in context.GetProcessLimtis())
             {
-                if(processLimit.ItemType == ProcessLimit.ITEM_TYPE_PROCESS)
+                if (!processLimit.IsUsed) continue;
+
+                if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PROCESS)
                 {
                     Process process = context.GetProcessById(processLimit.ItemId);
                     foreach(var mapping in process.Mapping)
@@ -258,8 +260,55 @@ namespace blockoptimiser.Services.LP
                         }
 
                     }
-                    Write(" < 0 ", sw);
+                    Write(" <= 0 ", sw);
                     Write("", sw);
+                }
+                else if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PRODUCT)
+                {
+                    Product product = context.GetProductById(processLimit.ItemId);
+                    if (product == null) continue;
+                    foreach(int processId in product.ProcessIds)
+                    {
+                        Process process = context.GetProcessById(processId);
+                        foreach (var mapping in process.Mapping)
+                        {
+                            List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
+                            foreach (Block b in blocks)
+                            {
+                                //context.GetUnitValueforBlock(b, product.);
+                                Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                            }
+
+                        }
+                        Write(" <= 0 ", sw);
+                        Write("", sw);
+                    }
+                    
+                    
+                }
+                else if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PRODUCT_JOIN)
+                {
+                    List<String> productNames = context.GetProductsInProductJoin(processLimit.ItemName);
+                    foreach (String productName in productNames)
+                    {
+                        Product product = context.GetProductByName(productName);
+                        if (product == null) continue;
+                        foreach (int processId in product.ProcessIds)
+                        {
+                            Process process = context.GetProcessById(processId);
+                            foreach (var mapping in process.Mapping)
+                            {
+                                List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
+                                foreach (Block b in blocks)
+                                {
+                                    Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                }
+
+                            }
+                            Write(" <= 0 ", sw);
+                            Write("", sw);
+                        }
+                    }                    
                 }
             }
         }
@@ -269,6 +318,7 @@ namespace blockoptimiser.Services.LP
             sw.WriteLine("\\ Grade Limits");
             foreach (GradeLimit gradeLimit in context.GetGradeLimtis())
             {
+                if (!gradeLimit.IsUsed) continue;
                 if (gradeLimit.ItemType == GradeLimit.ITEM_TYPE_PROCESS)
                 {
                     Process process = context.GetProcessById(gradeLimit.ItemId);
