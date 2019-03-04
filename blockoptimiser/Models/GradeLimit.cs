@@ -9,9 +9,8 @@ namespace blockoptimiser.Models
 {
     public class GradeLimit : INotifyPropertyChanged
     {
-        public static byte ITEM_TYPE_PROCESS = 1;
-        public static byte ITEM_TYPE_PRODUCT = 2;
-        public static byte ITEM_TYPE_PRODUCT_JOIN = 3;
+        public static byte ITEM_TYPE_PRODUCT = 1;
+        public static byte ITEM_TYPE_PRODUCT_JOIN = 2;
 
         private List<GradeLimitYearMapping> _gradeLimitYearMapping;
         private Boolean _isMax;

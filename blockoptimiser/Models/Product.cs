@@ -15,15 +15,8 @@ namespace blockoptimiser.Models
         public String Name { get; set; }
         public List<int> ProcessIds { get; set; }
         public int UnitId { get; set; }
+        public byte UnitType { get; set; }
         public String UnitName { get; set; }
         public Boolean CheckStatus { get; set; }
-    }
-
-    public class ProductModelMapping
-    {
-        public int ProductId { get; set; }
-        public int ModelId { get; set; }
-        public int Unitid { get; set; }
-        public int UnitType { get; set; }
     }
 }
