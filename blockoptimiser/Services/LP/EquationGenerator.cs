@@ -275,8 +275,10 @@ namespace blockoptimiser.Services.LP
                             List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                             foreach (Block b in blocks)
                             {
-                                //context.GetUnitValueforBlock(b, product.);
-                                Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
+                                Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+
+                                Write(" + "+ (value /tonnesWt)+ " B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                             }
 
                         }
@@ -298,10 +300,13 @@ namespace blockoptimiser.Services.LP
                             Process process = context.GetProcessById(processId);
                             foreach (var mapping in process.Mapping)
                             {
+                                
                                 List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                                 foreach (Block b in blocks)
                                 {
-                                    Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                    Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
+                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                    Write(" + " + (value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                                 }
 
                             }
@@ -341,7 +346,7 @@ namespace blockoptimiser.Services.LP
                             List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                             foreach (Block b in blocks)
                             {
-                                Decimal processRatio = context.GetUnitValueforBlock(b, product.UnitType, product.UnitId);
+                                Decimal processRatio = context.GetFieldValueforBlock(b, product.UnitName);
                                 Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
                                 Decimal coeff = processRatio * (targetGrade * blockGrade);
                                 if (coeff < 0 )
