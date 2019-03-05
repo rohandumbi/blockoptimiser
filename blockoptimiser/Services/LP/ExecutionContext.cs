@@ -253,6 +253,15 @@ namespace blockoptimiser.Services.LP
             return 0;
         }
 
+        public Decimal GetFieldValueforBlock(Block b, String fieldName)
+        {
+            String value = (String)b.data[fieldName];
+            if (value != null)
+            {
+                return Decimal.Parse(value);
+            }
+            return 0;
+        }
         public Decimal GetTonnesWtForBlock(Block b)
         {
             String tonnesColumnName = requiredFields["tonnage"];

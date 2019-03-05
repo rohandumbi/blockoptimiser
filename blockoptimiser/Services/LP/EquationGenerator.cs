@@ -275,8 +275,10 @@ namespace blockoptimiser.Services.LP
                             List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                             foreach (Block b in blocks)
                             {
-                                //context.GetUnitValueforBlock(b, product.);
-                                Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
+                                Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+
+                                Write(" + "+ (value /tonnesWt)+ " B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                             }
 
                         }
@@ -298,10 +300,13 @@ namespace blockoptimiser.Services.LP
                             Process process = context.GetProcessById(processId);
                             foreach (var mapping in process.Mapping)
                             {
+                                
                                 List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                                 foreach (Block b in blocks)
                                 {
-                                    Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                    Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
+                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                    Write(" + " + (value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                                 }
 
                             }
@@ -319,19 +324,93 @@ namespace blockoptimiser.Services.LP
             foreach (GradeLimit gradeLimit in context.GetGradeLimtis())
             {
                 if (!gradeLimit.IsUsed) continue;
-                if (gradeLimit.ItemType == GradeLimit.ITEM_TYPE_PROCESS)
+                Decimal targetGrade = 0;
+                foreach(var mapping in gradeLimit.GradeLimitYearMapping)
                 {
-                    Process process = context.GetProcessById(gradeLimit.ItemId);
-                    foreach (var mapping in process.Mapping)
+                    if(mapping.Year == context.Year)
                     {
-                        List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
-                        foreach (Block b in blocks)
-                        {
-                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
-                        }
-
+                        targetGrade = mapping.Value;
+                        break;
                     }
-                    Write(" < 0 ", sw);
+                }
+                if (gradeLimit.ItemType == GradeLimit.ITEM_TYPE_PRODUCT)
+                {
+                    Product product = context.GetProductByName(gradeLimit.ItemName);
+                    if (product == null) continue;
+                    
+                    foreach(int processId in product.ProcessIds)
+                    {
+                        Process process = context.GetProcessById(processId);
+                        foreach (var mapping in process.Mapping)
+                        {
+                            List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
+                            foreach (Block b in blocks)
+                            {
+                                Decimal processRatio = context.GetFieldValueforBlock(b, product.UnitName);
+                                Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
+                                Decimal coeff = processRatio * (targetGrade * blockGrade);
+                                if (coeff < 0 )
+                                {
+                                    Write(" "+coeff+"B" + b.Id + "p" + process.ProcessNumber +  " "+coeff+ "B" + b.Id + "s1", sw);
+                                } else
+                                {
+                                    Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber + " +" + coeff + "B" + b.Id + "s1", sw);
+                                }
+                                
+                            }
+
+                        }
+                    }
+                    if(gradeLimit.IsMax)
+                    {
+                        Write(" <= 0 ", sw);                        
+                    } else
+                    {
+                        Write(" >= 0 ", sw);
+                    }
+                    Write("", sw);
+                }
+                else if (gradeLimit.ItemType == GradeLimit.ITEM_TYPE_PRODUCT_JOIN)
+                {
+                    List<String> productNames = context.GetProductsInProductJoin(gradeLimit.ItemName);
+                    foreach(String productName in productNames)
+                    {
+                        Product product = context.GetProductByName(productName);
+                        if (product == null) continue;
+
+                        foreach (int processId in product.ProcessIds)
+                        {
+                            Process process = context.GetProcessById(processId);
+                            foreach (var mapping in process.Mapping)
+                            {
+                                List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
+                                foreach (Block b in blocks)
+                                {
+                                    Decimal processRatio = context.GetUnitValueforBlock(b, product.UnitType, product.UnitId);
+                                    Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
+                                    Decimal coeff = processRatio * (targetGrade * blockGrade);
+                                    if (coeff < 0)
+                                    {
+                                        Write(" " + coeff + "B" + b.Id + "p" + process.ProcessNumber + " " + coeff + "B" + b.Id + "s1", sw);
+                                    }
+                                    else
+                                    {
+                                        Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber + " +" + coeff + "B" + b.Id + "s1", sw);
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                    if (gradeLimit.IsMax)
+                    {
+                        Write(" <= 0 ", sw);
+                    }
+                    else
+                    {
+                        Write(" >= 0 ", sw);
+                    }
                     Write("", sw);
                 }
             }
