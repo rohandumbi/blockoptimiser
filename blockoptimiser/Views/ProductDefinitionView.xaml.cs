@@ -205,6 +205,7 @@ namespace blockoptimiser.Views
             if (SelectedUnit == null)
             {
                 MessageBox.Show("Select a valid Field");
+                return;
             }
 
             Product newProduct = new Product();
