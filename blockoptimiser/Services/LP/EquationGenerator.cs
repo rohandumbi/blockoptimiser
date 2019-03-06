@@ -57,7 +57,7 @@ namespace blockoptimiser.Services.LP
                     } else
                     {
                         String condition = modelProcessFilterMap[mapping.ModelId] + " AND not(" + mapping.FilterString + ") ";
-                        modelProcessFilterMap.Add(mapping.ModelId, condition);
+                        modelProcessFilterMap[mapping.ModelId] = condition;
                     }
                     List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
 

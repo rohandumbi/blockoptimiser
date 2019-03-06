@@ -17,7 +17,7 @@ CREATE TABLE Model (
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    Name VARCHAR(50) NOT NULL,
-   Bearing DECIMAL(18,10) NOT NULL,
+   Bearing DECIMAL(18,10),
    HasData BIT,
    UNIQUE (ProjectId, Name)
 );
