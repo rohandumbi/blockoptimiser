@@ -17,14 +17,14 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
                 List<Block> blocks = new List<Block>();
-                 List<object> rows = connection.Query($"select a.* , b.bid as bid from " +
+                 List<object> rows = connection.Query($"select a.* , b.* from " +
                      $"BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition } ").ToList();
                 foreach(Object row in rows)
                 {
                     IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
                     Block block = new Block
                     {
-                        Id = (long)rowDictionary["bid"],
+                        Id = (long)rowDictionary["Bid"],
                         data = rowDictionary
                     };
                     blocks.Add(block);

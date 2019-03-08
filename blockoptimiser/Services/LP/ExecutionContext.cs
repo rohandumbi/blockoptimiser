@@ -243,15 +243,7 @@ namespace blockoptimiser.Services.LP
                     if (expression.Id == unitId)
                     {
 
-                        String value = (String)b.data[expression.Name];
-                        if (value == null)
-                        {
-                            return 0;
-                        }
-                        else
-                        {
-                            return Decimal.Parse(value);
-                        }
+                        return (Decimal)b.data[expression.Name];                      
                     }
                 }
             }
