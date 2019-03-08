@@ -27,7 +27,7 @@ namespace blockoptimiser.Services.LP
         private List<ProcessLimit> processLimits;
         private List<GradeLimit> gradeLimits;
         private Dictionary<String, String> requiredFields;
-
+        private Dictionary<long, List<int>> blockProcessMapping;
 
         public ExecutionContext(int ProjectId, int ScenarioId, int DiscountFactor)
         {
@@ -36,6 +36,7 @@ namespace blockoptimiser.Services.LP
             this.DiscountFactor = DiscountFactor/100;
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
+            blockProcessMapping = new Dictionary<long, List<int>>();
             requiredFields = new Dictionary<string, string>();
             foreach(RequiredFieldMapping mapping in requiredFieldMappings)
             {
@@ -117,6 +118,10 @@ namespace blockoptimiser.Services.LP
         {
             return gradeLimits;
         }
+
+        public Dictionary<long, List<int>> GetBlockProcessMapping() {
+            return blockProcessMapping;
+        }
         public String GetColumnNameById(int fieldId, int modelId)
         {
             List<CsvColumnMapping> mappings = new CsvColumnMappingDataAccess().GetAll(modelId);
@@ -156,9 +161,9 @@ namespace blockoptimiser.Services.LP
             return new BlockDataAccess().GetBlocks(ProjectId, modelId, condition);
         }
 
-        public List<Block> GetGeotechBlocks(int modelId)
+        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetGeotechBlocks(int modelId)
         {
-            return new BlockDataAccess().GetBlocksByFields(ProjectId, modelId, new List<String> { requiredFields["tonnage"] });
+            return new BlockDataAccess().GetGeotechBlocks(ProjectId, modelId, new List<String> { requiredFields["tonnage"] });
         }
 
         public List<Opex> getOpexList()

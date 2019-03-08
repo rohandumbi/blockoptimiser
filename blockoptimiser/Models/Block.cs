@@ -10,6 +10,5 @@ namespace blockoptimiser.Models
     {
         public long Id { get; set; }
         public IDictionary<string, object> data { get; set; }
-        public List<int> ProcessNos;
     }
 }

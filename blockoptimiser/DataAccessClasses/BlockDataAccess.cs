@@ -42,17 +42,18 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public List<Block> GetBlocksByFields(int ProjectId, int ModelId, List<String> columns)
+        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetGeotechBlocks(int ProjectId, int ModelId, List<String> columns)
         {
+            
             using (IDbConnection connection = getConnection())
             {
-                List<Block> blocks = new List<Block>();
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Block>>>();
                 String sql = $"select bid, i, j, k,xortho, yortho, zortho " ;
                 foreach(String column in columns)
                 {
                     sql = sql + ","+ column;
                 }
-                sql = sql + $" from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id ";
+                sql = sql + $" from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id order by i,j,k asc ";
                 Console.WriteLine("Sql :>"+ sql);
                 List<object> rows = connection.Query(sql).ToList();
                 foreach (Object row in rows)
@@ -63,7 +64,33 @@ namespace blockoptimiser.DataAccessClasses
                         Id = (long)rowDictionary["bid"],
                         data = rowDictionary
                     };
-                    blocks.Add(block);
+                    int i = (int)rowDictionary["i"];
+                    int j = (int)rowDictionary["j"];
+                    int k = (int)rowDictionary["k"];
+                    if(!blocks.ContainsKey(i))
+                    {
+                        Dictionary<int, Block> zblocks = new Dictionary<int, Block>();
+                        Dictionary<int, Dictionary<int, Block>> yblocks = new Dictionary<int, Dictionary<int, Block>>();
+                        zblocks.Add(k, block);
+                        yblocks.Add(j, zblocks);
+                        blocks.Add(i, yblocks);
+                    } else
+                    {
+                        Dictionary<int, Dictionary<int, Block>> yblocks = blocks[i];
+                        if(!yblocks.ContainsKey(j))
+                        {
+                            Dictionary<int, Block> zblocks = new Dictionary<int, Block>();
+                            zblocks.Add(k, block);
+                            yblocks.Add(j, zblocks);
+                        } else
+                        {
+                            Dictionary<int, Block> zblocks = yblocks[j];
+                            if (!zblocks.ContainsKey(k))
+                            {
+                                zblocks.Add(k, block);
+                            }
+                        }
+                    }
 
                 }
                 return blocks;
