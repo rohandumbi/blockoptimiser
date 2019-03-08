@@ -68,14 +68,17 @@ namespace blockoptimiser.DataAccessClasses
                     // Update computed data as well. this is not a good place but I need to find a better place
                     try
                     {
-                        if (String.IsNullOrEmpty(ModelMapping.ExprString))
+                        String exprString = ModelMapping.ExprString;
+                        if (String.IsNullOrEmpty(exprString))
                         {
-                            ModelMapping.ExprString = "0";
+                            exprString = "0";
+                        } else
+                        {
+                            exprString = ConvertToSQLCompatible(newExpression.ProjectId, ModelMapping.ModelId, exprString);
                         }
-                        connection.Execute($"ALTER TABLE BOData_Computed_{ newExpression.ProjectId }_{ ModelMapping.ModelId }" +
-                       $" ADD { newExpression.Name } DECIMAL(18,10) ");
+                        connection.Execute($"ALTER TABLE BOData_Computed_{ newExpression.ProjectId }_{ ModelMapping.ModelId } ADD { newExpression.Name } DECIMAL(18,10) ");
                         String updateQuery = $" update BOData_Computed_{ newExpression.ProjectId }_{ ModelMapping.ModelId }" +
-                             $" set { newExpression.Name } = ( select ISNULL( {ModelMapping.ExprString} , 0) from BOData_{ newExpression.ProjectId }_{ ModelMapping.ModelId } a " +
+                             $" set { newExpression.Name } = ( select ISNULL( { exprString } , 0) from BOData_{ newExpression.ProjectId }_{ ModelMapping.ModelId } a " +
                              $"where a.Id = BOData_Computed_{ newExpression.ProjectId }_{ ModelMapping.ModelId }.Id )";
                         connection.Execute(updateQuery);
                     }
@@ -137,13 +140,19 @@ namespace blockoptimiser.DataAccessClasses
                 });
                 try
                 {
-                    if (String.IsNullOrEmpty(updatedMapping.ExprString))
-                    {
-                        updatedMapping.ExprString = "0";
-                    }
                     Expression expression = this.Get(updatedMapping.ExprId);
+                    String exprString = updatedMapping.ExprString;
+                    if (String.IsNullOrEmpty(exprString))
+                    {
+                        exprString = "0";
+                    }
+                    else
+                    {
+                        exprString = ConvertToSQLCompatible(expression.ProjectId, updatedMapping.ModelId, exprString);
+                    }
+
                     String sql = $" update BOData_Computed_{ expression.ProjectId }_{ updatedMapping.ModelId }" +
-                        $" set { expression.Name } = ( select ISNULL( {updatedMapping.ExprString} , 0) from BOData_{ expression.ProjectId }_{ updatedMapping.ModelId } a " +
+                        $" set { expression.Name } = ( select ISNULL( { exprString } , 0) from BOData_{ expression.ProjectId }_{ updatedMapping.ModelId } a " +
                         $"where a.Id = BOData_Computed_{ expression.ProjectId }_{ updatedMapping.ModelId }.Id )";
                     connection.Execute(sql);
                 }
@@ -176,16 +185,24 @@ namespace blockoptimiser.DataAccessClasses
                         {
                             ModelMapping.ExprString = "0";
                         }
-                        connection.Execute($"ALTER TABLE BOData_Computed_{ expression.ProjectId }_{ ModelMapping.ModelId }" +
-                       $" ADD { expression.Name } DECIMAL(18,10) ");
+                        connection.Execute($"ALTER TABLE BOData_Computed_{ expression.ProjectId }_{ ModelMapping.ModelId } ADD { expression.Name } DECIMAL(18,10) ");
                         
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
                     }
+                    String exprString = ModelMapping.ExprString;
+                    if (String.IsNullOrEmpty(exprString))
+                    {
+                        exprString = "0";
+                    }
+                    else
+                    {
+                        exprString = ConvertToSQLCompatible(expression.ProjectId, ModelMapping.ModelId, exprString);
+                    }
                     String updateQuery = $" update BOData_Computed_{ expression.ProjectId }_{ ModelMapping.ModelId }" +
-                        $" set { expression.Name } = ( select ISNULL( {ModelMapping.ExprString} , 0) from BOData_{ expression.ProjectId }_{ ModelMapping.ModelId } a " +
+                        $" set { expression.Name } = ( select ISNULL( { exprString } , 0) from BOData_{ expression.ProjectId }_{ ModelMapping.ModelId } a " +
                         $"where a.Id = BOData_Computed_{ expression.ProjectId }_{ ModelMapping.ModelId }.Id )";
                     connection.Execute(updateQuery);
                 }
@@ -211,6 +228,16 @@ namespace blockoptimiser.DataAccessClasses
                 connection.Execute(deleteMappingQuery);
                 connection.Execute(deleteQuery);
             }
+        }
+
+        private String ConvertToSQLCompatible(int projectId, int ModelId, String str)
+        {
+            List<Field> fields = new FieldDataAccess().GetAll(projectId);
+            foreach(Field field in fields)
+            {
+                str = str.Replace(field.Name, "cast(" + field.Name + " as decimal)");
+            }
+            return str;
         }
     }
 }
