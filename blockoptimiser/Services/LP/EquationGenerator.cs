@@ -83,7 +83,7 @@ namespace blockoptimiser.Services.LP
                             }
                         }
                         if(minigCost != 0) 
-                            Write(" - "+ minigCost * (Decimal)F  + " B" + block.Id + "s" + count, sw);
+                            Write(" - "+ minigCost * (Decimal)F  + " B" + block.Id + "s1", sw);
                     }
                 }
                 count++;
@@ -96,7 +96,7 @@ namespace blockoptimiser.Services.LP
                 {
                     Decimal minigCost = GetMiningCost(block, context.Year);
                     if (minigCost > 0)
-                        Write(" - " + minigCost * (Decimal)F + " B" + block.Id + "w" + count, sw);
+                        Write(" - " + minigCost * (Decimal)F + " B" + block.Id + "w1", sw);
                 }
             }
             
@@ -248,6 +248,16 @@ namespace blockoptimiser.Services.LP
             {
                 if (!processLimit.IsUsed) continue;
 
+                Decimal processLimitValue = 0;
+                foreach (var mapping in processLimit.ProcessLimitYearMapping)
+                {
+                    if (mapping.Year == context.Year)
+                    {
+                        processLimitValue = mapping.Value;
+                        break;
+                    }
+                }
+
                 if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PROCESS)
                 {
                     Process process = context.GetProcessById(processLimit.ItemId);
@@ -260,8 +270,6 @@ namespace blockoptimiser.Services.LP
                         }
 
                     }
-                    Write(" <= 0 ", sw);
-                    Write("", sw);
                 }
                 else if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PRODUCT)
                 {
@@ -282,11 +290,7 @@ namespace blockoptimiser.Services.LP
                             }
 
                         }
-                        Write(" <= 0 ", sw);
-                        Write("", sw);
-                    }
-                    
-                    
+                    }                                    
                 }
                 else if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PRODUCT_JOIN)
                 {
@@ -310,11 +314,12 @@ namespace blockoptimiser.Services.LP
                                 }
 
                             }
-                            Write(" <= 0 ", sw);
-                            Write("", sw);
+                           
                         }
-                    }                    
+                    }
                 }
+                Write(" <=  "+processLimitValue, sw);
+                Write("", sw);
             }
         }
 
