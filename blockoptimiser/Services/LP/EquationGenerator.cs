@@ -105,6 +105,8 @@ namespace blockoptimiser.Services.LP
         {
             WriteGeotechConstraints(sw);
             Write("", sw);
+            WriteReserveConstraints(sw);
+            Write("", sw);
             WriteProcessLimitConstraints(sw);
             Write("", sw);
             WriteGradeLimitConstraints(sw);
@@ -167,7 +169,6 @@ namespace blockoptimiser.Services.LP
                 {
                     foreach (int jj in blocks[ii].Keys)
                     {
-                        Dictionary<int, Block> blockList = blocks[ii][jj];
                         foreach (int kk in blocks[ii][jj].Keys)
                         {
                             Block b = blocks[ii][jj][kk];
@@ -239,6 +240,48 @@ namespace blockoptimiser.Services.LP
 
             }
 
+        }
+
+        private void WriteReserveConstraints(StreamWriter sw)
+        {
+            sw.WriteLine("\\Reserve Constraints");
+            List<Model> models = context.GetModels();
+            foreach (Model model in models)
+            {
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetGeotechBlocks(model.Id);
+                foreach (int ii in blocks.Keys)
+                {
+                    foreach (int jj in blocks[ii].Keys)
+                    {
+                        foreach (int kk in blocks[ii][jj].Keys)
+                        {
+                            Block block = blocks[ii][jj][kk];
+                            decimal tonneswt = context.GetTonnesWtForBlock(block);
+                            if (context.GetBlockProcessMapping().ContainsKey(block.Id))
+                            {
+                                List<int> processNos = context.GetBlockProcessMapping()[block.Id];
+                                String eqn = "";
+                                foreach (int processNo in processNos)
+                                {
+                                    Write("B" + block.Id + "p" + processNo + " >= 0", sw);
+                                    Write("", sw);
+                                    Write("B" + block.Id + "s1 >= 0", sw);
+                                    Write("", sw);
+                                    eqn = eqn + " + B" + block.Id + "p" + processNo + " + B" + block.Id + "s1";
+                                }
+                                Write(eqn + " <= " + tonneswt, sw);
+                                Write("", sw);
+                            } else
+                            {
+                                Write("B" + block.Id + "w1 >= 0 ", sw);
+                                Write("", sw);
+                                Write("B" + block.Id + "w1 <= "+tonneswt, sw);
+                                Write("", sw);
+                            }
+                        }
+                    }
+                }
+            }
         }
         private void WriteProcessLimitConstraints(StreamWriter sw)
         {
