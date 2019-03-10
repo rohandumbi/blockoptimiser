@@ -32,7 +32,17 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                return connection.Query<String>($"select GradeAliasName from ProductJoinGradeAliasing where ProductJoinName = '{ ProductJoinName }' AND ProjectId = { ProjectId } ").ToList();
+                return connection.Query<String>($"select GradeAliasName from ProductJoinGradeAliasing " +
+                    $"where ProductJoinName = '{ ProductJoinName }' AND ProjectId = { ProjectId } order by GradeAliasNameIndex asc").ToList();
+            }
+        }
+
+        public List<ProductJoinGradeAliasing> GetGradeAliases(String ProductJoinName, int ProjectId)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                return connection.Query<ProductJoinGradeAliasing>($"select * from ProductJoinGradeAliasing " +
+                    $"where ProductJoinName = '{ ProductJoinName }' AND ProjectId = { ProjectId } order by GradeAliasNameIndex asc").ToList();
             }
         }
 

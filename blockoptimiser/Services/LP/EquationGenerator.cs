@@ -393,16 +393,20 @@ namespace blockoptimiser.Services.LP
                             List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                             foreach (Block b in blocks)
                             {
-                                Decimal processRatio = context.GetFieldValueforBlock(b, product.UnitName);
+                                Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                Decimal processRatio = 0;
+                                if (tonnesWt > 0)
+                                    processRatio = context.GetFieldValueforBlock(b, product.UnitName) / tonnesWt;
+
                                 Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
-                                Decimal coeff = processRatio * (targetGrade * blockGrade);
+                                Decimal coeff = processRatio * (targetGrade - blockGrade);
                                 coeff = RoundOff(coeff);
                                 if (coeff < 0 )
                                 {
-                                    Write(" "+coeff+"B" + b.Id + "p" + process.ProcessNumber +  " "+coeff+ "B" + b.Id + "s1", sw);
+                                    Write(" "+coeff+"B" + b.Id + "p" + process.ProcessNumber , sw);
                                 } else
                                 {
-                                    Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber + " +" + coeff + "B" + b.Id + "s1", sw);
+                                    Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
                                 }
                                 
                             }
@@ -421,10 +425,25 @@ namespace blockoptimiser.Services.LP
                 else if (gradeLimit.ItemType == GradeLimit.ITEM_TYPE_PRODUCT_JOIN)
                 {
                     List<String> productNames = context.GetProductsInProductJoin(gradeLimit.ItemName);
+                    List<ProductJoinGradeAliasing> gradeAlises = context.GetGradeAlisesByProductJoinName(gradeLimit.ItemName);
+                    int gradeIndex = -1;
+                    foreach(var gradeAlias in gradeAlises)
+                    {
+                        if (gradeAlias.GradeAliasName.Equals(gradeLimit.GradeName))
+                        {
+                            gradeIndex = gradeAlias.GradeAliasNameIndex;
+                            break;
+                        }
+                    }
+                    if (gradeIndex == -1) continue;
+
                     foreach(String productName in productNames)
                     {
                         Product product = context.GetProductByName(productName);
                         if (product == null) continue;
+                        List<String> gradeNames = context.GetGradeFieldsByAssociatedFieldName(product.UnitName);
+                        if (gradeNames.Count == 0 || gradeNames.Count < gradeIndex) continue;
+                        String gradeName = gradeNames.ElementAt(gradeIndex-1);
 
                         foreach (int processId in product.ProcessIds)
                         {
@@ -434,17 +453,20 @@ namespace blockoptimiser.Services.LP
                                 List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                                 foreach (Block b in blocks)
                                 {
-                                    Decimal processRatio = context.GetUnitValueforBlock(b, product.UnitType, product.UnitId);
-                                    Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
-                                    Decimal coeff = processRatio * (targetGrade * blockGrade);
+                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                    Decimal processRatio = 0;
+                                    if (tonnesWt > 0)
+                                        processRatio = context.GetFieldValueforBlock(b, product.UnitName) / tonnesWt;
+                                    Decimal blockGrade = context.GetFieldValueforBlock(b, gradeName);
+                                    Decimal coeff = processRatio * (targetGrade - blockGrade);
                                     coeff = RoundOff(coeff);
                                     if (coeff < 0)
                                     {
-                                        Write(" " + coeff + "B" + b.Id + "p" + process.ProcessNumber + " " + coeff + "B" + b.Id + "s1", sw);
+                                        Write(" " + coeff + "B" + b.Id + "p" + process.ProcessNumber , sw);
                                     }
                                     else
                                     {
-                                        Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber + " +" + coeff + "B" + b.Id + "s1", sw);
+                                        Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
                                     }
 
                                 }

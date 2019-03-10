@@ -22,7 +22,6 @@ namespace blockoptimiser.Services.LP
         private List<Process> processes;
         private List<Product> products;
         private List<String> processJoins;
-        private List<String> productJoins;
         private List<Opex> opexList;
         private List<ProcessLimit> processLimits;
         private List<GradeLimit> gradeLimits;
@@ -53,7 +52,6 @@ namespace blockoptimiser.Services.LP
             processes = new ProcessDataAccess().GetAll(ProjectId);
             products = new ProductDataAccess().GetAll(ProjectId);
             processJoins = new ProcessJoinDataAccess().GetProcessJoins(ProjectId);
-            productJoins = new ProductJoinDataAccess().GetProductJoins(ProjectId);
             opexList = new OpexDataAccess().GetAll(ScenarioId);
             processLimits = new ProcessLimitDataAccess().GetProcessLimits();
             gradeLimits = new GradeLimitDataAccess().GetGradeLimits();
@@ -80,6 +78,28 @@ namespace blockoptimiser.Services.LP
             return null;
         }
 
+        public List<String> GetGradeFieldsByAssociatedFieldName(String AssociatedFieldName)
+        {
+            List<String> gradeFieldNames = new List<string>();
+            int AssociatedFieldId = -1;
+            foreach(Field f in fields)
+            {
+                if(f.DataType == Field.DATA_TYPE_ADDITIVE && f.Name.Equals(AssociatedFieldName))
+                {
+                    AssociatedFieldId = f.Id;
+                    break;
+                }
+            }
+            foreach (Field f in fields)
+            {
+                if (f.DataType == Field.DATA_TYPE_GRADE && f.AssociatedField == AssociatedFieldId)
+                {
+                    gradeFieldNames.Add(f.Name);
+                }
+            }
+            return gradeFieldNames;
+        }
+
         public Product GetProductById(int Id)
         {
             foreach (Product product in products)
@@ -102,6 +122,11 @@ namespace blockoptimiser.Services.LP
                 }
             }
             return null;
+        }
+
+        public List<ProductJoinGradeAliasing> GetGradeAlisesByProductJoinName(String Name)
+        {          
+            return new ProductJoinDataAccess().GetGradeAliases(Name, this.ProjectId);
         }
 
         public List<String> GetProductsInProductJoin(String productJoinName)
@@ -170,8 +195,6 @@ namespace blockoptimiser.Services.LP
         {
             return opexList;
         }
-
-
 
         public Boolean IsProductJoinAssociatedToProcess(String productJoinName, int processId)
         {
