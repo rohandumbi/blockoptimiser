@@ -179,10 +179,16 @@ namespace blockoptimiser.ViewModels
                 NewGradeLimitYearMapping.Add(TempModel);
             }
             newGradeLimitModel.GradeLimitYearMapping = NewGradeLimitYearMapping;
-
-            GradeLimitDAO.Insert(newGradeLimitModel);
-            GradeLimits.Add(newGradeLimitModel);
-            UpdateCollection();
+            try
+            {
+                GradeLimitDAO.Insert(newGradeLimitModel);
+                GradeLimits.Add(newGradeLimitModel);
+                UpdateCollection();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
     }
 }

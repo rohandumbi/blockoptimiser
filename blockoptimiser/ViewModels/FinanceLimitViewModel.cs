@@ -272,10 +272,16 @@ namespace blockoptimiser.ViewModels
                 NewOpexYearMapping.Add(TempModel);
             }
             newOpex.CostData = NewOpexYearMapping;
-
-            OpexDAO.Insert(newOpex);
-            OpexList.Add(newOpex);
-            UpdateCollection();
+            try
+            {
+                OpexDAO.Insert(newOpex);
+                OpexList.Add(newOpex);
+                UpdateCollection();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
     }
 }
