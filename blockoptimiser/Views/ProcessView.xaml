@@ -24,11 +24,11 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name = "ButtonPanel" Grid.Row="1" Grid.Column="0">
+        <!--<StackPanel x:Name = "ButtonPanel" Grid.Row="1" Grid.Column="0">
             <Button x:Name="AddProcess" Content = "Add Process" Width = "100" Height = "40" Margin = "10" />
             <Button x:Name="AddProduct" Content = "Add Product" Width = "100" Height = "40" Margin = "10" />
             <Button x:Name="AddProductJoin" Content = "Add Product Join" Width = "100" Height = "40" Margin = "10" />
-        </StackPanel>
+        </StackPanel>-->
         <StackPanel x:Name = "GraphContainer" Grid.Row="1" Grid.Column="1" Background="White" Width="450" Margin="10"></StackPanel>
     </Grid>
 </UserControl>
