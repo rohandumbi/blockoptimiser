@@ -308,7 +308,7 @@ namespace blockoptimiser.Services.LP
                         List<Block> blocks = context.GetBlocks(mapping.ModelId, mapping.FilterString);
                         foreach (Block b in blocks)
                         {
-                            Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                            Write(" + B" + b.Id + "p" + process.ProcessNumber , sw);
                         }
 
                     }
@@ -328,7 +328,7 @@ namespace blockoptimiser.Services.LP
                                 Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
                                 Decimal tonnesWt = context.GetTonnesWtForBlock(b);
 
-                                Write(" + "+ RoundOff(value /tonnesWt)+ " B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                Write(" + "+ RoundOff(value /tonnesWt)+ " B" + b.Id + "p" + process.ProcessNumber, sw);
                             }
 
                         }
@@ -352,7 +352,7 @@ namespace blockoptimiser.Services.LP
                                 {
                                     Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
                                     Decimal tonnesWt = context.GetTonnesWtForBlock(b);
-                                    Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                    Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber, sw);
                                 }
 
                             }
