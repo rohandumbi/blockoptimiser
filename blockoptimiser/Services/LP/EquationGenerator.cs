@@ -163,7 +163,7 @@ namespace blockoptimiser.Services.LP
                 double max_ira = context.GetIRA(selectstr, model.Id) * Math.PI / 180; ;
 
                 int nbenches = (int)Math.Ceiling(max_dim / (zinc / (decimal)Math.Tan(max_ira)));
-
+                
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetGeotechBlocks(model.Id);
                 foreach (int ii in blocks.Keys)
                 {
@@ -171,49 +171,49 @@ namespace blockoptimiser.Services.LP
                     {
                         foreach (int kk in blocks[ii][jj].Keys)
                         {
-                            Block b = blocks[ii][jj][kk];
 
-                            decimal dist = zinc / (decimal)Math.Tan(max_ira);
+                            Block b = blocks[ii][jj][kk];
                             decimal xorth = (decimal)b.data["xortho"];
                             decimal yorth = (decimal)b.data["yortho"];
-                            int imin = (int)((xorth - dist + xinc - xm) / xinc);
-                            int imax = (int)((xorth + dist + xinc - xm) / xinc);
-                            int jmin = (int)((yorth + dist + yinc - ym) / yinc);
-                            int jmax = (int)((yorth + dist + yinc - ym) / yinc);
-                            if (imin <= 0) imin = 1;
-                            if (jmin <= 0) jmin = 1;
-                            //Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
+                            decimal tonneswt = context.GetTonnesWtForBlock(b);
 
-                            for (int i = imin; i <= imax; i++)
+
+                            for (int k = 1; k <= nbenches - 1; k++)
                             {
-                                for (int j = jmin; j <= jmax; j++)
+                                decimal dist = k* zinc / (decimal)Math.Tan(max_ira);
+                                int imin = (int)((xorth - dist + xinc - xm) / xinc);
+                                int imax = (int)((xorth + dist + xinc - xm) / xinc);
+                                int jmin = (int)((yorth - dist + yinc - ym) / yinc);
+                                int jmax = (int)((yorth + dist + yinc - ym) / yinc);
+                                if (imin <= 0) imin = 1;
+                                if (jmin <= 0) jmin = 1;
+                                Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
+                                for (int i = imin; i <= imax; i++)
                                 {
-                                    for (int k = kk; k <= kk + nbenches - 1; k++)
+                                    for (int j = jmin; j <= jmax; j++)
                                     {
-                                        if(!blocks.ContainsKey(i) || !blocks[i].ContainsKey(j) || !blocks[i][j].ContainsKey(k) || !blocks[i][j].ContainsKey(k+1))
+                                        if(!blocks.ContainsKey(i) || !blocks[i].ContainsKey(j) || !blocks[i][j].ContainsKey(kk+ k))
                                         {
                                             continue;
                                         }
-                                        Block lb = blocks[i][j][k];
                                         Block ub = blocks[i][j][k + 1];
-                                        //Console.WriteLine("Block :" + lb.Id + " UpperBlock:" + ub.Id);
-                                        decimal lbtonneswt = context.GetTonnesWtForBlock(lb);
+                                        
                                         decimal ubtonneswt = context.GetTonnesWtForBlock(ub);
                                         if (ubtonneswt == 0) continue;
-                                        decimal ratio = lbtonneswt / ubtonneswt;
+                                        decimal ratio = tonneswt / ubtonneswt;
                                         ratio = RoundOff(ratio);
-                                        if (context.GetBlockProcessMapping().ContainsKey(lb.Id))
+                                        if (context.GetBlockProcessMapping().ContainsKey(b.Id))
                                         {
-                                            List<int> processNos = context.GetBlockProcessMapping()[lb.Id];
+                                            List<int> processNos = context.GetBlockProcessMapping()[b.Id];
                                             foreach (int processNo in processNos)
                                             {
-                                                Write(" + B" + lb.Id + "p" + processNo + " + B" + lb.Id + "s1", sw);
+                                                Write(" + B" + b.Id + "p" + processNo + " + B" + b.Id + "s1", sw);
                                             }
 
                                         }
                                         else
                                         {
-                                            Write(" + B" + lb.Id + "w1", sw);
+                                            Write(" + B" + b.Id + "w1", sw);
                                         }
                                         if (context.GetBlockProcessMapping().ContainsKey(ub.Id))
                                         {
