@@ -285,6 +285,7 @@ namespace blockoptimiser.ViewModels
             if (String.IsNullOrEmpty(_inputFileName))
             {
                 MessageBox.Show("Please select a file!");
+                return false;
             }
 
             return true;

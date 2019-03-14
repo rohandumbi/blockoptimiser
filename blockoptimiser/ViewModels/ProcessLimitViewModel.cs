@@ -170,9 +170,16 @@ namespace blockoptimiser.ViewModels
                 NewProcessLimitYearMapping.Add(TempModel);
             }
             newProcessLimitModel.ProcessLimitYearMapping = NewProcessLimitYearMapping;
-            ProcessLimitDAO.InsertProcessLimit(newProcessLimitModel);
-            ProcessLimits.Add(newProcessLimitModel);
-            UpdateCollection();
+            try
+            {
+                ProcessLimitDAO.InsertProcessLimit(newProcessLimitModel);
+                ProcessLimits.Add(newProcessLimitModel);
+                UpdateCollection();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
     }
 }
