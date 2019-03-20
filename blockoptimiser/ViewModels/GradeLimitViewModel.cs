@@ -18,6 +18,7 @@ namespace blockoptimiser.ViewModels
     {
         private GradeLimitDataAccess GradeLimitDAO;
         private ScenarioDataAccess ScenarioDAO;
+        private FieldDataAccess FieldDAO;
         private Scenario Scenario;
 
         public UnitItem SelectedUnit { get; set; }
@@ -29,6 +30,8 @@ namespace blockoptimiser.ViewModels
 
         public List<Product> Products;
         public List<String> ProductJoins;
+        private List<Field> Fields;
+
 
         public BindableCollection<ProcessLimit> ProcessLimits { get; set; }
         public BindableCollection<GradeLimit> GradeLimits { get; set; }
@@ -75,6 +78,9 @@ namespace blockoptimiser.ViewModels
                 UnitItems.Add(new UnitItem(productJoin, 0, GradeLimit.ITEM_TYPE_PRODUCT_JOIN));
             }
 
+            FieldDAO = new FieldDataAccess();
+            Fields = FieldDAO.GetAll(Context.ProjectId);
+
             this.GradeLimitColumns = new ObservableCollection<DataGridColumn>();
             this.GenerateDefaultColumns();
         }
@@ -82,7 +88,71 @@ namespace blockoptimiser.ViewModels
         private void gradeLimit_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             GradeLimit UpdatedGradeLimit = (GradeLimit)sender;
+            if (e.PropertyName == "GradeName")
+            {
+                if (!isValidGradeUpdate(UpdatedGradeLimit))
+                {
+                    MessageBox.Show("Invalid grade selected");
+                    return;
+                }
+            }
             GradeLimitDAO.Update(UpdatedGradeLimit);
+        }
+
+        private Boolean isValidGradeUpdate(GradeLimit UpdatedGradeLimit)
+        {
+            Boolean isValidUpdate = false;
+            if (UpdatedGradeLimit.ItemType == GradeLimit.ITEM_TYPE_PRODUCT)
+            {
+                Product product = GetProductById(UpdatedGradeLimit.ItemId);
+                List<String> AssociatedGrades = GetAssociatedGrades(product);
+                foreach (String AssociatedGradeName in AssociatedGrades)
+                {
+                    if (AssociatedGradeName == UpdatedGradeLimit.GradeName)
+                    {
+                        isValidUpdate = true;
+                    }
+                }
+                
+            } else if (UpdatedGradeLimit.ItemType == GradeLimit.ITEM_TYPE_PRODUCT_JOIN)
+            {
+                List<String> AssociatedGradeAliases = ProductJoinDAO.GetGradeAliasNames(UpdatedGradeLimit.ItemName, Context.ProjectId);
+                foreach (String AliasName in AssociatedGradeAliases)
+                {
+                    if (AliasName == UpdatedGradeLimit.GradeName)
+                    {
+                        isValidUpdate = true;
+                    }
+                }
+            }
+            return isValidUpdate;
+        }
+
+        private List<String> GetAssociatedGrades(Product selectedProduct)
+        {
+            List<String> associatedGradeNames = new List<string>();
+            foreach (Field field in Fields)
+            {
+                if (field.DataType == Field.DATA_TYPE_GRADE && field.AssociatedField == selectedProduct.UnitId)
+                {
+                    associatedGradeNames.Add(field.Name);
+                }
+            }
+            return associatedGradeNames;
+        }
+
+        private Product GetProductById(int id)
+        {
+            Product returnedProduct = null;
+            foreach (Product product in Products)
+            {
+                if (product.Id == id)
+                {
+                    returnedProduct = product;
+                    break;
+                }
+            }
+            return returnedProduct;
         }
 
         private void gradeLimitYearMapping_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -118,7 +188,8 @@ namespace blockoptimiser.ViewModels
             this.GradeLimitColumns.Add(
                 new DataGridTextColumn { Header = "Product/Product Join", Binding = new Binding("ItemName") });
             this.GradeLimitColumns.Add(
-               new DataGridTextColumn { Header = "Grade", Binding = new Binding("GradeName") });
+              new DataGridTextColumn { Header = "Grade", Binding = new Binding("GradeName") });
+            //this.GradeLimitColumns.Add(new DataGridComboBoxColumn { Header = "Grade", ItemsSource = "" });
             this.GradeLimitColumns.Add(
                 new DataGridCheckBoxColumn { Header = "Is Max", Binding = new Binding("IsMax") });
             this.GradeLimitColumns.Add(
