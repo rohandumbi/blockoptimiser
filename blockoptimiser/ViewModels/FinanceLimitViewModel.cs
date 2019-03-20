@@ -133,7 +133,32 @@ namespace blockoptimiser.ViewModels
         {
             //Do stuff with fleet here
             Opex UpdatedOpex = (Opex)sender;
+            if (e.PropertyName == "FilterName")
+            {
+                if (!isValidFilter(UpdatedOpex))
+                {
+                    MessageBox.Show("Process/Product update invalid");
+                }
+            } else if (e.PropertyName == "UnitName")
+            {
+                if (!isValidUnit(UpdatedOpex))
+                {
+                    MessageBox.Show("Expression update invalid");
+                }
+            }
             OpexDAO.Update(UpdatedOpex);
+        }
+
+        private Boolean isValidFilter(Opex UpdatedOpex)
+        {
+            Boolean isValid = false;
+            return isValid;
+        }
+
+        private Boolean isValidUnit(Opex UpdatedOpex)
+        {
+            Boolean isValid = false;
+            return isValid;
         }
 
         private Opex GetOpexById(int id)
