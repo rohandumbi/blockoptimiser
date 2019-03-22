@@ -186,7 +186,7 @@ namespace blockoptimiser.ViewModels
         private void GenerateDefaultColumns()
         {
             this.GradeLimitColumns.Add(
-                new DataGridTextColumn { Header = "Product/Product Join", Binding = new Binding("ItemName") });
+                new DataGridTextColumn { Header = "Product/Product Join", Binding = new Binding("ItemName"), IsReadOnly = true });
             this.GradeLimitColumns.Add(
               new DataGridTextColumn { Header = "Grade", Binding = new Binding("GradeName") });
             //this.GradeLimitColumns.Add(new DataGridComboBoxColumn { Header = "Grade", ItemsSource = "" });

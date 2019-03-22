@@ -133,7 +133,7 @@ namespace blockoptimiser.ViewModels
         private void GenerateDefaultColumns()
         {
             this.ProcessLimitColumns.Add(
-                new DataGridTextColumn { Header = "Item", Binding = new Binding("ItemName") });
+                new DataGridTextColumn { Header = "Item", Binding = new Binding("ItemName"), IsReadOnly = true });
             this.ProcessLimitColumns.Add(
                 new DataGridCheckBoxColumn { Header = "Is Used", Binding = new Binding("IsUsed") });
 
