@@ -84,7 +84,7 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
                 connection.Execute($"delete from ProductJoin where Name = '{ ProductJoinName }'");
-                connection.Execute($"delete from ProductJoinGradeAliasing where Name = '{ ProductJoinName }'");
+                connection.Execute($"delete from ProductJoinGradeAliasing where ProductJoinName = '{ ProductJoinName }'");
             }
         }
 

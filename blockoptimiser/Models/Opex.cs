@@ -23,15 +23,29 @@ namespace blockoptimiser.Models
 
         private List<OpexYearMapping> _costData;
         private Boolean _isUsed;
+        private String _filterName;
+        private String _unitName;
         public int Id { get; set; }
         public int ScenarioId { get; set; }
         public byte CostType { get; set; }
         public String CostName { get; set; }
         public byte FilterType { get; set; }
-        public String FilterName { get; set; }
+        public String FilterName {
+            get { return _filterName; }
+            set {
+                _filterName = value;
+                OnPropertyChanged("FilterName");
+            }
+        }
         public Byte UnitType { get; set; }
         public int UnitId { get; set; }
-        public String UnitName { get; set; }
+        public String UnitName {
+            get { return _unitName; }
+            set {
+                _unitName = value;
+                OnPropertyChanged("UnitName");
+            }
+        }
         public Boolean IsUsed {
             get { return _isUsed; }
             set
