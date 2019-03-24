@@ -196,6 +196,9 @@
     <Compile Include="Views\ProcessDefinitionView.xaml.cs">
       <DependentUpon>ProcessDefinitionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProcessEditView.xaml.cs">
+      <DependentUpon>ProcessEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProcessLimitView.xaml.cs">
       <DependentUpon>ProcessLimitView.xaml</DependentUpon>
     </Compile>
@@ -269,6 +272,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProcessEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

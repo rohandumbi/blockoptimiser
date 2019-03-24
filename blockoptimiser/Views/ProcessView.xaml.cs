@@ -199,7 +199,15 @@ namespace blockoptimiser.Views
 
         private void EditProcess(Process process)
         {
-            MessageBox.Show("Edit Process");
+            ProcessEditView processEditView = new ProcessEditView(process);
+            processEditView.ShowDialog();
+            UpdateCollections();
+            ProcessGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
         }
 
         private void EditProductJoin(String productJoin)
