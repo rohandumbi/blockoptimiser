@@ -194,7 +194,21 @@ namespace blockoptimiser.Views
 
         private void EditProduct(Product product)
         {
-            MessageBox.Show("Edit Product");
+            ProductEditView productEditView = new ProductEditView(product);
+            productEditView.ShowDialog();
+            UpdateCollections();
+            ProcessGraphViewer.Graph = null;
+            ProductGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            ProductGraph = new Graph();
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+            ProductGraphViewer.Graph = ProductGraph;
         }
 
         private void EditProcess(Process process)

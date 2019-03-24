@@ -75,6 +75,38 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public void UpdateUnit(Product UpdatedProduct)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                String updateQuery = $"update Product set UnitId = @UnitId, UnitName = @UnitName where Id = @Id ";
+                connection.Execute(updateQuery, new
+                {
+                    UpdatedProduct.UnitId,
+                    UpdatedProduct.UnitName,
+                    UpdatedProduct.Id
+                });
+            }
+        }
+
+        public void UpdateProcessMapping(Product UpdatedProduct)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute($"delete from ProductProcessMapping where ProductId = { UpdatedProduct.Id }");
+                String insertMappingQuery = $"insert into ProductProcessMapping (ProductId, ProcessId) " +
+                    $" VALUES(@ProductId, @ProcessId)";
+                foreach (int processId in UpdatedProduct.ProcessIds)
+                {
+                    connection.Execute(insertMappingQuery, new
+                    {
+                        ProductId = UpdatedProduct.Id,
+                        processId
+                    });
+                }
+            }
+        }
+
         public void InsertProcessMapping(int ProductId, int ProcessId)
         {
             using (IDbConnection connection = getConnection())
