@@ -208,6 +208,9 @@
     <Compile Include="Views\ProductJoinDefinitionView.xaml.cs">
       <DependentUpon>ProductJoinDefinitionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProductJoinEditView.xaml.cs">
+      <DependentUpon>ProductJoinEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProjectsView.xaml.cs">
       <DependentUpon>ProjectsView.xaml</DependentUpon>
     </Compile>
@@ -282,6 +285,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProductJoinDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductJoinEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

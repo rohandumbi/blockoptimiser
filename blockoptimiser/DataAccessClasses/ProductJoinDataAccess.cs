@@ -46,6 +46,7 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+
         public void Insert(ProductJoin newProductJoin)
         {
             using (IDbConnection connection = getConnection())
