@@ -1,0 +1,47 @@
+﻿<Window x:Class="blockoptimiser.Views.ProductJoinEditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:blockoptimiser.Views"
+        mc:Ignorable="d"
+        Title="ProductJoinEditView" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label>Name:</Label>
+        <TextBox x:Name="Name" Width="200" Grid.Column="1" Margin="0,0,0,10" IsReadOnly="true"/>
+        <Label Grid.Row="1">Products:</Label>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" Width="200" TextBoxBase.TextChanged="Product_TextChanged" Name="productCombo" IsEditable="True" IsTextSearchEnabled="True" 
+                  StaysOpenOnEdit="True" SelectionChanged="Product_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate >
+                    <CheckBox Name="chkCountry"  Width="220"  Checked="AllCheckbocx_CheckedAndUnchecked" Unchecked="AllCheckbocx_CheckedAndUnchecked" Content="{Binding Name}"  IsChecked="{Binding CheckStatus}"  CommandParameter="{Binding Id}" ></CheckBox>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Grid.Row="3">Selected Products:</Label>
+        <ListBox Name="productListbox" Grid.Row="3" Grid.Column="1" Height="100"/>
+        <Label Grid.Row="4">Associated Grades:</Label>
+        <TextBox x:Name="GradeAliasName" Width="200" Grid.Row="4" Grid.Column="1" Margin="0,5,0,10" />
+        <Button x:Name="AddGradeAlias" Click="button_grade_Click"  Grid.Row="4" Grid.Column="2" Content="Add Grade"  Width="100" Margin="10,5,0,10" ></Button>
+        <ListBox Name="gradeListbox" Grid.Row="5" Grid.Column="1" Height="100"/>
+        <Button x:Name="RemoveGradeAlias" Click="button_grade_remove_Click"  Grid.Row="5" Grid.Column="2" Content="Remove Grade"  Height="20" Width="100" Margin="10,5,0,10" ></Button>
+        <Button x:Name="AddProduct" Click="button_Click"  Grid.Row="6" Content="Submit"></Button>
+    </Grid>
+</Window>

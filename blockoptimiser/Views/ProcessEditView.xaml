@@ -1,0 +1,39 @@
+﻿<Window x:Class="blockoptimiser.Views.ProcessEditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:blockoptimiser.Views"
+        mc:Ignorable="d"
+        Title="ProcessEditView" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label>Name:</Label>
+        <TextBox x:Name="Name" Grid.Column="1" Margin="0 0 10 0" IsReadOnly="true"/>
+        <Label Grid.Row="1" Content="Model Mappings:"></Label>
+        <ItemsControl Name="ModelMapping" Grid.Row="2"  Grid.Column="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"  Margin="10 0 5 10">
+                        <CheckBox Name="UseModel" IsChecked="{Binding CheckStatus}"  CommandParameter="{Binding Id}" >
+                        </CheckBox>
+                        <TextBlock Text="{Binding Name}" Margin="10 0 5 10"/>
+                        <TextBox Text="{Binding FilterString}" Width="250px"></TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="3" Grid.Column="0" Content="Submit"></Button>
+    </Grid>
+</Window>

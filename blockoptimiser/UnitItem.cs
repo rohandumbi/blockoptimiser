@@ -17,5 +17,10 @@ namespace blockoptimiser
             UnitId = Id;
             UnitType = type;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

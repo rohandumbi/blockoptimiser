@@ -133,7 +133,99 @@ namespace blockoptimiser.ViewModels
         {
             //Do stuff with fleet here
             Opex UpdatedOpex = (Opex)sender;
-            OpexDAO.Update(UpdatedOpex);
+            if (e.PropertyName == "FilterName")
+            {
+                if (UpdatedOpex.CostType == Opex.MINING_COST)
+                {
+                    MessageBox.Show("Cannot update Process/Product for Mining Cost");
+                    return;
+                }
+                if (!isValidFilter(UpdatedOpex))
+                {
+                    MessageBox.Show("Process/Product update invalid");
+                    return;
+                }
+            } else if (e.PropertyName == "UnitName")
+            {
+                if (UpdatedOpex.CostType == Opex.PROCESS_COST)
+                {
+                    MessageBox.Show("Cannot update Filter for Process Cost");
+                    return;
+                }
+                if (!isValidUnit(UpdatedOpex))
+                {
+                    MessageBox.Show("Expression update invalid");
+                    return;
+                }
+            }
+            try
+            {
+                OpexDAO.Update(UpdatedOpex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private Boolean isValidFilter(Opex UpdatedOpex)
+        {
+            Boolean isValid = false;
+            foreach (Process process in Processes)
+            {
+                if (UpdatedOpex.FilterName == process.Name)
+                {
+                    isValid = true;
+                    UpdatedOpex.FilterType = Opex.FILTER_TYPE_PROCESS;
+                    break;
+                }
+            }
+            foreach (Product product in Products)
+            {
+                if (UpdatedOpex.FilterName == product.Name)
+                {
+                    isValid = true;
+                    UpdatedOpex.FilterType = Opex.FILTER_TYPE_PRODUCT;
+                    break;
+                }
+            }
+            foreach (String productJoin in ProductJoins)
+            {
+                if (UpdatedOpex.FilterName == productJoin)
+                {
+                    isValid = true;
+                    UpdatedOpex.FilterType = Opex.FILTER_TYPE_PRODUCT_JOIN;
+                    break;
+                }
+            }
+            return isValid;
+        }
+
+        private Boolean isValidUnit(Opex UpdatedOpex)
+        {
+            Boolean isValid = false;
+            foreach (Field field in Fields)
+            {
+                if (UpdatedOpex.UnitName == field.Name)
+                {
+                    isValid = true;
+                    UpdatedOpex.UnitType = Opex.UNIT_FIELD;
+                    UpdatedOpex.UnitId = field.Id;
+                    break;
+                }
+            }
+            foreach (Models.Expression expression in Expressions)
+            {
+                if (UpdatedOpex.UnitName == expression.Name)
+                {
+                    isValid = true;
+                    UpdatedOpex.UnitType = Opex.UNIT_EXPRESSION;
+                    UpdatedOpex.UnitId = expression.Id;
+                    break;
+                }
+
+            }
+            return isValid;
         }
 
         private Opex GetOpexById(int id)
@@ -154,7 +246,7 @@ namespace blockoptimiser.ViewModels
         private void GenerateDefaultColumns()
         {
             this.OpexColumns.Add(
-                new DataGridTextColumn { Header = "Cost", Binding = new Binding("CostName") });
+                new DataGridTextColumn { Header = "Cost", Binding = new Binding("CostName"), IsReadOnly = true });
             this.OpexColumns.Add(
                 new DataGridTextColumn { Header = "Process/Product", Binding = new Binding("FilterName") });
             this.OpexColumns.Add(

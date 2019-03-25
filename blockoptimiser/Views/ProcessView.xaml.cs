@@ -156,7 +156,85 @@ namespace blockoptimiser.Views
 
         private void ProcessGraph_EditClick()
         {
-            MessageBox.Show("ProcessGraph Edit click");
+            List<Microsoft.Msagl.WpfGraphControl.VNode> nodesToEdit = new List<Microsoft.Msagl.WpfGraphControl.VNode>();
+            foreach (var en in ProcessGraphViewer.Entities)
+            {
+                if (en.MarkedForDragging && en is IViewerNode)
+                { //got a selected node}
+                    Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
+                    nodesToEdit.Add(ViewerNode);
+                }
+            }
+            if (nodesToEdit.Count < 1)
+            {
+                MessageBox.Show("Select atleast one node to delete.");
+                return;
+            }
+            if (nodesToEdit.Count > 1)
+            {
+                MessageBox.Show("Cannot edit multiple nodes. Select only one.");
+                return;
+            }
+            if (nodesToEdit[0].Node.OutEdges.Count() > 0)
+            {
+                Product product = GetProductByName(nodesToEdit[0].Node.LabelText);
+                if (product != null) EditProduct(product);
+            }
+            else
+            {
+                Process process = GetProcessByName(nodesToEdit[0].Node.LabelText);
+                if (process != null) EditProcess(process);
+            }
+            foreach (var node in nodesToEdit)
+            {
+                
+                //ViewerNode.Node.IsVisible = false;
+            }
+        }
+
+        private void EditProduct(Product product)
+        {
+            ProductEditView productEditView = new ProductEditView(product);
+            productEditView.ShowDialog();
+            UpdateCollections();
+            ProcessGraphViewer.Graph = null;
+            ProductGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            ProductGraph = new Graph();
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+            ProductGraphViewer.Graph = ProductGraph;
+        }
+
+        private void EditProcess(Process process)
+        {
+            ProcessEditView processEditView = new ProcessEditView(process);
+            processEditView.ShowDialog();
+            UpdateCollections();
+            ProcessGraphViewer.Graph = null;
+            ProcessGraph = new Graph();
+            AddProcessNodes();
+            AddProductNodesInProcessGraph();
+            ProcessGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProcessGraphViewer.Graph = ProcessGraph;
+        }
+
+        private void EditProductJoin(String productJoin)
+        {
+            ProductJoinEditView productJoinEditView = new ProductJoinEditView(productJoin);
+            productJoinEditView.ShowDialog();
+            UpdateCollections();
+            ProductGraphViewer.Graph = null;
+            ProductGraph = new Graph();
+            AddProductNodesInProductGraph();
+            AddProductJoinNodes();
+            ProductGraph.Attr.LayerDirection = LayerDirection.RL;
+            ProductGraphViewer.Graph = ProductGraph;
         }
 
         private void ProcessGraph_DeleteClick()
@@ -175,6 +253,7 @@ namespace blockoptimiser.Views
                 MessageBox.Show("Select atleast one node to delete.");
                 return;
             }
+            
             foreach (var node in nodesToDelete)
             {
                 if (node.Node.OutEdges.Count() > 0)
@@ -193,7 +272,35 @@ namespace blockoptimiser.Views
 
         private void ProductGraph_EditClick()
         {
-            MessageBox.Show("ProductGraph Edit click");
+            List<Microsoft.Msagl.WpfGraphControl.VNode> nodesToEdit = new List<Microsoft.Msagl.WpfGraphControl.VNode>();
+            foreach (var en in ProductGraphViewer.Entities)
+            {
+                if (en.MarkedForDragging && en is IViewerNode)
+                { //got a selected node}
+                    Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
+                    nodesToEdit.Add(ViewerNode);
+                }
+            }
+            if (nodesToEdit.Count < 1)
+            {
+                MessageBox.Show("Select atleast one node to delete.");
+                return;
+            }
+            if (nodesToEdit.Count > 1)
+            {
+                MessageBox.Show("Cannot edit multiple nodes. Select only one.");
+                return;
+            }
+            if (nodesToEdit[0].Node.OutEdges.Count() > 0)
+            {
+                Product product = GetProductByName(nodesToEdit[0].Node.LabelText);
+                if (product != null) EditProduct(product);
+
+            }
+            else
+            {
+                EditProductJoin(nodesToEdit[0].Node.LabelText);
+            }
         }
 
         private void ProductGraph_DeleteClick()
@@ -223,8 +330,8 @@ namespace blockoptimiser.Views
                 else
                 {
                     DeleteProductJoin(node.Node.LabelText);
-                    Product product = GetProductByName(node.Node.LabelText);
-                    if (product != null) DeleteProduct(product);
+                    //Product product = GetProductByName(node.Node.LabelText);
+                    //if (product != null) DeleteProduct(product);
                 }
                 //ViewerNode.Node.IsVisible = false;
                 //ProductGraphViewer.RemoveNode(ViewerNode, false);
@@ -384,7 +491,7 @@ namespace blockoptimiser.Views
         private void DeleteProcess(Process process)
         {
             ProcessDAO.Delete(process.Id);
-             UpdateCollections();
+            UpdateCollections();
             ProcessGraphViewer.Graph = null;
             ProcessGraph = new Graph();
             AddProcessNodes();

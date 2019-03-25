@@ -1,0 +1,50 @@
+﻿<Window x:Class="blockoptimiser.Views.ProductEditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:blockoptimiser.Views"
+        mc:Ignorable="d"
+        Title="ProductEditView" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label>Name:</Label>
+        <TextBox x:Name="Name" Width="200" Grid.Column="1" Margin="0,0,0,10" IsReadOnly="true"/>
+        <Label Grid.Row="2">Processes:</Label>
+        <ComboBox Grid.Row="2" Grid.Column="1" Margin="0 0 0 10" Width="200" TextBoxBase.TextChanged="Process_TextChanged" Name="processCombo" IsEditable="True" IsTextSearchEnabled="True" 
+                  StaysOpenOnEdit="True" SelectionChanged="Process_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate >
+                    <CheckBox Name="chkCountry"  Width="220"  Checked="AllCheckbocx_CheckedAndUnchecked" Unchecked="AllCheckbocx_CheckedAndUnchecked" Content="{Binding Name}"  IsChecked="{Binding CheckStatus}"  CommandParameter="{Binding Id}" ></CheckBox>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Grid.Row="3">Selected Processes:</Label>
+        <ListBox Name="testListbox" Grid.Row="3" Grid.Column="1" Height="120"/>
+        <Label Grid.Row="4" Margin="0 10 0 10">Field:</Label>
+        <TextBox x:Name="UnitName" Width="200" Grid.Row="4" Grid.Column="1" Margin="0,10,0,10" IsReadOnly="true"/>
+        <ComboBox Name="fieldsCombo" ItemsSource="{Binding UnitItems}"  SelectedItem="{Binding Path=SelectedUnit}" SelectedValue="{Binding Path=SelectedUnit}"
+                  Grid.Row="5" Grid.Column="1"  Margin="0 0 0 10" Width="200" SelectionChanged="Field_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate >
+                    <Label Content="{Binding Name}"></Label>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button x:Name="AddProduct"  Click="button_Click" Grid.Row="6" Grid.Column="0" Content="Submit"></Button>
+    </Grid>
+</Window>

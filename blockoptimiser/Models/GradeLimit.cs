@@ -15,6 +15,7 @@ namespace blockoptimiser.Models
         private List<GradeLimitYearMapping> _gradeLimitYearMapping;
         private Boolean _isMax;
         private Boolean _isUsed;
+        private String _gradeName;
         public event PropertyChangedEventHandler PropertyChanged;
         public int Id { get; set; }
         public int ScenarioId { get; set; }
@@ -39,7 +40,14 @@ namespace blockoptimiser.Models
         public int ItemId { get; set; }
         public byte ItemType { get; set; }
 
-        public String GradeName { get; set; }
+        public String GradeName {
+            get { return _gradeName; }
+            set
+            {
+                _gradeName = value;
+                OnPropertyChanged("GradeName");
+            }
+        }
 
         public List<GradeLimitYearMapping> GradeLimitYearMapping
         {

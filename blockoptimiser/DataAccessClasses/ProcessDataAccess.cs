@@ -25,6 +25,25 @@ namespace blockoptimiser.DataAccessClasses
 
         }
 
+        public void UpdateModelMapping(Process UpdatedProcess)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                connection.Execute($"delete from ProcessModelMapping where ProcessId = { UpdatedProcess.Id }");
+                String insertMappingQuery = $"insert into ProcessModelMapping (ProcessId, ModelId, FilterString) " +
+                    $" VALUES(@ProcessId, @ModelId, @FilterString)";
+                foreach (ProcessModelMapping mapping in UpdatedProcess.Mapping)
+                {
+                    connection.Execute(insertMappingQuery, new
+                    {
+                        ProcessId = UpdatedProcess.Id,
+                        mapping.ModelId,
+                        mapping.FilterString
+                    });
+                }
+            }
+        }
+
         public void Insert(Process newProcess)
         {
             using (IDbConnection connection = getConnection())
