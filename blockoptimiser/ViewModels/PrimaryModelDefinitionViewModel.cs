@@ -75,7 +75,7 @@ namespace blockoptimiser.ViewModels
                     {
                         LastAdditiveField = field;
                     }
-                    else if (field.DataType == Field.DATA_TYPE_GRADE)
+                    else if (field.DataType == Field.DATA_TYPE_GRADE && LastAdditiveField != null)
                     {
                         field.AssociatedField = LastAdditiveField.Id;
                         field.AssociatedFieldName = LastAdditiveField.Name;
