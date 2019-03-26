@@ -162,7 +162,7 @@ namespace blockoptimiser.Services.LP
 
                 double max_ira = context.GetIRA(selectstr, model.Id) * Math.PI / 180; ;
 
-                int nbenches = (int)Math.Ceiling(max_dim / (zinc / (decimal)Math.Tan(max_ira)));
+                int nbenches = (int)Math.Ceiling((max_dim / 2 ) / (zinc / (decimal)Math.Tan(max_ira)));
                 
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetGeotechBlocks(model.Id);
                 foreach (int ii in blocks.Keys)
@@ -178,7 +178,7 @@ namespace blockoptimiser.Services.LP
                             decimal tonneswt = context.GetTonnesWtForBlock(b);
 
 
-                            for (int k = 1; k <= nbenches - 1; k++)
+                            for (int k = 1; k <= nbenches; k++)
                             {
                                 decimal dist = k* zinc / (decimal)Math.Tan(max_ira);
                                 int imin = (int)((xorth - dist + xinc - xm) / xinc);
@@ -196,7 +196,7 @@ namespace blockoptimiser.Services.LP
                                         {
                                             continue;
                                         }
-                                        Block ub = blocks[i][j][k + 1];
+                                        Block ub = blocks[i][j][kk + k];
                                         
                                         decimal ubtonneswt = context.GetTonnesWtForBlock(ub);
                                         if (ubtonneswt == 0) continue;
