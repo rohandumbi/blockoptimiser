@@ -20,7 +20,7 @@ namespace blockoptimiser.Services.LP
             _generator = new EquationGenerator();
         }
 
-        public void Solve(int ProjectId, int ScenarioId)
+        public void Solve(int ProjectId, int ScenarioId, int StartYear, int EndYear, float DiscountFactor)
         {
             new Thread(() =>
             {

@@ -1,6 +1,7 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
 using blockoptimiser.Services.LP;
+using blockoptimiser.Views;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -89,14 +90,15 @@ namespace blockoptimiser.ViewModels
         }
         public void RunScheduler()
         {
-            if(Context.ScenarioId > 0)
-            {
-                new CplexSolver().Solve(Context.ProjectId, Context.ScenarioId);
-            } else
-            {
-                MessageBox.Show("Please select a scenario.");
-            }
-            
+            //if(Context.ScenarioId > 0)
+            //{
+            //    new CplexSolver().Solve(Context.ProjectId, Context.ScenarioId, 0 , 0 , 0);
+            //} else
+            //{
+            //    MessageBox.Show("Please select a scenario.");
+            //}
+            SchedulerWindow schedulerWindow = new SchedulerWindow();
+            schedulerWindow.ShowDialog();
         }
     }
 }
