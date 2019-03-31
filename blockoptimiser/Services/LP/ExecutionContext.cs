@@ -14,7 +14,7 @@ namespace blockoptimiser.Services.LP
         public int ScenarioId { get; set; }
         public int Year { get; set; }
         public int Period { get; set; }
-        public int DiscountFactor { get; set; }
+        public decimal DiscountFactor { get; set; }
 
         private List<Model> models;
         private List<Field> fields;
@@ -32,7 +32,7 @@ namespace blockoptimiser.Services.LP
         {
             this.ProjectId = ProjectId;
             this.ScenarioId = ScenarioId;
-            this.DiscountFactor = DiscountFactor/100;
+            this.DiscountFactor = (decimal)DiscountFactor/100;
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
             blockProcessMapping = new Dictionary<long, List<int>>();
