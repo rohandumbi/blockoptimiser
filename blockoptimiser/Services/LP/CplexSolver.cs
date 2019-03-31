@@ -34,14 +34,14 @@ namespace blockoptimiser.Services.LP
                     int year = scenario.StartYear + i;
                     context.Year = year;
                     context.Period = (i + 1);
-                    _generator.Generate(context);
                     try
                     {
-                        //_generator.Generate(context);
+                        _generator.Generate(context);
                     }
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message);
+                        break;
                     }
 
 

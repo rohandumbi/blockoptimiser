@@ -563,11 +563,11 @@ namespace blockoptimiser.Services.LP
                             break;
                         }
                     }
-                    if( opex.UnitType > 0 )
+                    /*if( opex.UnitType > 0 )
                     {
                         Decimal revExprValue = context.GetUnitValueforBlock(b, opex.UnitType, opex.UnitId);
                         miningCost = miningCost* revExprValue;
-                    }
+                    }*/
                     
                     return miningCost;
                 }
