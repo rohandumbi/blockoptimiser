@@ -60,6 +60,7 @@ namespace blockoptimiser.Services.LP
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message);
+                        break;
                     }
                     
                 }
