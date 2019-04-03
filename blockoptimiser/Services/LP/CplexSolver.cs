@@ -30,6 +30,7 @@ namespace blockoptimiser.Services.LP
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 Scenario scenario = new ScenarioDataAccess().Get(ScenarioId);
+                
                 ExecutionContext context = new ExecutionContext(ProjectId, ScenarioId, scenario.DiscountFactor);
                 for (int i = 0; i < scenario.TimePeriod; i++)
                 {
@@ -38,11 +39,16 @@ namespace blockoptimiser.Services.LP
                     context.Period = (i + 1);
                     try
                     {
+                        if(i>0)
+                        {
+                            context.LoadMinedBlockList();
+                        }
                         _generator.Generate(context);
                         SchedulerQueue queueItem = new SchedulerQueue
                         {
                             ProjectId = ProjectId,
-                            FileName = _generator.FileName
+                            FileName = _generator.FileName,
+                            Year = year
                         };
                         _schedulerQueueDataAccess.Insert(queueItem);
                         Boolean loopcontinue = true;
@@ -50,10 +56,14 @@ namespace blockoptimiser.Services.LP
                         loopstopwatch.Start();
                         while (loopcontinue && loopstopwatch.ElapsedMilliseconds < 5 * 60 * 1000 ) // If elapsed time is more than 5 mins break
                         {
-                            SchedulerQueue uupdateQueueItem = _schedulerQueueDataAccess.Get(queueItem.Id);
-                            if(uupdateQueueItem.IsProcessed)
+                            SchedulerQueue updateQueueItem = _schedulerQueueDataAccess.Get(queueItem.Id);
+                            if(updateQueueItem.IsProcessed)
                             {
                                 loopcontinue = false;
+                            } else
+                            {
+                                Console.WriteLine("Waiting for queue item to be processed. ");
+                                Thread.Sleep(5000);
                             }
                         }
                     }

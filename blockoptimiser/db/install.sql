@@ -289,6 +289,7 @@ CREATE TABLE SchedulerQueue (
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ProjectId INT,
    FileName VARCHAR(200),
+   Year INT,
    IsProcessed TINYINT,
    UpdatedAt DATETIME
 );
