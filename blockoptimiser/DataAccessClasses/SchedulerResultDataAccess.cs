@@ -16,7 +16,7 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
                 String create_sql = "create table BOResult_" + Context.ProjectId + " ( " +
-                    " BId BIGINT PRIMARY KEY, " +
+                    " BId BIGINT, " +
                     " DestinationType TINYINT, " +
                     " Destination INT," +
                     " Year INT," +
