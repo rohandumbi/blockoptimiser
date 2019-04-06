@@ -1,0 +1,38 @@
+﻿<Controls:MetroWindow x:Class="blockoptimiser.Views.V2ShellView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:cal="http://www.caliburnproject.org"
+                      Title="Block Optimizer"
+                      Height="600"
+                      Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="FontStyle" Value="Normal" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="Foreground" Value="#189ad3" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </StackPanel.Resources>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" Content="Projects" Foreground="{Binding ProjectButtonForeground}">
+            </Button>
+        </StackPanel>
+        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="1"/>
+    </Grid>
+</Controls:MetroWindow>

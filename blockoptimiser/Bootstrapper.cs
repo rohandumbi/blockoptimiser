@@ -18,7 +18,7 @@ namespace blockoptimiser
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ShellViewModel>();
+            DisplayRootViewFor<V2ShellViewModel>();
         }
     }
 }
