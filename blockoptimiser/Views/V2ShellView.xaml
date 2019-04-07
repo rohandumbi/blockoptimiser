@@ -6,6 +6,18 @@
                       Title="Block Optimizer"
                       Height="600"
                       Width="800">
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Header="Add project"
+                             Position="Right"
+                             IsOpen="{Binding IsAddFlyoutOpen}"
+                             Theme="Inverse">
+                <Grid Width="400" Margin="10">
+                    <TextBlock Text="This flyout will host the add project form" />
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

@@ -24,5 +24,10 @@ namespace blockoptimiser.Views
         {
             InitializeComponent();
         }
+
+        private void Add_Project(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Add new project");
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace blockoptimiser.ViewModels
 {
@@ -13,9 +14,11 @@ namespace blockoptimiser.ViewModels
     {
         public BindableCollection<Project> Projects { get; set; }
         private ProjectDataAccess ProjectDAO;
+        private readonly IEventAggregator _eventAggregator;
 
-        public V2ProjectsViewModel()
+        public V2ProjectsViewModel(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             ProjectDAO = new ProjectDataAccess();
             LoadProjects();
         }
@@ -29,6 +32,11 @@ namespace blockoptimiser.ViewModels
                 var color = String.Format("#{0:X6}", random.Next(0x1000000));
                 project.BackgroundColor = color;
             }
+        }
+
+        public void AddProject()
+        {
+            _eventAggregator.PublishOnUIThread("load:addFlyout");
         }
     }
 }

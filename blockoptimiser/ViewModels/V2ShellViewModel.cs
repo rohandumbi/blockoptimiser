@@ -11,12 +11,14 @@ namespace blockoptimiser.ViewModels
     class V2ShellViewModel : Conductor<Object>, IHandle<object>
     {
         private readonly IEventAggregator _eventAggregator;
+        public Boolean IsAddFlyoutOpen { get; set; }
         public V2ShellViewModel()
         {
             _eventAggregator = new EventAggregator();
             _eventAggregator.Subscribe(this);
+            IsAddFlyoutOpen = false;
             //ActivateItem(new ProjectsViewModel(_eventAggregator));
-            ActivateItem(new V2ProjectsViewModel());
+            ActivateItem(new V2ProjectsViewModel(_eventAggregator));
         }
 
         public void ClickTab(object sender)
@@ -42,6 +44,11 @@ namespace blockoptimiser.ViewModels
             {
                 //ActivateItem(new MainViewModel());
                 ActivateItem(new AppViewModel());
+            }
+            else if (EventName == "load:addFlyout")
+            {
+                IsAddFlyoutOpen = !IsAddFlyoutOpen;
+                NotifyOfPropertyChange("IsAddFlyoutOpen");
             }
         }
     }

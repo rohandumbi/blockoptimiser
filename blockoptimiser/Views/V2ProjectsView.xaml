@@ -1,4 +1,4 @@
-﻿    <UserControl x:Class="blockoptimiser.Views.V2ProjectsView"
+﻿<UserControl x:Class="blockoptimiser.Views.V2ProjectsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -39,7 +39,6 @@
                 <RowDefinition Height="83*" />
                 <RowDefinition Height="259*" />
             </Grid.RowDefinitions>
-
             <TextBlock Grid.Column="1"
                        VerticalAlignment="Center"
                        FontFamily="Segoe UI"
@@ -139,6 +138,7 @@
                 <Controls:Tile Title="Add project"
                                VerticalTitleAlignment="Top"
                                Background="#1E90FF"
+                               x:Name="AddProject"
                                Style="{StaticResource SmallTileStyle}">
                     <iconPacks:PackIconFontAwesome Width="40"
                                                 Height="40"
