@@ -54,7 +54,27 @@
                        Height="382"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top">
-                <Controls:Tile Title="Project 1"
+
+                <ItemsControl x:Name="Projects">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Controls:Tile Title="{Binding Name}"
+                               VerticalTitleAlignment="Top"
+                               Margin="3"
+                               Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}"
+                               Background="{Binding BackgroundColor}"
+                               HorizontalTitleAlignment="Left"
+                               Style="{StaticResource LargeTileStyle}">
+                                <iconPacks:PackIconFontAwesome Width="40"
+                                              Height="40"
+                                              Kind="DesktopSolid" />
+                            </Controls:Tile>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+                <!--<Controls:Tile Title="Project 1"
                                VerticalTitleAlignment="Top"
                                Margin="3"
                                Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}"
@@ -90,7 +110,7 @@
                     <iconPacks:PackIconFontAwesome Width="40"
                                               Height="40"
                                               Kind="DesktopSolid" />
-                </Controls:Tile>
+                </Controls:Tile>-->
                 <!--<Controls:Tile Title="Count"
                                Background="#FF842D"
                                Count="28"
@@ -107,7 +127,7 @@
                                                 Height="40"
                                                 Kind="WeatherCloudy" />
                 </Controls:Tile>-->
-                <Controls:Tile Title="Project 5"
+                <!--<Controls:Tile Title="Project 5"
                                VerticalTitleAlignment="Top"
                                CountFontSize="12"
                                Background="Green"
@@ -115,7 +135,7 @@
                     <iconPacks:PackIconFontAwesome Width="40"
                                               Height="40"
                                               Kind="DesktopSolid" />
-                </Controls:Tile>
+                </Controls:Tile>-->
                 <Controls:Tile Title="Add project"
                                VerticalTitleAlignment="Top"
                                Background="#1E90FF"
