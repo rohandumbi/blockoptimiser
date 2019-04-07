@@ -28,11 +28,22 @@ namespace blockoptimiser.ViewModels
         {
             Projects = new BindableCollection<Project>(ProjectDAO.GetAll());
             var random = new Random();
-            foreach (Project project in Projects)
+            int j = 0;
+            for (var i=0; i<Projects.Count; i++)
             {
-                var color = String.Format("#{0:X6}", random.Next(0x1000000));
-                project.BackgroundColor = color;
+                j++;
+                if (j > 6)
+                {
+                    j = 1;
+                }
+                var color = GetBackgroundColor(j);
+                Projects[i].BackgroundColor = color;
             }
+            //foreach (Project project in Projects)
+            //{
+            //    var color = String.Format("#{0:X6}", random.Next(0x1000000));
+            //    project.BackgroundColor = color;
+            //}
         }
 
         public void ShowProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
@@ -44,6 +55,35 @@ namespace blockoptimiser.ViewModels
         public void AddProject()
         {
             _eventAggregator.PublishOnUIThread("load:addProjectFlyout");
+        }
+
+        private String GetBackgroundColor(int index)
+        {
+            if (index == 1)
+            {
+                return "Teal";
+            }
+            else if (index == 2)
+            {
+                return "DimGray";
+            }
+            else if (index == 3)
+            {
+                return "#D2691E";
+            }
+            else if (index == 4)
+            {
+                return "#FF842D";
+            }
+            else if (index == 5)
+            {
+                return "#1E90FF";
+            }
+            else if (index == 6)
+            {
+                return "Green";
+            }
+            else return "";
         }
     }
 }
