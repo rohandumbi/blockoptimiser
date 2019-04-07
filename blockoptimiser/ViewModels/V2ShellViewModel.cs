@@ -12,6 +12,7 @@ namespace blockoptimiser.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         public Boolean IsAddFlyoutOpen { get; set; }
+        public Boolean IsShowFlyoutOpen { get; set; }
         public V2ShellViewModel()
         {
             _eventAggregator = new EventAggregator();
@@ -45,10 +46,15 @@ namespace blockoptimiser.ViewModels
                 //ActivateItem(new MainViewModel());
                 ActivateItem(new AppViewModel());
             }
-            else if (EventName == "load:addFlyout")
+            else if (EventName == "load:addProjectFlyout")
             {
                 IsAddFlyoutOpen = !IsAddFlyoutOpen;
                 NotifyOfPropertyChange("IsAddFlyoutOpen");
+            }
+            else if (EventName == "load:projectDetailsFlyout")
+            {
+                IsShowFlyoutOpen = !IsShowFlyoutOpen;
+                NotifyOfPropertyChange("IsShowFlyoutOpen");
             }
         }
     }

@@ -13,7 +13,15 @@
                              IsOpen="{Binding IsAddFlyoutOpen}"
                              Theme="Inverse">
                 <Grid Width="400" Margin="10">
-                    <TextBlock Text="This flyout will host the add project form" />
+                    <TextBlock Text="This flyout will host the add project form." />
+                </Grid>
+            </Controls:Flyout>
+            <Controls:Flyout Header="Project details"
+                             Position="Right"
+                             IsOpen="{Binding IsShowFlyoutOpen}"
+                             Theme="Inverse">
+                <Grid Width="400" Margin="10">
+                    <TextBlock Text="This flyout will host the project details." />
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:blockoptimiser.Views"
              mc:Ignorable="d" >
     <UserControl.Resources>
@@ -55,18 +56,24 @@
                        VerticalAlignment="Top">
 
                 <ItemsControl x:Name="Projects">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" ></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Controls:Tile Title="{Binding Name}"
-                               VerticalTitleAlignment="Top"
-                               Margin="3"
-                               Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}"
-                               Background="{Binding BackgroundColor}"
-                               HorizontalTitleAlignment="Left"
-                               Style="{StaticResource LargeTileStyle}">
+                                   VerticalTitleAlignment="Top"
+                                   cal:Message.Attach="[Event Click] = [ShowProject($dataContext, $eventArgs))]"
+                                   Margin="3"
+                                   Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}"
+                                   Background="{Binding BackgroundColor}"
+                                   HorizontalTitleAlignment="Left"
+                                   Style="{StaticResource LargeTileStyle}">
                                 <iconPacks:PackIconFontAwesome Width="40"
-                                              Height="40"
-                                              Kind="DesktopSolid" />
+                                                  Height="40"
+                                                  Kind="DesktopSolid" />
                             </Controls:Tile>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
