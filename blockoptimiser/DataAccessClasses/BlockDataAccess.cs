@@ -18,7 +18,7 @@ namespace blockoptimiser.DataAccessClasses
             {
                 List<Block> blocks = new List<Block>();
                  List<object> rows = connection.Query($"select a.* , b.* from " +
-                     $"BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }" +
+                     $" BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }" +
                      $" and b.Bid not in ( select distinct BId from BOResult_" + Context.ProjectId +")" ).ToList();
                 foreach(Object row in rows)
                 {

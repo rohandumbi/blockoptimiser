@@ -49,6 +49,10 @@ namespace blockoptimiser.Services.LP
             schedulerResultDataAccess.Create(ProjectId);
         }
 
+        public void Reset()
+        {
+            blockProcessMapping = new Dictionary<long, List<int>>();
+        }
         private void LoadData()
         {
             models = new ModelDataAccess().GetAll(ProjectId);

@@ -27,6 +27,7 @@ namespace blockoptimiser.Services.LP
         public void Generate(ExecutionContext context)
         {
             this.context = context;
+            this.context.Reset();
             FileStream fs = CreateFile();
 
             using (StreamWriter sw = new StreamWriter(fs))
