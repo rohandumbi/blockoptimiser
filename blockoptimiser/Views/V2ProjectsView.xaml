@@ -77,71 +77,7 @@
                             </Controls:Tile>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-
                 </ItemsControl>
-
-                <!--<Controls:Tile Title="Project 1"
-                               VerticalTitleAlignment="Top"
-                               Margin="3"
-                               Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}"
-                               Background="Teal"
-                               HorizontalTitleAlignment="Left"
-                               Style="{StaticResource LargeTileStyle}">
-                    <iconPacks:PackIconFontAwesome Width="40"
-                                              Height="40"
-                                              Kind="DesktopSolid" />
-                </Controls:Tile>
-                <Controls:Tile Title="Project 2"
-                               VerticalTitleAlignment="Top"
-                               Margin="3"
-                               Controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource BlackBrush}"
-                               Style="{StaticResource LargeTileStyle}">
-                    <iconPacks:PackIconFontAwesome Width="40"
-                                                   Height="40"
-                                                   Kind="DesktopSolid" />
-                </Controls:Tile>
-                <Controls:Tile Title="Project 3"
-                               VerticalTitleAlignment="Top"
-                               Background="DimGray"
-                               Style="{StaticResource LargeTileStyle}">
-                    <iconPacks:PackIconFontAwesome Width="40"
-                                              Height="40"
-                                              Kind="DesktopSolid" />
-                </Controls:Tile>
-                <Controls:Tile Title="Project 4"
-                               VerticalTitleAlignment="Top"
-                               Background="#D2691E"
-                               HorizontalTitleAlignment="Left"
-                               Style="{StaticResource LargeTileStyle}">
-                    <iconPacks:PackIconFontAwesome Width="40"
-                                              Height="40"
-                                              Kind="DesktopSolid" />
-                </Controls:Tile>-->
-                <!--<Controls:Tile Title="Count"
-                               Background="#FF842D"
-                               Count="28"
-                               CountFontSize="42"
-                               HorizontalTitleAlignment="Center"
-                               IsEnabled="False"
-                               Style="{StaticResource SmallTileStyle}"
-                               TitleFontSize="16"
-                               VerticalTitleAlignment="Top" />
-                <Controls:Tile Title="Weather"
-                               Background="#1E90FF"
-                               Style="{StaticResource SmallTileStyle}">
-                    <iconPacks:PackIconMaterial Width="40"
-                                                Height="40"
-                                                Kind="WeatherCloudy" />
-                </Controls:Tile>-->
-                <!--<Controls:Tile Title="Project 5"
-                               VerticalTitleAlignment="Top"
-                               CountFontSize="12"
-                               Background="Green"
-                               Style="{StaticResource LargeTileStyle}">
-                    <iconPacks:PackIconFontAwesome Width="40"
-                                              Height="40"
-                                              Kind="DesktopSolid" />
-                </Controls:Tile>-->
                 <Controls:Tile Title="Add project"
                                VerticalTitleAlignment="Top"
                                Background="#1E90FF"
