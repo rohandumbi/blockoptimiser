@@ -334,7 +334,7 @@ namespace blockoptimiser.Services.LP
             {
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
                 Dictionary<int, Block> verticalBlocks = blocks[bp.I][bp.J];
-                int maxKValue = verticalBlocks.Keys.Last();
+                int maxKValue = verticalBlocks.Keys.Max();
                 if (bp.K <= (maxKValue - _benchConstraint))
                 {
                     isValid = false;
@@ -353,7 +353,7 @@ namespace blockoptimiser.Services.LP
 
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
                 Dictionary<int, Block> verticalBlocks = blocks[i][j];
-                int maxKValue = verticalBlocks.Keys.Last();
+                int maxKValue = verticalBlocks.Keys.Max();
                 if (k <= (maxKValue - _benchConstraint))
                 {
                     isValid = false;
