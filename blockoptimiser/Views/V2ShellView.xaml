@@ -36,7 +36,8 @@
                              Grid.Row="1"
                              Grid.Column="1"
                              Margin="0 5 5 5"
-                             VerticalAlignment="Center" />
+                             VerticalAlignment="Center"
+                             Text="{Binding NewProjectName}"/>
                     <Label Grid.Row="2"
                            Grid.Column="0"
                            Margin="5"
@@ -50,13 +51,14 @@
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
                              AcceptsTab="True"
-                             SpellCheck.IsEnabled="True"/>
+                             SpellCheck.IsEnabled="True"
+                             Text="{Binding NewProjectDescription}"/>
                     <Controls:ToggleSwitch x:Name="openProjectSwitch"
                                    Grid.Row="3"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2"        
                                    Margin="5"
-                                   IsChecked="False"
+                                   IsChecked="{Binding ShouldOpenNewProject}"
                                    OffLabel="Do not open new project."
                                    OnLabel="Open new project."
                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
@@ -68,6 +70,7 @@
                             Margin="5"
                             Content="Create"
                             HorizontalAlignment="Right"
+                            cal:Message.Attach="[Event Click] = [CreateProject($dataContext, $eventArgs))]"
                             Style="{DynamicResource SquareButtonStyle}" />
                 </Grid>
             </Controls:Flyout>
@@ -106,6 +109,8 @@
                 </Style>
             </StackPanel.Resources>
             <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" Content="Projects" Foreground="{Binding ProjectButtonForeground}">
+            </Button>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" Content="New App" Foreground="{Binding ProjectButtonForeground}">
             </Button>
         </StackPanel>
         <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="1"/>

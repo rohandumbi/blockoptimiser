@@ -39,11 +39,39 @@ namespace blockoptimiser.ViewModels
                 var color = GetBackgroundColor(j);
                 Projects[i].BackgroundColor = color;
             }
-            //foreach (Project project in Projects)
-            //{
-            //    var color = String.Format("#{0:X6}", random.Next(0x1000000));
-            //    project.BackgroundColor = color;
-            //}
+            NotifyOfPropertyChange("Projects");
+        }
+
+        public Project CreateProject(String name, String description)
+        {
+            Project newProject = new Project
+            {
+                Name = name,
+                Description = description
+            };
+            try
+            {
+                ProjectDAO.Insert(newProject);
+                LoadProjects();
+                //Add required fields
+                String[] RequiredFields = { "x", "y", "z", "tonnage" };
+                RequiredFieldMappingDataAccess RequiredFieldMappingDAO = new RequiredFieldMappingDataAccess();
+                for (int i = 0; i < RequiredFields.Length; i++)
+                {
+                    RequiredFieldMapping obj = new RequiredFieldMapping
+                    {
+                        ProjectId = newProject.Id,
+                        RequiredFieldName = RequiredFields[i]
+                    };
+                    RequiredFieldMappingDAO.Insert(obj);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+            NotifyOfPropertyChange("Projects");
+            return newProject;
         }
 
         public void ShowProject(object e, MouseButtonEventArgs mouseButtonEventArgs)

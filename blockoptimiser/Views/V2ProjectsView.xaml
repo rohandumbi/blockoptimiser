@@ -30,7 +30,7 @@
 
     <ScrollViewer Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True"
                   HorizontalScrollBarVisibility="Visible"
-                  VerticalScrollBarVisibility="Disabled">
+                  VerticalScrollBarVisibility="Auto">
         <Grid Background="{DynamicResource AccentColorBrush4}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
@@ -51,14 +51,14 @@
             <WrapPanel Grid.Row="1"
                        Grid.Column="1"
                        Width="940"
-                       Height="382"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Top">
+                       VerticalAlignment="Top"
+                       Orientation="Horizontal">
 
                 <ItemsControl x:Name="Projects">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" ></StackPanel>
+                            <WrapPanel Orientation="Horizontal" ></WrapPanel>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
