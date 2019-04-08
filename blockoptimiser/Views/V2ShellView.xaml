@@ -13,7 +13,62 @@
                              IsOpen="{Binding IsAddFlyoutOpen}"
                              Theme="Inverse">
                 <Grid Width="400" Margin="10">
-                    <TextBlock Text="This flyout will host the add project form." />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Please fill in the details to create a new project." />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Content="Name:" />
+                    <TextBox x:Name="newProjectName"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             Margin="0 5 5 5"
+                             VerticalAlignment="Center" />
+                    <Label Grid.Row="2"
+                           Grid.Column="0"
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Content="Description:" />
+                    <TextBox x:Name="newProjectDescription"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             Margin="0 5 5 5"
+                             VerticalAlignment="Center"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             AcceptsTab="True"
+                             SpellCheck.IsEnabled="True"/>
+                    <Controls:ToggleSwitch x:Name="openProjectSwitch"
+                                   Grid.Row="3"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"        
+                                   Margin="5"
+                                   IsChecked="False"
+                                   OffLabel="Do not open new project."
+                                   OnLabel="Open new project."
+                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                    <Button x:Name="CreateProjectButton"
+                            Width="100"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Margin="5"
+                            Content="Create"
+                            HorizontalAlignment="Right"
+                            Style="{DynamicResource SquareButtonStyle}" />
                 </Grid>
             </Controls:Flyout>
             <Controls:Flyout Header="Project details"
