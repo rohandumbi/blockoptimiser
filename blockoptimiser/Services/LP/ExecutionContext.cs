@@ -14,7 +14,8 @@ namespace blockoptimiser.Services.LP
         public int ScenarioId { get; set; }
         public int Year { get; set; }
         public int Period { get; set; }
-        public int DiscountFactor { get; set; }
+        public decimal DiscountFactor { get; set; }
+
 
         private List<Model> models;
         private List<Field> fields;
@@ -27,12 +28,15 @@ namespace blockoptimiser.Services.LP
         private List<GradeLimit> gradeLimits;
         private Dictionary<String, String> requiredFields;
         private Dictionary<long, List<int>> blockProcessMapping;
+        private SchedulerResultDataAccess schedulerResultDataAccess { get; set; }
+        private List<long> minedBlocks;
 
         public ExecutionContext(int ProjectId, int ScenarioId, int DiscountFactor)
         {
             this.ProjectId = ProjectId;
             this.ScenarioId = ScenarioId;
-            this.DiscountFactor = DiscountFactor/100;
+            this.DiscountFactor = (decimal)DiscountFactor/100;
+            this.schedulerResultDataAccess = new SchedulerResultDataAccess();
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
             blockProcessMapping = new Dictionary<long, List<int>>();
@@ -42,8 +46,13 @@ namespace blockoptimiser.Services.LP
                 requiredFields.Add(mapping.RequiredFieldName, mapping.MappedColumnName);
             }
             LoadData();
+            schedulerResultDataAccess.Create(ProjectId);
         }
 
+        public void Reset()
+        {
+            blockProcessMapping = new Dictionary<long, List<int>>();
+        }
         private void LoadData()
         {
             models = new ModelDataAccess().GetAll(ProjectId);
@@ -57,6 +66,15 @@ namespace blockoptimiser.Services.LP
             gradeLimits = new GradeLimitDataAccess().GetGradeLimits();
         }
 
+        public void LoadMinedBlockList()
+        {
+            minedBlocks = schedulerResultDataAccess.GetMinedBlocks(ProjectId);
+        }
+
+        public Boolean IsMined(long BId)
+        {
+            return minedBlocks.Contains(BId);
+        }
         public List<Model> GetModels()
         {
             return models;

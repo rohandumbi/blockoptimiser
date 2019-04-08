@@ -13,11 +13,21 @@ namespace blockoptimiser.Services.LP
     {
         private String _line = "";
         private int _lineMaxLength = 200;
-
+        private String _fileName = "";
+        
+        public String FileName
+        {
+            get
+            {
+                return _fileName;
+            }
+            
+        }
         ExecutionContext context;
         public void Generate(ExecutionContext context)
         {
             this.context = context;
+            this.context.Reset();
             FileStream fs = CreateFile();
 
             using (StreamWriter sw = new StreamWriter(fs))
@@ -34,9 +44,9 @@ namespace blockoptimiser.Services.LP
         private FileStream CreateFile()
         {
             Directory.CreateDirectory(@"C:\\blockoptimiser");
-            String fileName = @"C:\\blockoptimiser\\blockoptimiser-dump_" + context.Period+".lp";
+            _fileName = @"C:\\blockoptimiser\\blockoptimiser-dump_" + context.Period+".lp";
 
-            return File.Create(fileName);
+            return File.Create(_fileName);
         }
 
         private void WriteObjectiveFunction(StreamWriter sw)
@@ -187,7 +197,7 @@ namespace blockoptimiser.Services.LP
                                 int jmax = (int)((yorth + dist + yinc - ym) / yinc);
                                 if (imin <= 0) imin = 1;
                                 if (jmin <= 0) jmin = 1;
-                                Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
+                                //Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
                                 for (int i = imin; i <= imax; i++)
                                 {
                                     for (int j = jmin; j <= jmax; j++)
@@ -563,11 +573,11 @@ namespace blockoptimiser.Services.LP
                             break;
                         }
                     }
-                    if( opex.UnitType > 0 )
+                    /*if( opex.UnitType > 0 )
                     {
                         Decimal revExprValue = context.GetUnitValueforBlock(b, opex.UnitType, opex.UnitId);
                         miningCost = miningCost* revExprValue;
-                    }
+                    }*/
                     
                     return miningCost;
                 }

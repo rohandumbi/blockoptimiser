@@ -18,7 +18,8 @@ namespace blockoptimiser.DataAccessClasses
             {
                 List<Block> blocks = new List<Block>();
                  List<object> rows = connection.Query($"select a.* , b.* from " +
-                     $"BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition } ").ToList();
+                     $" BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }" +
+                     $" and b.Bid not in ( select distinct BId from BOResult_" + Context.ProjectId +")" ).ToList();
                 foreach(Object row in rows)
                 {
                     IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
@@ -53,7 +54,8 @@ namespace blockoptimiser.DataAccessClasses
                 {
                     sql = sql + ","+ column;
                 }
-                sql = sql + $" from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id order by i,j,k asc ";
+                sql = sql + $" from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id" +
+                    $" and b.bid not in ( select distinct BId from BOResult_" + Context.ProjectId + ") order by i,j,k asc ";
                 Console.WriteLine("Sql :>"+ sql);
                 List<object> rows = connection.Query(sql).ToList();
                 foreach (Object row in rows)
