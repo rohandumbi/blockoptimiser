@@ -79,7 +79,90 @@
                              IsOpen="{Binding IsShowFlyoutOpen}"
                              Theme="Inverse">
                 <Grid Width="400" Margin="10">
-                    <TextBlock Text="This flyout will host the project details." />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="2" 
+                               TextWrapping="Wrap"
+                               Text="The details of the selected project are as follows. Choose your desired action." />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Content="Name:" />
+                    <TextBlock x:Name="currentProjectName"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             FontWeight="Bold"
+                             Foreground="#CC1BA1E2"
+                             VerticalAlignment="Center"
+                             Text="{Binding CurrentProjectName}"/>
+                    <Label Grid.Row="2"
+                           Grid.Column="0"
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Content="Description:" />
+                    <TextBlock x:Name="currentProjectDescription"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             FontWeight="Bold"
+                             Foreground="#CC1BA1E2"
+                             Margin="0 5 5 5"
+                             VerticalAlignment="Center"
+                             TextWrapping="Wrap"
+                             Text="{Binding CurrentProjectDescription}"/>
+                    <Label Grid.Row="3"
+                           Grid.Column="0"
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Content="Created on:" />
+                    <TextBlock x:Name="currentProjectCreationDate"
+                             Grid.Row="3"
+                             Grid.Column="1"
+                             FontWeight="Bold"
+                             Foreground="#CC1BA1E2"
+                             Margin="0 5 5 5"
+                             VerticalAlignment="Center"
+                             TextWrapping="Wrap"
+                             Text="{Binding CurrentProjectCreationDate}"/>
+                    <StackPanel Grid.Row="4"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Button x:Name="openProjectButton"
+                            Width="95"
+                            Margin="5"
+                            Content="Open"
+                            HorizontalAlignment="Right"
+                            cal:Message.Attach="[Event Click] = [OpenProject($dataContext, $eventArgs))]"
+                            Style="{DynamicResource SquareButtonStyle}" />
+                        <Button x:Name="cloneProjectButton"
+                            Width="95"
+                            Margin="5"
+                            Content="Clone"
+                            HorizontalAlignment="Right"
+                            cal:Message.Attach="[Event Click] = [CloneProject($dataContext, $eventArgs))]"
+                            Style="{DynamicResource SquareButtonStyle}" />
+                        <Button x:Name="deleteProjectButton"
+                            Width="95"
+                            Margin="5"
+                            Content="Delete"
+                            HorizontalAlignment="Right"
+                            cal:Message.Attach="[Event Click] = [DeleteProject($dataContext, $eventArgs))]"
+                            Style="{DynamicResource SquareButtonStyle}" />
+
+                    </StackPanel>
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>

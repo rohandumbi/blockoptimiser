@@ -1,4 +1,5 @@
-﻿using blockoptimiser.Models;
+﻿using blockoptimiser.DataAccessClasses;
+using blockoptimiser.Models;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace blockoptimiser.ViewModels
     class V2ShellViewModel : Conductor<Object>, IHandle<object>
     {
         private readonly IEventAggregator _eventAggregator;
+        private ProjectDataAccess ProjectDAO;
         public Boolean IsAddFlyoutOpen { get; set; }
         public Boolean IsShowFlyoutOpen { get; set; }
         private V2ProjectsViewModel ProjectsView;
@@ -21,12 +23,17 @@ namespace blockoptimiser.ViewModels
         public String NewProjectName { get; set; }
         public String NewProjectDescription { get; set; }
         public Boolean ShouldOpenNewProject { get; set; }
+
+        public String CurrentProjectName { get; set; }
+        public String CurrentProjectDescription { get; set; }
+        public String CurrentProjectCreationDate { get; set; }
         public V2ShellViewModel()
         {
             _eventAggregator = new EventAggregator();
             _eventAggregator.Subscribe(this);
             IsAddFlyoutOpen = false;
             ShouldOpenNewProject = false;
+            ProjectDAO = new ProjectDataAccess();
             //ActivateItem(new ProjectsViewModel(_eventAggregator));
             ProjectsView = new V2ProjectsViewModel(_eventAggregator);
             ActivateItem(ProjectsView);
@@ -76,6 +83,30 @@ namespace blockoptimiser.ViewModels
             
         }
 
+        public void OpenProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (Context.ProjectId > 0)
+            {
+                ActivateItem(new AppViewModel());
+            }
+        }
+
+        public void CloneProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (Context.ProjectId > 0)
+            {
+                MessageBox.Show("TODO: Clone project.");
+            }
+        }
+
+        public void DeleteProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (Context.ProjectId > 0)
+            {
+                MessageBox.Show("TODO: Delete project.");
+            }
+        }
+
         public void Handle(object message)
         {
             String EventName = message as String;
@@ -91,6 +122,13 @@ namespace blockoptimiser.ViewModels
             }
             else if (EventName == "load:projectDetailsFlyout")
             {
+                Project selectedProject = ProjectDAO.Get(Context.ProjectId);
+                CurrentProjectName = selectedProject.Name;
+                CurrentProjectDescription = selectedProject.Description;
+                CurrentProjectCreationDate = selectedProject.ModifiedDate.ToString();
+                NotifyOfPropertyChange("CurrentProjectName");
+                NotifyOfPropertyChange("CurrentProjectDescription");
+                NotifyOfPropertyChange("CurrentProjectCreationDate");
                 IsShowFlyoutOpen = !IsShowFlyoutOpen;
                 NotifyOfPropertyChange("IsShowFlyoutOpen");
             }

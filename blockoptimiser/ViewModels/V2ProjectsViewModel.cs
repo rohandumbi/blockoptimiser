@@ -77,6 +77,7 @@ namespace blockoptimiser.ViewModels
         public void ShowProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
         {
             Project selectedProject = e as Project;
+            Context.ProjectId = selectedProject.Id;
             _eventAggregator.PublishOnUIThread("load:projectDetailsFlyout");
         }
 
