@@ -12,25 +12,13 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class BlockDataAccess : BaseDataAccess
     {
-        public List<Block> GetBlocks(int ProjectId, int ModelId, String condition)
+        public List<BlockPosition> GetBlockPositions(int ProjectId, int ModelId, String condition)
         {
             using (IDbConnection connection = getConnection())
             {
-                List<Block> blocks = new List<Block>();
-                 List<object> rows = connection.Query($"select a.* , b.* from " +
-                     $"BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition } ").ToList();
-                foreach(Object row in rows)
-                {
-                    IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
-                    Block block = new Block
-                    {
-                        Id = (long)rowDictionary["Bid"],
-                        data = rowDictionary
-                    };
-                    blocks.Add(block);
-                    
-                }
-                return blocks;
+                return connection.Query<BlockPosition>($"select bid, i, j, k from " +
+                     $" BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }" +
+                     $" and b.Bid not in ( select distinct BId from BOResult_" + Context.ProjectId +")" ).ToList();
             }
         }
         public String GetAngle(int ProjectId, int ModelId, String selectstr)
@@ -42,18 +30,14 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetGeotechBlocks(int ProjectId, int ModelId, List<String> columns)
+        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int ProjectId, int ModelId)
         {
             
             using (IDbConnection connection = getConnection())
             {
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Block>>>();
-                String sql = $"select bid, i, j, k,xortho, yortho, zortho " ;
-                foreach(String column in columns)
-                {
-                    sql = sql + ","+ column;
-                }
-                sql = sql + $" from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id order by i,j,k asc ";
+                String sql =  $"select a.* , b.*  from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id" +
+                    $" and b.bid not in ( select distinct BId from BOResult_" + Context.ProjectId + ") order by i,j,k asc ";
                 Console.WriteLine("Sql :>"+ sql);
                 List<object> rows = connection.Query(sql).ToList();
                 foreach (Object row in rows)
@@ -61,12 +45,12 @@ namespace blockoptimiser.DataAccessClasses
                     IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
                     Block block = new Block
                     {
-                        Id = (long)rowDictionary["bid"],
+                        Id = (long)rowDictionary["Bid"],
                         data = rowDictionary
                     };
-                    int i = (int)rowDictionary["i"];
-                    int j = (int)rowDictionary["j"];
-                    int k = (int)rowDictionary["k"];
+                    int i = (int)rowDictionary["I"];
+                    int j = (int)rowDictionary["J"];
+                    int k = (int)rowDictionary["K"];
                     if(!blocks.ContainsKey(i))
                     {
                         Dictionary<int, Block> zblocks = new Dictionary<int, Block>();

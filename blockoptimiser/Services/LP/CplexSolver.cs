@@ -14,10 +14,12 @@ namespace blockoptimiser.Services.LP
     public class CplexSolver
     {
         private EquationGenerator _generator;
+        private SchedulerQueueDataAccess _schedulerQueueDataAccess;
 
         public CplexSolver()
         {
             _generator = new EquationGenerator();
+            _schedulerQueueDataAccess = new SchedulerQueueDataAccess();
         }
 
         public void Solve(int ProjectId, int ScenarioId, int StartYear, int EndYear, float DiscountFactor)
@@ -28,26 +30,55 @@ namespace blockoptimiser.Services.LP
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 Scenario scenario = new ScenarioDataAccess().Get(ScenarioId);
+                
                 ExecutionContext context = new ExecutionContext(ProjectId, ScenarioId, scenario.DiscountFactor);
                 for (int i = 0; i < scenario.TimePeriod; i++)
                 {
                     int year = scenario.StartYear + i;
                     context.Year = year;
                     context.Period = (i + 1);
-                    _generator.Generate(context);
                     try
                     {
-                        //_generator.Generate(context);
+                        if(i>0)
+                        {
+                            context.LoadMinedBlockList();
+                        }
+                        _generator.Generate(context);
+                        SchedulerQueue queueItem = new SchedulerQueue
+                        {
+                            ProjectId = ProjectId,
+                            FileName = _generator.FileName,
+                            Year = year
+                        };
+                        _schedulerQueueDataAccess.Insert(queueItem);
+                        Boolean solved = false;
+                        Boolean loopcontinue = true;
+                        Stopwatch loopstopwatch = new Stopwatch();
+                        loopstopwatch.Start();
+                        while (loopcontinue && loopstopwatch.ElapsedMilliseconds < 5 * 60 * 1000 ) // If elapsed time is more than 5 mins break
+                        {
+                            SchedulerQueue updateQueueItem = _schedulerQueueDataAccess.Get(queueItem.Id);
+                            if(updateQueueItem.IsProcessed)
+                            {
+                                loopcontinue = false;
+                                solved = true;
+                            } else
+                            {
+                                Console.WriteLine("Waiting for queue item to be processed. ");
+                                Thread.Sleep(5000);
+                            }
+                        }
+                        if(!solved)
+                        {
+                            break;
+                        }
                     }
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message);
+                        break;
                     }
-
-
-                    // read solution and go for next one. As of now breaking in the first one
-
-                    if (i == 0) break;
+                    
                 }
                 stopwatch.Stop();
                 // Write hours, minutes and seconds.

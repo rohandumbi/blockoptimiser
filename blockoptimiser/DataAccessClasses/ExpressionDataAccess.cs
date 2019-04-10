@@ -235,7 +235,7 @@ namespace blockoptimiser.DataAccessClasses
             List<Field> fields = new FieldDataAccess().GetAll(projectId);
             foreach(Field field in fields)
             {
-                str = str.Replace(field.Name, "cast(" + field.Name + " as decimal)");
+                str = str.Replace(field.Name, "convert(float," + field.Name+")");
             }
             return str;
         }

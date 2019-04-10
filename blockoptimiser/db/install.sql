@@ -281,3 +281,15 @@ CREATE TABLE OpexYearMapping (
    Value DECIMAL(18,10),
    unique (OpexId, Year)
 );
+
+IF OBJECT_ID('SchedulerQueue', 'U') IS NOT NULL
+DROP TABLE SchedulerQueue; 
+
+CREATE TABLE SchedulerQueue (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ProjectId INT,
+   FileName VARCHAR(200),
+   Year INT,
+   IsProcessed TINYINT,
+   UpdatedAt DATETIME
+);
