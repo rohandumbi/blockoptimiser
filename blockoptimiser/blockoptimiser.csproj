@@ -121,6 +121,7 @@
     <Compile Include="DataAccessClasses\SchedulerQueueDataAccess.cs" />
     <Compile Include="DataAccessClasses\SchedulerResultDataAccess.cs" />
     <Compile Include="MenuItem.cs" />
+    <Compile Include="Models\BenchLimit.cs" />
     <Compile Include="Models\Block.cs" />
     <Compile Include="Models\CsvColumnMapping.cs" />
     <Compile Include="Models\Expression.cs" />
