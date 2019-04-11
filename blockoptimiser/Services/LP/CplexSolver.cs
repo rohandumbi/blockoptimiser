@@ -22,7 +22,7 @@ namespace blockoptimiser.Services.LP
             _schedulerQueueDataAccess = new SchedulerQueueDataAccess();
         }
 
-        public void Solve(int ProjectId, int ScenarioId)
+        public void Solve(int ProjectId, int ScenarioId, int StartYear, int EndYear, float DiscountFactor)
         {
             new Thread(() =>
             {
@@ -51,6 +51,7 @@ namespace blockoptimiser.Services.LP
                             Year = year
                         };
                         _schedulerQueueDataAccess.Insert(queueItem);
+                        Boolean solved = false;
                         Boolean loopcontinue = true;
                         Stopwatch loopstopwatch = new Stopwatch();
                         loopstopwatch.Start();
@@ -60,11 +61,16 @@ namespace blockoptimiser.Services.LP
                             if(updateQueueItem.IsProcessed)
                             {
                                 loopcontinue = false;
+                                solved = true;
                             } else
                             {
                                 Console.WriteLine("Waiting for queue item to be processed. ");
                                 Thread.Sleep(5000);
                             }
+                        }
+                        if(!solved)
+                        {
+                            break;
                         }
                     }
                     catch (Exception e)

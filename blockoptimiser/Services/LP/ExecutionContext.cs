@@ -16,6 +16,9 @@ namespace blockoptimiser.Services.LP
         public int Period { get; set; }
         public decimal DiscountFactor { get; set; }
 
+        private Boolean _benchConstraintEnabled = true;
+        private int _benchConstraint = 4;
+
 
         private List<Model> models;
         private List<Field> fields;
@@ -28,15 +31,15 @@ namespace blockoptimiser.Services.LP
         private List<GradeLimit> gradeLimits;
         private Dictionary<String, String> requiredFields;
         private Dictionary<long, List<int>> blockProcessMapping;
-        private SchedulerResultDataAccess schedulerResultDataAccess { get; set; }
         private List<long> minedBlocks;
+        private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
 
         public ExecutionContext(int ProjectId, int ScenarioId, int DiscountFactor)
         {
             this.ProjectId = ProjectId;
             this.ScenarioId = ScenarioId;
             this.DiscountFactor = (decimal)DiscountFactor/100;
-            this.schedulerResultDataAccess = new SchedulerResultDataAccess();
+            SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
             blockProcessMapping = new Dictionary<long, List<int>>();
@@ -52,6 +55,7 @@ namespace blockoptimiser.Services.LP
         public void Reset()
         {
             blockProcessMapping = new Dictionary<long, List<int>>();
+            LoadBlocks();
         }
         private void LoadData()
         {
@@ -66,14 +70,29 @@ namespace blockoptimiser.Services.LP
             gradeLimits = new GradeLimitDataAccess().GetGradeLimits();
         }
 
-        public void LoadMinedBlockList()
+        private void LoadBlocks()
         {
-            minedBlocks = schedulerResultDataAccess.GetMinedBlocks(ProjectId);
+            Blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>>();
+            BlockDataAccess blockDataAccess = new BlockDataAccess();
+            foreach (Model model in models)
+            {
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>>  blocksInModel = blockDataAccess.GetBlocks(this.ProjectId, model.Id);
+                Blocks.Add(model.Id, blocksInModel);
+            }
         }
 
+        public void LoadMinedBlockList()
+        {
+            SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
+            minedBlocks = schedulerResultDataAccess.GetMinedBlocks(ProjectId);
+        } 
         public Boolean IsMined(long BId)
         {
             return minedBlocks.Contains(BId);
+        }
+        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int modelId)
+        {
+            return Blocks[modelId];
         }
         public List<Model> GetModels()
         {
@@ -199,14 +218,9 @@ namespace blockoptimiser.Services.LP
         {
             return new GeotechDataAccess().Get(ModelId);
         }
-        public List<Block> GetBlocks(int modelId, String condition)
+        public List<BlockPosition> GetBlockPositions(int modelId, String condition)
         {
-            return new BlockDataAccess().GetBlocks(ProjectId, modelId, condition);
-        }
-
-        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetGeotechBlocks(int modelId)
-        {
-            return new BlockDataAccess().GetGeotechBlocks(ProjectId, modelId, new List<String> { requiredFields["tonnage"] });
+            return new BlockDataAccess().GetBlockPositions(ProjectId, modelId, condition);
         }
 
         public List<Opex> getOpexList()
@@ -311,6 +325,41 @@ namespace blockoptimiser.Services.LP
             {
                 return Decimal.Parse(value);
             }
+        }
+
+        public Boolean IsValid(BlockPosition bp, int modelId)
+        {
+            Boolean isValid = true;
+            if(_benchConstraintEnabled)
+            {
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
+                Dictionary<int, Block> verticalBlocks = blocks[bp.I][bp.J];
+                int maxKValue = verticalBlocks.Keys.Max();
+                if (bp.K <= (maxKValue - _benchConstraint))
+                {
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+        public Boolean IsValid(Block b, int modelId)
+        {
+            Boolean isValid = true;
+            if (_benchConstraintEnabled)
+            {
+                int i = (int)b.data["I"];
+                int j = (int)b.data["J"];
+                int k = (int)b.data["K"];
+
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
+                Dictionary<int, Block> verticalBlocks = blocks[i][j];
+                int maxKValue = verticalBlocks.Keys.Max();
+                if (k <= (maxKValue - _benchConstraint))
+                {
+                    isValid = false;
+                }
+            }
+            return isValid;
         }
     }
 }

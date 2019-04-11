@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace blockoptimiser.DataAccessClasses
 {
@@ -51,6 +52,11 @@ namespace blockoptimiser.DataAccessClasses
                 String deleteQuery = $"delete from Project where Id = { ProjectId }";
                 connection.Execute(deleteQuery);
             }
+        }
+
+        public void Clone(int ProjectId)
+        {
+            MessageBox.Show("TODO: DB implementation of cloning project id: " + ProjectId);
         }
     }
 }

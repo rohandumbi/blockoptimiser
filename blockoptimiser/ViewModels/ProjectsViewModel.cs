@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace blockoptimiser.ViewModels
 {
@@ -44,9 +45,34 @@ namespace blockoptimiser.ViewModels
         {
             set
             {
-                Context.ProjectId = value.Id;
-                _eventAggregator.PublishOnUIThread("loaded:project");
+                if (value != null)
+                {
+                    Context.ProjectId = value.Id;
+                }
+               // _eventAggregator.PublishOnUIThread("loaded:project");
             }
+        }
+
+        public void LoadProject()
+        {
+            if (Context.ProjectId <= 0)
+            {
+                MessageBox.Show("Please select a project.");
+                return;
+            }
+            _eventAggregator.PublishOnUIThread("loaded:project");
+        }
+
+        public void CloneProject()
+        {
+            if (Context.ProjectId <= 0)
+            {
+                MessageBox.Show("Please select a project.");
+                return;
+            }
+            _projectDAO.Clone(Context.ProjectId);
+            LoadProjects();
+            NotifyOfPropertyChange("Projects");
         }
 
         public void CreateProject()
