@@ -20,6 +20,7 @@ namespace blockoptimiser.ViewModels
         private ProcessLimitDataAccess ProcessLimitDAO;
         private ScenarioDataAccess ScenarioDAO;
         private Scenario Scenario;
+        private ModelDataAccess ModelDAO;
 
         public UnitItem SelectedUnit { get; set; }
         public List<UnitItem> UnitItems { get; set; }
@@ -31,6 +32,7 @@ namespace blockoptimiser.ViewModels
         public List<Product> Products;
         public List<String> ProductJoins;
         public List<Process> Processes;
+        private List<Model> Models;
 
         public BindableCollection<ProcessLimit> ProcessLimits { get; set; }
 
@@ -55,10 +57,12 @@ namespace blockoptimiser.ViewModels
             ProcessDAO = new ProcessDataAccess();
             ProductDAO = new ProductDataAccess();
             ProductJoinDAO = new ProductJoinDataAccess();
+            ModelDAO = new ModelDataAccess();
 
             Processes = ProcessDAO.GetAll(Context.ProjectId);
             Products = ProductDAO.GetAll(Context.ProjectId);
             ProductJoins = ProductJoinDAO.GetProductJoins(Context.ProjectId);
+            Models = ModelDAO.GetAll(Context.ProjectId);
 
 
             UnitItems = new List<UnitItem>();
@@ -76,6 +80,11 @@ namespace blockoptimiser.ViewModels
             foreach (String productJoin in ProductJoins)
             {
                 UnitItems.Add(new UnitItem(productJoin, 0, ProcessLimit.ITEM_TYPE_PRODUCT_JOIN));
+            }
+
+            foreach (Model model in Models)
+            {
+                UnitItems.Add(new UnitItem(model.Name, model.Id, ProcessLimit.ITEM_TYPE_MODEL));
             }
 
             this.ProcessLimitColumns = new ObservableCollection<DataGridColumn>();

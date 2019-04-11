@@ -12,6 +12,7 @@ namespace blockoptimiser.Models
         public static byte ITEM_TYPE_PROCESS = 1;
         public static byte ITEM_TYPE_PRODUCT = 2;
         public static byte ITEM_TYPE_PRODUCT_JOIN = 3;
+        public static byte ITEM_TYPE_MODEL = 4;
 
         private List<ProcessLimitYearMapping> _processLimitYearMapping;
         private Boolean _isUsed;

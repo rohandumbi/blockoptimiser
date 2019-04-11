@@ -14,6 +14,7 @@ namespace blockoptimiser.ViewModels
         public String FinanceButtonForeground { get; set; }
         public String ProcessButtonForeground { get; set; }
         public String GradeButtonForeground { get; set; }
+        public String BenchButtonForeground { get; set; }
         public Boolean IsPeriodSelected { get; set; }
 
         private readonly IEventAggregator _eventAggregator;
@@ -34,6 +35,7 @@ namespace blockoptimiser.ViewModels
             FinanceButtonForeground = "#FF0E1A1F";
             ProcessButtonForeground = "#FF0E1A1F";
             GradeButtonForeground = "#FF0E1A1F";
+            BenchButtonForeground = "#FF0E1A1F";
         }
 
         public void SetDisabledButtonForegrounds()
@@ -42,6 +44,7 @@ namespace blockoptimiser.ViewModels
             FinanceButtonForeground = "#D3D3D3";
             ProcessButtonForeground = "#D3D3D3";
             GradeButtonForeground = "#D3D3D3";
+            BenchButtonForeground = "#D3D3D3";
         }
 
         private void NotifyButtonforegroundChanges()
@@ -50,6 +53,7 @@ namespace blockoptimiser.ViewModels
             NotifyOfPropertyChange(() => FinanceButtonForeground);
             NotifyOfPropertyChange(() => ProcessButtonForeground);
             NotifyOfPropertyChange(() => GradeButtonForeground);
+            NotifyOfPropertyChange(() => BenchButtonForeground);
         }
 
         public void ClickTab(object sender)
@@ -83,6 +87,11 @@ namespace blockoptimiser.ViewModels
                         GradeButtonForeground = "#FF189AD3";
                         NotifyOfPropertyChange(() => GradeButtonForeground);
                         ActivateItem(new GradeLimitViewModel());
+                        break;
+                    case "Bench":
+                        BenchButtonForeground = "#FF189AD3";
+                        NotifyOfPropertyChange(() => BenchButtonForeground);
+                        ActivateItem(new BenchLimitViewModel());
                         break;
                     default:
                         PeriodButtonForeground = "#FF189AD3";

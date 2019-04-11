@@ -39,6 +39,8 @@
             </Button>
             <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsPeriodSelected}" Content="Grade" Foreground="{Binding GradeButtonForeground}">
             </Button>
+            <Button cal:Message.Attach="[Event Click] = [Action ClickTab($source)]" IsEnabled="{Binding IsPeriodSelected}" Content="Bench" Foreground="{Binding BenchButtonForeground}">
+            </Button>
         </StackPanel>
         <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="1"/>
     </Grid>
