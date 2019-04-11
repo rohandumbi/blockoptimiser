@@ -150,6 +150,7 @@
     <Compile Include="UnitItem.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\BenchLimitViewModel.cs" />
     <Compile Include="ViewModels\ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\ExpressionViewModel.cs" />
     <Compile Include="ViewModels\FinanceLimitViewModel.cs" />
@@ -167,6 +168,9 @@
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BenchLimitView.xaml.cs">
+      <DependentUpon>BenchLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExpressionModelMappingView.xaml.cs">
       <DependentUpon>ExpressionModelMappingView.xaml</DependentUpon>
@@ -239,6 +243,10 @@
       <DependentUpon>ZoneView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BenchLimitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -237,6 +237,7 @@ CREATE TABLE BenchLimit (
    Id INT IDENTITY(1,1) PRIMARY KEY,
    ScenarioId INT NOT NULL,
    ModelId INT NOT NULL,
+   ModelName VARCHAR(50) NOT NULL,
    Value INT,
    IsUsed TINYINT,
    unique (ScenarioId, ModelId)

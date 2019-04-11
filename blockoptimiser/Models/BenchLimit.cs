@@ -15,6 +15,7 @@ namespace blockoptimiser.Models
         public int Id { get; set; }
         public int ScenarioId { get; set; }
         public int ModelId { get; set; }
+        public String ModelName { get; set; }
         public int Value {
             get { return _value; }
             set

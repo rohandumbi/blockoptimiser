@@ -27,11 +27,12 @@ namespace blockoptimiser.DataAccessClasses
         {
             using (IDbConnection connection = getConnection())
             {
-                String updateQuery = $"update BenchLimit set ScenarioId = @ScenarioId, ModelId = @ModelId, Value = @Value, IsUsed = @IsUsed  where Id = @Id ";
+                String updateQuery = $"update BenchLimit set ScenarioId = @ScenarioId, ModelId = @ModelId, ModelName = @ModelName, Value = @Value, IsUsed = @IsUsed  where Id = @Id ";
                 connection.Execute(updateQuery, new
                 {
                     updatedBenchLimit.ScenarioId,
                     updatedBenchLimit.ModelId,
+                    updatedBenchLimit.ModelName,
                     updatedBenchLimit.Value,
                     updatedBenchLimit.IsUsed,
                     updatedBenchLimit.Id
@@ -44,14 +45,15 @@ namespace blockoptimiser.DataAccessClasses
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into BenchLimit (ScenarioId, ModelId, Value, IsUsed)" +
+                String insertQuery = $"insert into BenchLimit (ScenarioId, ModelId, ModelName,  Value, IsUsed)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ScenarioId, @ModelId, @Value, @IsUsed)";
+                    $" VALUES(@ScenarioId, @ModelId, @ModelName, @Value, @IsUsed)";
 
                 newBenchLimit.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newBenchLimit.ScenarioId,
                     newBenchLimit.ModelId,
+                    newBenchLimit.ModelName,
                     newBenchLimit.Value,
                     newBenchLimit.IsUsed
                 });
