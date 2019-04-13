@@ -230,6 +230,19 @@ CREATE TABLE ProcessLimitYearMapping (
    unique (ProcessLimitId,Year)
 );
 
+IF OBJECT_ID('BenchLimit', 'U') IS NOT NULL
+DROP TABLE BenchLimit; 
+
+CREATE TABLE BenchLimit (
+   Id INT IDENTITY(1,1) PRIMARY KEY,
+   ScenarioId INT NOT NULL,
+   ModelId INT NOT NULL,
+   ModelName VARCHAR(50) NOT NULL,
+   Value INT,
+   IsUsed TINYINT,
+   unique (ScenarioId, ModelId)
+);
+
 IF OBJECT_ID('GradeLimit', 'U') IS NOT NULL
 DROP TABLE GradeLimit; 
 
