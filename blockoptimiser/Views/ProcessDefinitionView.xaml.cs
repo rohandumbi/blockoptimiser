@@ -22,9 +22,7 @@ namespace blockoptimiser.Views
     public partial class ProcessDefinitionView : Window
     {
         private ProcessDataAccess ProcessDAO;
-        private FieldDataAccess FieldDAO;
         private ModelDataAccess ModelDAO;
-        private List<Field> Fields;
         private List<String> FieldNames;
         private String SelectedFieldName;
         public List<Model> Models;

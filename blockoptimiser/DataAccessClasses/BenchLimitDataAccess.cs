@@ -11,15 +11,11 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class BenchLimitDataAccess : BaseDataAccess
     {
-        public List<BenchLimit> GetAll()
+        public List<BenchLimit> GetAll(int ScenarioId)
         {
             using (IDbConnection connection = getConnection())
             {
-                var BenchLimits = connection.Query<BenchLimit>($"select * " +
-                    $"from BenchLimit " +
-                    $"where ScenarioID = { Context.ScenarioId }").ToList();
-
-                return BenchLimits;
+                return connection.Query<BenchLimit>($"select * from BenchLimit where ScenarioID = { ScenarioId }").ToList();
             }
         }
 

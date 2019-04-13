@@ -11,13 +11,11 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class ProcessLimitDataAccess : BaseDataAccess
     {
-        public List<ProcessLimit> GetProcessLimits()
+        public List<ProcessLimit> GetAll(int ScenarioId)
         {
             using (IDbConnection connection = getConnection())
             {
-                var ProcessLimits = connection.Query<ProcessLimit>($"select * " +
-                    $"from ProcessLimit " +
-                    $"where ScenarioID = { Context.ScenarioId }").ToList();
+                var ProcessLimits = connection.Query<ProcessLimit>($"select * from ProcessLimit where ScenarioID = { ScenarioId }").ToList();
                 
                 foreach (var ProcessLimit in ProcessLimits)
                 {

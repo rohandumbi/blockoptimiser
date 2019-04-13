@@ -32,9 +32,9 @@ namespace blockoptimiser.Services.LP
                 Scenario scenario = new ScenarioDataAccess().Get(ScenarioId);
                 
                 ExecutionContext context = new ExecutionContext(ProjectId, ScenarioId, scenario.DiscountFactor);
-                for (int i = 0; i < scenario.TimePeriod; i++)
+                for (int i = 0; i < (EndYear - StartYear + 1 ); i++)
                 {
-                    int year = scenario.StartYear + i;
+                    int year = StartYear + i;
                     context.Year = year;
                     context.Period = (i + 1);
                     try

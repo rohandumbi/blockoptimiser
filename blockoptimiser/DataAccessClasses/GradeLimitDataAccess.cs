@@ -11,11 +11,11 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class GradeLimitDataAccess : BaseDataAccess
     {
-        public List<GradeLimit> GetGradeLimits()
+        public List<GradeLimit> GetAll(int ScenarioId)
         {
             using (IDbConnection connection = getConnection())
             {
-                List<GradeLimit> GradeLimits = connection.Query<GradeLimit>($"select * from GradeLimit where ScenarioID = { Context.ScenarioId }").ToList();
+                List<GradeLimit> GradeLimits = connection.Query<GradeLimit>($"select * from GradeLimit where ScenarioID = { ScenarioId }").ToList();
                 
                 foreach (var GradeLimit in GradeLimits)
                 {

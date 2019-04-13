@@ -30,6 +30,27 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
+        public Block GetBlock(int ProjectId, int ModelId, long bid)
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                
+                String sql = $"select a.* , b.*  from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id" +
+                    $" and b.bid = { bid } ";
+
+                IDictionary<string, object> rowDictionary = connection.QuerySingle(sql);
+                Block block = new Block
+                {
+                    Id = (long)rowDictionary["Bid"],
+                    data = rowDictionary
+                };
+                return block;
+
+            }
+                
+        }
+
         public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int ProjectId, int ModelId)
         {
             
