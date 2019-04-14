@@ -387,6 +387,33 @@ namespace blockoptimiser.Services.LP
                         }
                     }
                 }
+                if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_MODEL)
+                {
+                    int modelId = processLimit.ItemId;
+                    Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(modelId);
+                    foreach (int ii in blocks.Keys)
+                    {
+                        foreach (int jj in blocks[ii].Keys)
+                        {
+                            foreach (int kk in blocks[ii][jj].Keys)
+                            {
+
+                                Block b = blocks[ii][jj][kk];
+                                if(!context.IsValid(b, modelId))
+                                {
+                                    if (context.GetBlockProcessMapping().ContainsKey(b.Id))
+                                    {
+                                        List<int> processNos = context.GetBlockProcessMapping()[b.Id];
+                                        foreach (int processNo in processNos)
+                                        {
+                                            Write(" + B" + b.Id + "p" + processNo , sw);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 Write(" <=  "+processLimitValue, sw);
                 Write("", sw);
             }

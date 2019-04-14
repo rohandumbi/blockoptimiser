@@ -44,7 +44,7 @@ namespace blockoptimiser.ViewModels
         {
             IsMax = false;
             GradeLimitDAO = new GradeLimitDataAccess();
-            GradeLimits = new BindableCollection<GradeLimit>(GradeLimitDAO.GetGradeLimits());
+            GradeLimits = new BindableCollection<GradeLimit>(GradeLimitDAO.GetAll(Context.ScenarioId));
 
             foreach (GradeLimit gradeLimitModel in GradeLimits)
             {
@@ -205,7 +205,7 @@ namespace blockoptimiser.ViewModels
 
         private void UpdateCollection()
         {
-            GradeLimits = new BindableCollection<GradeLimit>(GradeLimitDAO.GetGradeLimits());
+            GradeLimits = new BindableCollection<GradeLimit>(GradeLimitDAO.GetAll(Context.ScenarioId));
             foreach (GradeLimit gradeLimitModel in GradeLimits)
             {
                 gradeLimitModel.PropertyChanged += gradeLimit_PropertyChanged;

@@ -27,7 +27,6 @@ namespace blockoptimiser.Views
 
         public void button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Run sliding window.");
             int StartYear = 0;
             int EndYear = 0;
             float DiscountFactor = 0;

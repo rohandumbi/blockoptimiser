@@ -40,7 +40,7 @@ namespace blockoptimiser.ViewModels
         public ProcessLimitViewModel()
         {
             ProcessLimitDAO = new ProcessLimitDataAccess();
-            ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetProcessLimits());
+            ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetAll(Context.ScenarioId));
 
             foreach (ProcessLimit processLimitmodel in ProcessLimits)
             {
@@ -113,7 +113,7 @@ namespace blockoptimiser.ViewModels
 
         public void UpdateCollection()
         {
-            ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetProcessLimits());
+            ProcessLimits = new BindableCollection<ProcessLimit>(ProcessLimitDAO.GetAll(Context.ScenarioId));
             foreach (ProcessLimit processLimitmodel in ProcessLimits)
             {
                 processLimitmodel.PropertyChanged += processLimit_PropertyChanged;

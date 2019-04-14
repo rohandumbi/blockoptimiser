@@ -16,9 +16,6 @@ namespace blockoptimiser.Services.LP
         public int Period { get; set; }
         public decimal DiscountFactor { get; set; }
 
-        private Boolean _benchConstraintEnabled = true;
-        private int _benchConstraint = 4;
-
 
         private List<Model> models;
         private List<Field> fields;
@@ -29,6 +26,8 @@ namespace blockoptimiser.Services.LP
         private List<Opex> opexList;
         private List<ProcessLimit> processLimits;
         private List<GradeLimit> gradeLimits;
+        private List<BenchLimit> benchLimits;
+        private Dictionary<int, BenchLimit> modelBenchLimitMapping;
         private Dictionary<String, String> requiredFields;
         private Dictionary<long, List<int>> blockProcessMapping;
         private List<long> minedBlocks;
@@ -66,8 +65,17 @@ namespace blockoptimiser.Services.LP
             products = new ProductDataAccess().GetAll(ProjectId);
             processJoins = new ProcessJoinDataAccess().GetProcessJoins(ProjectId);
             opexList = new OpexDataAccess().GetAll(ScenarioId);
-            processLimits = new ProcessLimitDataAccess().GetProcessLimits();
-            gradeLimits = new GradeLimitDataAccess().GetGradeLimits();
+            processLimits = new ProcessLimitDataAccess().GetAll(ScenarioId);
+            gradeLimits = new GradeLimitDataAccess().GetAll(ScenarioId);
+            benchLimits = new BenchLimitDataAccess().GetAll(ScenarioId);
+            modelBenchLimitMapping = new Dictionary<int, BenchLimit>();
+            foreach(BenchLimit benchLimit in benchLimits)
+            {
+                if(!modelBenchLimitMapping.ContainsKey(benchLimit.ModelId))
+                {
+                    modelBenchLimitMapping.Add(benchLimit.ModelId, benchLimit);
+                }
+            }
         }
 
         private void LoadBlocks()
@@ -330,33 +338,42 @@ namespace blockoptimiser.Services.LP
         public Boolean IsValid(BlockPosition bp, int modelId)
         {
             Boolean isValid = true;
-            if(_benchConstraintEnabled)
+            if(modelBenchLimitMapping.ContainsKey(modelId))
             {
-                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
-                Dictionary<int, Block> verticalBlocks = blocks[bp.I][bp.J];
-                int maxKValue = verticalBlocks.Keys.Max();
-                if (bp.K <= (maxKValue - _benchConstraint))
+                BenchLimit benchLimit = modelBenchLimitMapping[modelId];
+                if(benchLimit.IsUsed)
                 {
-                    isValid = false;
+                    Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
+                    Dictionary<int, Block> verticalBlocks = blocks[bp.I][bp.J];
+                    int maxKValue = verticalBlocks.Keys.Max();
+                    if (bp.K <= (maxKValue - benchLimit.Value))
+                    {
+                        isValid = false;
+                    }
                 }
+
             }
             return isValid;
         }
         public Boolean IsValid(Block b, int modelId)
         {
             Boolean isValid = true;
-            if (_benchConstraintEnabled)
+            if (modelBenchLimitMapping.ContainsKey(modelId))
             {
-                int i = (int)b.data["I"];
-                int j = (int)b.data["J"];
-                int k = (int)b.data["K"];
-
-                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
-                Dictionary<int, Block> verticalBlocks = blocks[i][j];
-                int maxKValue = verticalBlocks.Keys.Max();
-                if (k <= (maxKValue - _benchConstraint))
+                BenchLimit benchLimit = modelBenchLimitMapping[modelId];
+                if (benchLimit.IsUsed)
                 {
-                    isValid = false;
+                    int i = (int)b.data["I"];
+                    int j = (int)b.data["J"];
+                    int k = (int)b.data["K"];
+
+                    Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
+                    Dictionary<int, Block> verticalBlocks = blocks[i][j];
+                    int maxKValue = verticalBlocks.Keys.Max();
+                    if (k <= (maxKValue - benchLimit.Value))
+                    {
+                        isValid = false;
+                    }
                 }
             }
             return isValid;

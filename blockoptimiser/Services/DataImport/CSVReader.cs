@@ -87,7 +87,7 @@ namespace blockoptimiser.Services.DataImport
                         DataTypes[i] = DATA_TYPE_ADDITIVE;
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     DataTypes[i] = DATA_TYPE_GROUP_BY;
                 }

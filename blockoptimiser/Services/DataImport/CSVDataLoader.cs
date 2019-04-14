@@ -152,7 +152,8 @@ namespace blockoptimiser.Services.DataImport
                     " K INT," +
                     " Xortho DECIMAL(18,10)," +
                     " Yortho DECIMAL(18,10)," +
-                    " Zortho DECIMAL(18,10)" +
+                    " Zortho DECIMAL(18,10)," +
+                    " UNIQUE (I, J, K) " +
                     ")";
 
                 connection.Execute(ddl);

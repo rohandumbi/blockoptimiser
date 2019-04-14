@@ -23,7 +23,7 @@ namespace blockoptimiser.ViewModels
         public BenchLimitViewModel()
         {
             BenchLimitDAO = new BenchLimitDataAccess();
-            BenchLimits = new BindableCollection<BenchLimit>(BenchLimitDAO.GetAll());
+            BenchLimits = new BindableCollection<BenchLimit>(BenchLimitDAO.GetAll(Context.ScenarioId));
             foreach (BenchLimit benchLimit in BenchLimits)
             {
                 benchLimit.PropertyChanged += benchLimit_PropertyChanged;
@@ -72,7 +72,7 @@ namespace blockoptimiser.ViewModels
 
         public void UpdateCollection()
         {
-            BenchLimits = new BindableCollection<BenchLimit>(BenchLimitDAO.GetAll());
+            BenchLimits = new BindableCollection<BenchLimit>(BenchLimitDAO.GetAll(Context.ScenarioId));
             foreach (BenchLimit benchLimit in BenchLimits)
             {
                 benchLimit.PropertyChanged += benchLimit_PropertyChanged;
