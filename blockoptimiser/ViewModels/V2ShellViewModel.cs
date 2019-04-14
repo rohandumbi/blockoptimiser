@@ -27,6 +27,8 @@ namespace blockoptimiser.ViewModels
         public String CurrentProjectName { get; set; }
         public String CurrentProjectDescription { get; set; }
         public String CurrentProjectCreationDate { get; set; }
+
+        private Boolean isNewApp = true;
         public V2ShellViewModel()
         {
             _eventAggregator = new EventAggregator();
@@ -48,9 +50,11 @@ namespace blockoptimiser.ViewModels
                 String keyword = selectedButton.Content.ToString();
                 if (keyword == "Projects")
                 {
+                    isNewApp = false;
                     ShowProjectsViewScreen();
                 } else if (keyword == "New App")
                 {
+                    isNewApp = true;
                     ShowNewApp();
                 }
             }
@@ -78,7 +82,8 @@ namespace blockoptimiser.ViewModels
             if (ShouldOpenNewProject == true)
             {
                 Context.ProjectId = newProject.Id;
-                ActivateItem(new AppViewModel());
+                //ActivateItem(new AppViewModel());
+                ActivateItem(new V2AppViewModel());
             }
             
         }
@@ -87,7 +92,8 @@ namespace blockoptimiser.ViewModels
         {
             if (Context.ProjectId > 0)
             {
-                ActivateItem(new AppViewModel());
+                //ActivateItem(new AppViewModel());
+                ActivateItem(new V2AppViewModel());
             }
         }
 
@@ -113,7 +119,15 @@ namespace blockoptimiser.ViewModels
             if (EventName == "loaded:project")
             {
                 //ActivateItem(new MainViewModel());
-                ActivateItem(new AppViewModel());
+                //ActivateItem(new AppViewModel());
+                if (isNewApp == true)
+                {
+                    ActivateItem(new V2AppViewModel());
+                }
+                else {
+                    ActivateItem(new AppViewModel());
+                }
+                
             }
             else if (EventName == "load:addProjectFlyout")
             {
