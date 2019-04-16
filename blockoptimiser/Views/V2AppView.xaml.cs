@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using blockoptimiser.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,20 @@ namespace blockoptimiser.Views
         public V2AppView()
         {
             InitializeComponent();
+            //this.DataContext = new GeotechContainerViewModel();
         }
         private void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
         {
+            //this.DataContext = new GeotechContainerViewModel();
+            //HamburgerMenuControl.Content = e.InvokedItem;
             HamburgerMenuControl.Content = e.InvokedItem;
+
+            //if ((e.InvokedItem as HamburgerMenuIconItem).Tag != null)
+            //{
+            //    ((e.InvokedItem as HamburgerMenuIconItem).Tag as UserControl).DataContext = new GeotechContainerView();
+            //}
+            //HamburgerMenuControl.Content = e.InvokedItem;
         }
+        //HamburgerMenuControl.Content = new GeotechContainerView();
     }
 }

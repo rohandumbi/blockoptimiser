@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using blockoptimiser.ViewModels;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace blockoptimiser.ViewModels
+namespace blockoptimiser.Views
 {
-    public class GeotechContainerViewModel : Conductor<Object>
+    public class V2GeotechContainerViewModel : Conductor<Object>
     {
         private String _geotechButtonForeground;
         private String _processButtonForeground;
         private String _expressionButtonForeground;
 
-        public GeotechContainerViewModel()
+        public V2GeotechContainerViewModel()
         {
             SetDisabledButtonForegrounds();
             GeotechButtonForeground = "#FF189AD3";
@@ -100,4 +101,3 @@ namespace blockoptimiser.ViewModels
         }
     }
 }
-

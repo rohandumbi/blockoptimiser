@@ -185,9 +185,9 @@
                             </Controls:HamburgerMenuIconItem.Tag>-->
                         </Controls:HamburgerMenuIconItem>
                         <Controls:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=AccountCircle}" Label="Geotech/Process">
-                            <!--<Controls:HamburgerMenuIconItem.Tag>
-                                <metroDemo:PrivateView />
-                            </Controls:HamburgerMenuIconItem.Tag>-->
+                            <Controls:HamburgerMenuIconItem.Tag>
+                                <local:V2GeotechContainerView/>
+                            </Controls:HamburgerMenuIconItem.Tag>
                         </Controls:HamburgerMenuIconItem>
                         <Controls:HamburgerMenuIconItem Icon="{iconPacks:Octicons Kind=Briefcase}" Label="Limits">
                             <Controls:HamburgerMenuIconItem.Tag>

@@ -265,6 +265,10 @@
     <Compile Include="Views\V2AppView.xaml.cs">
       <DependentUpon>V2AppView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2GeotechContainerView.xaml.cs">
+      <DependentUpon>V2GeotechContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2GeotechContainerViewModel.cs" />
     <Compile Include="Views\V2ProjectsView.xaml.cs">
       <DependentUpon>V2ProjectsView.xaml</DependentUpon>
     </Compile>
@@ -367,6 +371,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\V2AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2GeotechContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
