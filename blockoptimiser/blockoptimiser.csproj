@@ -265,10 +265,19 @@
     <Compile Include="Views\V2AppView.xaml.cs">
       <DependentUpon>V2AppView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2ExpressionView.xaml.cs">
+      <DependentUpon>V2ExpressionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2GeotechContainerView.xaml.cs">
       <DependentUpon>V2GeotechContainerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\V2GeotechContainerViewModel.cs" />
+    <Compile Include="ViewModels\V2GeotechContainerViewModel.cs" />
+    <Compile Include="Views\V2GeotechView.xaml.cs">
+      <DependentUpon>V2GeotechView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ProcessView.xaml.cs">
+      <DependentUpon>V2ProcessView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ProjectsView.xaml.cs">
       <DependentUpon>V2ProjectsView.xaml</DependentUpon>
     </Compile>
@@ -374,7 +383,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2ExpressionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2GeotechContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2GeotechView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

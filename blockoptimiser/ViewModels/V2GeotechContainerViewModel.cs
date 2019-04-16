@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace blockoptimiser.Views
+namespace blockoptimiser.ViewModels
 {
     public class V2GeotechContainerViewModel : Conductor<Object>
     {
