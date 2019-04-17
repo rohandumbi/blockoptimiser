@@ -22,7 +22,7 @@ namespace blockoptimiser.Services.LP
             _schedulerQueueDataAccess = new SchedulerQueueDataAccess();
         }
 
-        public void Solve(int ProjectId, int ScenarioId, int StartYear, int EndYear, float DiscountFactor)
+        public void Solve(int ProjectId, int ScenarioId, int StartYear, int EndYear, float DiscountFactor, int Period)
         {
             new Thread(() =>
             {
