@@ -1,4 +1,6 @@
-﻿using blockoptimiser.Services.LP;
+﻿using blockoptimiser.DataAccessClasses;
+using blockoptimiser.Models;
+using blockoptimiser.Services.LP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,21 +22,56 @@ namespace blockoptimiser.Views
     /// </summary>
     public partial class SchedulerWindow : Window
     {
+        public List<String> AvailableYears { get; set; }
+        public String StartYear { get; set; }
+        public String EndYear { get; set; }
+        private ScenarioDataAccess ScenarioDAO;
+
         public SchedulerWindow()
         {
             InitializeComponent();
+            ScenarioDAO = new ScenarioDataAccess();
+            Scenario loadedScenario = ScenarioDAO.Get(Context.ScenarioId);
+            AvailableYears = new List<string>();
+            int StartYear = loadedScenario.StartYear;
+            AvailableYears.Add(StartYear.ToString());
+            int PresentYear = StartYear;
+            for (int i=1; i<loadedScenario.TimePeriod; i++)
+            {
+                PresentYear++;
+                AvailableYears.Add(PresentYear.ToString());
+            }
+            StartYearCombo.ItemsSource = AvailableYears;
+            EndYearCombo.ItemsSource = AvailableYears;
         }
 
         public void button_Click(object sender, RoutedEventArgs e)
         {
-            int StartYear = 0;
-            int EndYear = 0;
-            Decimal DiscountFactor = 0;
+            int StartYearInt = 0;
+            int EndYearInt = 0;
+            float DiscountFactor = 0;
+            int Period = 0;
             try
             {
-                StartYear = Int32.Parse(StartYearText.Text);
-                EndYear = Int32.Parse(EndYearText.Text);
-                DiscountFactor = Decimal.Parse(DiscountFactorText.Text);
+                if (StartYearCombo.SelectedItem == null || EndYearCombo.SelectedItem == null)
+                {
+                    MessageBox.Show("Select a valid year.");
+                    return;
+                }
+                if (DiscountFactorText.Text == null || DiscountFactorText.Text == "")
+                {
+                    MessageBox.Show("Provide a valid discount factor.");
+                    return;
+                }
+                if (PeriodText.Text == null || PeriodText.Text == "")
+                {
+                    MessageBox.Show("Provide a valid period.");
+                    return;
+                }
+                StartYearInt = Int32.Parse((String)StartYearCombo.SelectedItem);
+                EndYearInt = Int32.Parse((String)EndYearCombo.SelectedItem);
+                DiscountFactor = float.Parse(DiscountFactorText.Text);
+                Period = Int32.Parse(PeriodText.Text);
             }
             catch (FormatException)
             {
