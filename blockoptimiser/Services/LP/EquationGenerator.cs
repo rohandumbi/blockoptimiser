@@ -117,6 +117,7 @@ namespace blockoptimiser.Services.LP
                 {
                     for (int i = 0; i < context.Window && (context.Year + i) <= context.EndYear; i++)
                     {
+                        double F = (1 / Math.Pow(Convert.ToDouble(1 + context.DiscountFactor), Convert.ToDouble(context.Period + i)));
                         if (!context.IsValid(blockPosition, ModelId, (i+1))) continue;
                         Block block = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
                         Decimal minigCost = GetMiningCost(block, (context.Year+i));
@@ -310,10 +311,9 @@ namespace blockoptimiser.Services.LP
                                 }
                                 else
                                 {
-                                    Write("B" + block.Id + "w1 " + "t" + (context.Period + i) + " >= 0 ", sw);
+                                    Write("B" + block.Id + "w1" + "t" + (context.Period + i) + " >= 0 ", sw);
                                     Write("", sw);
-                                    eqn = eqn + "B" + block.Id + "w1 " + "t" + (context.Period + i);
-                                    Write("", sw);
+                                    eqn = eqn + " + B" + block.Id + "w1" + "t" + (context.Period + i);
                                 }
                             }
                             if(eqn.Length > 0)
@@ -337,6 +337,7 @@ namespace blockoptimiser.Services.LP
                 for (int i = 0; i < context.Window && (context.Year + i) <= context.EndYear; i++)
                 {
                     Decimal processLimitValue = 0;
+                    Boolean hasVariables = false;
                     foreach (var mapping in processLimit.ProcessLimitYearMapping)
                     {
                         if (mapping.Year == (context.Year + i))
@@ -358,6 +359,7 @@ namespace blockoptimiser.Services.LP
                                 if (!context.IsValid(blockPosition, mapping.ModelId, (i + 1))) continue;
                                 Block b = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
                                 Write(" + B" + b.Id + "p" + process.ProcessNumber, sw);
+                                hasVariables = true;
                             }
 
                         }
@@ -381,6 +383,7 @@ namespace blockoptimiser.Services.LP
                                     Decimal tonnesWt = context.GetTonnesWtForBlock(b);
 
                                     Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber + "t" + (context.Period + i), sw);
+                                    hasVariables = true;
                                 }
 
                             }
@@ -408,6 +411,7 @@ namespace blockoptimiser.Services.LP
                                         Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
                                         Decimal tonnesWt = context.GetTonnesWtForBlock(b);
                                         Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber + "t" + (context.Period + i), sw);
+                                        hasVariables = true;
                                     }
 
                                 }
@@ -435,6 +439,7 @@ namespace blockoptimiser.Services.LP
                                             foreach (int processNo in processNos)
                                             {
                                                 Write(" + B" + b.Id + "p" + processNo + "t"+(context.Period + i), sw);
+                                                hasVariables = true;
                                             }
                                         }
                                     }
@@ -442,8 +447,11 @@ namespace blockoptimiser.Services.LP
                             }
                         }
                     }
-                    Write(" <=  " + processLimitValue, sw);
-                    Write("", sw);
+                    if(hasVariables)
+                    {
+                        Write(" <=  " + processLimitValue, sw);
+                        Write("", sw);
+                    }                   
                 }
             }
         }
@@ -457,7 +465,7 @@ namespace blockoptimiser.Services.LP
                 for (int i = 0; i < context.Window && (context.Year + i) <= context.EndYear; i++)
                 {
                     Decimal targetGrade = 0;
-
+                    Boolean hasVariables = false;
                     foreach (var mapping in gradeLimit.GradeLimitYearMapping)
                     {
                         if (mapping.Year == (context.Year + i))
@@ -498,7 +506,7 @@ namespace blockoptimiser.Services.LP
                                     {
                                         Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber + "t" + (context.Period + i), sw);
                                     }
-
+                                    hasVariables = true;
                                 }
 
                             }
@@ -553,22 +561,25 @@ namespace blockoptimiser.Services.LP
                                         {
                                             Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber + "t" + (context.Period + i), sw);
                                         }
-
+                                        hasVariables = true;
                                     }
 
                                 }
                             }
                         }
                     }
-                    if (gradeLimit.IsMax)
+                    if(hasVariables)
                     {
-                        Write(" <= 0 ", sw);
-                    }
-                    else
-                    {
-                        Write(" >= 0 ", sw);
-                    }
-                    Write("", sw);
+                        if (gradeLimit.IsMax)
+                        {
+                            Write(" <= 0 ", sw);
+                        }
+                        else
+                        {
+                            Write(" >= 0 ", sw);
+                        }
+                        Write("", sw);
+                    }                   
                 }
             }
         }

@@ -49,7 +49,7 @@ namespace blockoptimiser.Views
         {
             int StartYearInt = 0;
             int EndYearInt = 0;
-            float DiscountFactor = 0;
+            Decimal DiscountFactor = 0;
             int Period = 0;
             try
             {
@@ -70,7 +70,7 @@ namespace blockoptimiser.Views
                 }
                 StartYearInt = Int32.Parse((String)StartYearCombo.SelectedItem);
                 EndYearInt = Int32.Parse((String)EndYearCombo.SelectedItem);
-                DiscountFactor = float.Parse(DiscountFactorText.Text);
+                DiscountFactor = Decimal.Parse(DiscountFactorText.Text);
                 Period = Int32.Parse(PeriodText.Text);
             }
             catch (FormatException)
@@ -85,8 +85,8 @@ namespace blockoptimiser.Views
                 {
                     ProjectId = Context.ProjectId,
                     ScenarioId = Context.ScenarioId,
-                    StartYear  = StartYear,
-                    EndYear = EndYear,
+                    StartYear  = StartYearInt,
+                    EndYear = EndYearInt,
                     DiscountFactor = DiscountFactor
                 };
                 new CplexSolver().Solve(runconfig);
