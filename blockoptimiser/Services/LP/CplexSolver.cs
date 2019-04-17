@@ -48,7 +48,8 @@ namespace blockoptimiser.Services.LP
                         {
                             ProjectId = runconfig.ProjectId,
                             FileName = _generator.FileName,
-                            Year = year
+                            Year = year,
+                            Period = i + 1
                         };
                         _schedulerQueueDataAccess.Insert(queueItem);
                         Boolean solved = false;

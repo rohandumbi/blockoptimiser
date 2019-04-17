@@ -33,14 +33,15 @@ namespace blockoptimiser.DataAccessClasses
 
             using (IDbConnection connection = getConnection())
             {
-                String insertQuery = $"insert into SchedulerQueue (ProjectId, FileName, Year, IsProcessed, UpdatedAt)" +
+                String insertQuery = $"insert into SchedulerQueue (ProjectId, FileName, Year, Period, IsProcessed, UpdatedAt)" +
                     $" OUTPUT INSERTED.Id  " +
-                    $" VALUES(@ProjectId, @FileName, @Year, 0, GETDATE())";
+                    $" VALUES(@ProjectId, @FileName, @Year, @Period, 0, GETDATE())";
                 newQueueItem.Id = connection.QuerySingle<int>(insertQuery, new
                 {
                     newQueueItem.ProjectId,
                     newQueueItem.FileName,
-                    newQueueItem.Year
+                    newQueueItem.Year,
+                    newQueueItem.Period
                 });
             }
         }

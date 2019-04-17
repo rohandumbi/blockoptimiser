@@ -12,13 +12,13 @@ namespace blockoptimiser.DataAccessClasses
 {
     public class BlockDataAccess : BaseDataAccess
     {
-        public List<BlockPosition> GetBlockPositions(int ProjectId, int ModelId, String condition)
+        public List<BlockPosition> GetBlockPositions(int ProjectId, int ModelId, String tonnesColumnName, String condition)
         {
             using (IDbConnection connection = getConnection())
             {
                 return connection.Query<BlockPosition>($"select bid, i, j, k from " +
                      $" BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }" +
-                     $" and b.Bid not in ( select distinct BId from BOResult_" + Context.ProjectId +")" ).ToList();
+                     $" and b.Bid not in ( select distinct BId from BOResult_{ Context.ProjectId }) and convert(float, a.{ tonnesColumnName }) > 0").ToList();
             }
         }
         public String GetAngle(int ProjectId, int ModelId, String selectstr)
@@ -51,14 +51,14 @@ namespace blockoptimiser.DataAccessClasses
                 
         }
 
-        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int ProjectId, int ModelId)
+        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int ProjectId, int ModelId, String tonnesColumnName)
         {
             
             using (IDbConnection connection = getConnection())
             {
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Block>>>();
                 String sql =  $"select a.* , b.*  from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id" +
-                    $" and b.bid not in ( select distinct BId from BOResult_" + Context.ProjectId + ") order by i,j,k asc ";
+                    $" and b.bid not in ( select distinct BId from BOResult_{ ProjectId } ) and convert(float, a.{ tonnesColumnName }) > 0  order by i,j,k asc ";
                 Console.WriteLine("Sql :>"+ sql);
                 List<object> rows = connection.Query(sql).ToList();
                 foreach (Object row in rows)

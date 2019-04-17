@@ -303,6 +303,7 @@ CREATE TABLE SchedulerQueue (
    ProjectId INT,
    FileName VARCHAR(200),
    Year INT,
+   Period INT,
    IsProcessed TINYINT,
    UpdatedAt DATETIME
 );

@@ -85,10 +85,11 @@ namespace blockoptimiser.Services.LP
         private void LoadBlocks()
         {
             Blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>>();
+            String tonnesColumnName = requiredFields["tonnage"];
             BlockDataAccess blockDataAccess = new BlockDataAccess();
             foreach (Model model in models)
             {
-                Dictionary<int, Dictionary<int, Dictionary<int, Block>>>  blocksInModel = blockDataAccess.GetBlocks(this.ProjectId, model.Id);
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>>  blocksInModel = blockDataAccess.GetBlocks(this.ProjectId, model.Id, tonnesColumnName);
                 Blocks.Add(model.Id, blocksInModel);
             }
         }
@@ -232,7 +233,8 @@ namespace blockoptimiser.Services.LP
         }
         public List<BlockPosition> GetBlockPositions(int modelId, String condition)
         {
-            return new BlockDataAccess().GetBlockPositions(ProjectId, modelId, condition);
+            String tonnesColumnName = requiredFields["tonnage"];
+            return new BlockDataAccess().GetBlockPositions(ProjectId, modelId, tonnesColumnName, condition);
         }
 
         public List<Opex> getOpexList()
