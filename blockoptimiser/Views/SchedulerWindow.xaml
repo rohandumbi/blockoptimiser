@@ -17,14 +17,29 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label>Start Year:</Label>
-        <TextBox x:Name="StartYearText" Grid.Column="1" Margin="0 0 10 0" Width="100"/>
+        <ComboBox x:Name="StartYearCombo" Grid.Column="1" Margin="0 0 10 0" Width="100" ItemsSource="{Binding AvailableYears}" SelectedItem="{Binding StartYear}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding .}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <Label Grid.Row="1">End Year:</Label>
-        <TextBox x:Name="EndYearText" Grid.Row="1" Grid.Column="1" Margin="0 0 10 0" Width="100"/>
-        <Label Grid.Row="2"> Discount Factor:</Label>
+        <ComboBox x:Name="EndYearCombo" Grid.Row="1" Grid.Column="1" Margin="0 0 10 0" Width="100" ItemsSource="{Binding AvailableYears}" SelectedItem="{Binding EndYear}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding .}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Grid.Row="2">Period:</Label>
         <TextBox x:Name="DiscountFactorText" Grid.Row="2" Grid.Column="1" Margin="0 0 10 0" Width="100"/>
-        <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="3" Grid.Column="0" Content="Run"></Button>
+        <Label Grid.Row="3"> Discount Factor:</Label>
+        <TextBox x:Name="PeriodText" Grid.Row="3" Grid.Column="1" Margin="0 0 10 0" Width="100"/>
+        <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="4" Grid.Column="0" Content="Run"></Button>
     </Grid>
 </Window>
