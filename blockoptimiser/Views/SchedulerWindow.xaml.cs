@@ -29,12 +29,12 @@ namespace blockoptimiser.Views
         {
             int StartYear = 0;
             int EndYear = 0;
-            float DiscountFactor = 0;
+            Decimal DiscountFactor = 0;
             try
             {
                 StartYear = Int32.Parse(StartYearText.Text);
                 EndYear = Int32.Parse(EndYearText.Text);
-                DiscountFactor = float.Parse(DiscountFactorText.Text);
+                DiscountFactor = Decimal.Parse(DiscountFactorText.Text);
             }
             catch (FormatException)
             {
@@ -43,8 +43,16 @@ namespace blockoptimiser.Views
                 return;
             }
             if (Context.ScenarioId > 0)
-            {
-                new CplexSolver().Solve(Context.ProjectId, Context.ScenarioId, StartYear, EndYear, DiscountFactor);
+            { 
+                RunConfig runconfig = new RunConfig
+                {
+                    ProjectId = Context.ProjectId,
+                    ScenarioId = Context.ScenarioId,
+                    StartYear  = StartYear,
+                    EndYear = EndYear,
+                    DiscountFactor = DiscountFactor
+                };
+                new CplexSolver().Solve(runconfig);
                 this.Close();
             }
             else

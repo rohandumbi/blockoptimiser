@@ -13,6 +13,8 @@ namespace blockoptimiser.Services.LP
         public int ProjectId { get; set; }
         public int ScenarioId { get; set; }
         public int Year { get; set; }
+        public int EndYear { get; set; }
+        public  int Window { get; set; }
         public int Period { get; set; }
         public decimal DiscountFactor { get; set; }
 
@@ -33,11 +35,13 @@ namespace blockoptimiser.Services.LP
         private List<long> minedBlocks;
         private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
 
-        public ExecutionContext(int ProjectId, int ScenarioId, int DiscountFactor)
+        public ExecutionContext(RunConfig runconfig)
         {
-            this.ProjectId = ProjectId;
-            this.ScenarioId = ScenarioId;
-            this.DiscountFactor = (decimal)DiscountFactor/100;
+            this.ProjectId = runconfig.ProjectId;
+            this.ScenarioId = runconfig.ScenarioId;
+            this.DiscountFactor = (Decimal)runconfig.DiscountFactor / 100;
+            this.Window = runconfig.Window;
+            this.EndYear = runconfig.EndYear;
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
@@ -335,7 +339,7 @@ namespace blockoptimiser.Services.LP
             }
         }
 
-        public Boolean IsValid(BlockPosition bp, int modelId)
+        public Boolean IsValid(BlockPosition bp, int modelId, int period)
         {
             Boolean isValid = true;
             if(modelBenchLimitMapping.ContainsKey(modelId))
@@ -346,7 +350,7 @@ namespace blockoptimiser.Services.LP
                     Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
                     Dictionary<int, Block> verticalBlocks = blocks[bp.I][bp.J];
                     int maxKValue = verticalBlocks.Keys.Max();
-                    if (bp.K <= (maxKValue - benchLimit.Value))
+                    if (bp.K <= (maxKValue - benchLimit.Value * period))
                     {
                         isValid = false;
                     }
@@ -355,7 +359,7 @@ namespace blockoptimiser.Services.LP
             }
             return isValid;
         }
-        public Boolean IsValid(Block b, int modelId)
+        public Boolean IsValid(Block b, int modelId, int period)
         {
             Boolean isValid = true;
             if (modelBenchLimitMapping.ContainsKey(modelId))
@@ -370,7 +374,7 @@ namespace blockoptimiser.Services.LP
                     Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
                     Dictionary<int, Block> verticalBlocks = blocks[i][j];
                     int maxKValue = verticalBlocks.Keys.Max();
-                    if (k <= (maxKValue - benchLimit.Value))
+                    if (k <= (maxKValue - benchLimit.Value * period))
                     {
                         isValid = false;
                     }
