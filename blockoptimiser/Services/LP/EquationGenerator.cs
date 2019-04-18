@@ -80,9 +80,16 @@ namespace blockoptimiser.Services.LP
                             Block block = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
                             if (!context.GetBlockProcessMapping().ContainsKey(blockPosition.Bid))
                             {
-                                context.GetBlockProcessMapping().Add(blockPosition.Bid, new List<int>());
+                                Dictionary<int, List<int>> timePeriodDictionary = new Dictionary<int, List<int>>();
+                                timePeriodDictionary.Add((context.Period + i), new List<int>());
+                                context.GetBlockProcessMapping().Add(blockPosition.Bid, timePeriodDictionary);
+                            } else
+                            {
+                                if(!context.GetBlockProcessMapping()[blockPosition.Bid].ContainsKey(context.Period + i)) {
+                                    context.GetBlockProcessMapping()[blockPosition.Bid].Add( (context.Period + i ), new List<int>());
+                                }
                             }
-                            context.GetBlockProcessMapping()[blockPosition.Bid].Add(process.ProcessNumber);
+                            context.GetBlockProcessMapping()[blockPosition.Bid][context.Period + i].Add(process.ProcessNumber);
 
                             Decimal minigCost = GetMiningCost(block, (context.Year+ i));
                             Decimal processValue = GetProcessValue(block, process, (context.Year + i)) - minigCost;
@@ -235,31 +242,38 @@ namespace blockoptimiser.Services.LP
                                             ratio = RoundOff(ratio);
                                             if (context.GetBlockProcessMapping().ContainsKey(b.Id))
                                             {
-                                                List<int> processNos = context.GetBlockProcessMapping()[b.Id];
-                                                foreach (int processNo in processNos)
+                                                if(context.GetBlockProcessMapping()[b.Id].ContainsKey(context.Period + x))
                                                 {
-                                                    Write(" + B" + b.Id + "p" + processNo + "t"+ (context.Period + x) +" + B" + b.Id + "s1" + "t" + (context.Period + x), sw);
+                                                    List<int> processNos = context.GetBlockProcessMapping()[b.Id][context.Period + x];
+                                                    foreach (int processNo in processNos)
+                                                    {
+                                                        Write(" + B" + b.Id + "p" + processNo + "t" + (context.Period + x) + " + B" + b.Id + "s1" + "t" + (context.Period + x), sw);
+                                                    }
                                                 }
-
                                             }
                                             else
                                             {
                                                 Write(" + B" + b.Id + "w1" + "t" + (context.Period + x), sw);
                                             }
                                             for( int y = 0; y <= x; y++)
-                                            if (context.GetBlockProcessMapping().ContainsKey(ub.Id))
                                             {
-                                                List<int> processNos = context.GetBlockProcessMapping()[ub.Id];
-                                                foreach (int processNo in processNos)
+                                                if (!context.IsValid(ub, model.Id, (y + 1))) continue;
+                                                if (context.GetBlockProcessMapping().ContainsKey(ub.Id) )
                                                 {
-                                                    Write(" - " + ratio + "B" + ub.Id + "p" + processNo + "t" + (context.Period + y) + " - " + ratio + "B" + ub.Id + "s1" + "t" + (context.Period + y), sw);
+                                                    if(context.GetBlockProcessMapping()[ub.Id].ContainsKey(context.Period + y))
+                                                    {
+                                                        List<int> processNos = context.GetBlockProcessMapping()[ub.Id][context.Period + y];
+                                                        foreach (int processNo in processNos)
+                                                        {
+                                                            Write(" - " + ratio + "B" + ub.Id + "p" + processNo + "t" + (context.Period + y) + " - " + ratio + "B" + ub.Id + "s1" + "t" + (context.Period + y), sw);
+                                                        }
+                                                    }                                                   
+                                                }
+                                                else
+                                                {
+                                                    Write(" - " + ratio + "B" + ub.Id + "w1" + "t" + (context.Period + y), sw);
                                                 }
                                             }
-                                            else
-                                            {
-                                                Write(" - " + ratio + "B" + ub.Id + "w1" + "t" + (context.Period + y), sw);
-                                            }
-
                                             Write(" <= 0", sw);
                                             Write("", sw);
                                         }
@@ -295,15 +309,15 @@ namespace blockoptimiser.Services.LP
                             {
                                 if (!context.IsValid(block, model.Id, (i + 1))) continue;
                                 
-                                if (context.GetBlockProcessMapping().ContainsKey(block.Id))
+                                if (context.GetBlockProcessMapping().ContainsKey(block.Id) && context.GetBlockProcessMapping()[block.Id].ContainsKey(context.Period + i))
                                 {
-                                    List<int> processNos = context.GetBlockProcessMapping()[block.Id];
+                                    List<int> processNos = context.GetBlockProcessMapping()[block.Id][context.Period + i];
                                     
                                     foreach (int processNo in processNos)
                                     {
                                         Write("B" + block.Id + "p" + processNo + "t"+ (context.Period + i ) + "  >= 0", sw);
                                         Write("", sw);
-                                        Write("B" + block.Id + "s1 " + "t" + (context.Period + i) +">= 0", sw);
+                                        Write("B" + block.Id + "s1" + "t" + (context.Period + i) +" >= 0", sw);
                                         Write("", sw);
                                         eqn = eqn + " + B" + block.Id + "p" + processNo + "t" + (context.Period + i) + " + B" + block.Id + "s1" + "t" + (context.Period + i) ;
                                     }
@@ -433,9 +447,9 @@ namespace blockoptimiser.Services.LP
                                     Block b = blocks[ii][jj][kk];
                                     if (!context.IsValid(b, modelId, (i + 1)))
                                     {
-                                        if (context.GetBlockProcessMapping().ContainsKey(b.Id))
+                                        if (context.GetBlockProcessMapping().ContainsKey(b.Id) && context.GetBlockProcessMapping()[b.Id].ContainsKey(context.Period + i))
                                         {
-                                            List<int> processNos = context.GetBlockProcessMapping()[b.Id];
+                                            List<int> processNos = context.GetBlockProcessMapping()[b.Id][context.Period + i];
                                             foreach (int processNo in processNos)
                                             {
                                                 Write(" + B" + b.Id + "p" + processNo + "t"+(context.Period + i), sw);

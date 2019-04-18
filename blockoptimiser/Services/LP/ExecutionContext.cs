@@ -31,7 +31,7 @@ namespace blockoptimiser.Services.LP
         private List<BenchLimit> benchLimits;
         private Dictionary<int, BenchLimit> modelBenchLimitMapping;
         private Dictionary<String, String> requiredFields;
-        private Dictionary<long, List<int>> blockProcessMapping;
+        private Dictionary<long, Dictionary<int, List<int>>> blockProcessMapping;
         private List<long> minedBlocks;
         private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
 
@@ -45,7 +45,7 @@ namespace blockoptimiser.Services.LP
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
-            blockProcessMapping = new Dictionary<long, List<int>>();
+            blockProcessMapping = new Dictionary<long, Dictionary<int, List<int>>>();
             requiredFields = new Dictionary<string, string>();
             foreach(RequiredFieldMapping mapping in requiredFieldMappings)
             {
@@ -57,7 +57,7 @@ namespace blockoptimiser.Services.LP
 
         public void Reset()
         {
-            blockProcessMapping = new Dictionary<long, List<int>>();
+            blockProcessMapping = new Dictionary<long, Dictionary<int, List<int>>>();
             LoadBlocks();
         }
         private void LoadData()
@@ -194,7 +194,7 @@ namespace blockoptimiser.Services.LP
             return gradeLimits;
         }
 
-        public Dictionary<long, List<int>> GetBlockProcessMapping() {
+        public Dictionary<long, Dictionary<int, List<int>>> GetBlockProcessMapping() {
             return blockProcessMapping;
         }
         public String GetColumnNameById(int fieldId, int modelId)
