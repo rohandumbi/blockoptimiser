@@ -24,7 +24,7 @@ namespace blockoptimiser.Views
         public V2ExpressionModelMappingView(blockoptimiser.Models.Expression expression)
         {
             InitializeComponent();
-            this.DataContext = new ExpressionModelMappingViewModel(expression);
+            this.DataContext = new V2ExpressionModelMappingViewModel(expression);
         }
     }
 }

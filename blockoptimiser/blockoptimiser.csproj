@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\ProjectsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\V2AppViewModel.cs" />
+    <Compile Include="ViewModels\V2ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\V2ExpressionViewModel.cs" />
     <Compile Include="ViewModels\V2ProjectsViewModel.cs" />
     <Compile Include="ViewModels\V2ShellViewModel.cs" />

@@ -15,7 +15,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ItemsControl x:Name="ModelMapping" Grid.Row="0">
+        <ItemsControl ItemsSource="{Binding ModelMapping}" Grid.Row="0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"  Margin="10 0 5 10">
