@@ -1,4 +1,5 @@
-﻿using System;
+﻿using blockoptimiser.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,19 @@ namespace blockoptimiser.Views
         public V2ExpressionView()
         {
             InitializeComponent();
+            this.DataContext = new ExpressionViewModel();
+        }
+
+        private void MouseLeftUp(object sender, RoutedEventArgs e)
+        {
+            var ctx = (ExpressionViewModel)this.DataContext;
+            ctx.ClickExpression(((TextBlock)sender).DataContext, e as MouseButtonEventArgs);
+        }
+
+        private void Add(object sender, RoutedEventArgs e)
+        {
+            var ctx = (ExpressionViewModel)this.DataContext;
+            ctx.AddExpression();
         }
     }
 }
