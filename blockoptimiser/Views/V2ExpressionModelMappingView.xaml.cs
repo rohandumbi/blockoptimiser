@@ -1,5 +1,4 @@
-﻿using blockoptimiser.Models;
-using blockoptimiser.ViewModels;
+﻿using blockoptimiser.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +17,14 @@ using System.Windows.Shapes;
 namespace blockoptimiser.Views
 {
     /// <summary>
-    /// Interaction logic for V2GeotechView.xaml
+    /// Interaction logic for V2ExpressionModelMappingView.xaml
     /// </summary>
-    public partial class V2GeotechView : UserControl
+    public partial class V2ExpressionModelMappingView : UserControl
     {
-        public V2GeotechView()
+        public V2ExpressionModelMappingView(blockoptimiser.Models.Expression expression)
         {
             InitializeComponent();
-            this.DataContext = new GeotechViewModel();
-        }
-
-        private void Update(object sender, RoutedEventArgs e)
-        {
-            var ctx = (GeotechViewModel)this.DataContext;
-            ctx.UpdateGeotech(((Button)sender).DataContext as Geotech);
+            this.DataContext = new ExpressionModelMappingViewModel(expression);
         }
     }
 }

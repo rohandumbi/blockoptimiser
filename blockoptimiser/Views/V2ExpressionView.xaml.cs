@@ -24,18 +24,19 @@ namespace blockoptimiser.Views
         public V2ExpressionView()
         {
             InitializeComponent();
-            this.DataContext = new ExpressionViewModel();
+            this.DataContext = new V2ExpressionViewModel();
         }
 
         private void MouseLeftUp(object sender, RoutedEventArgs e)
         {
-            var ctx = (ExpressionViewModel)this.DataContext;
-            ctx.ClickExpression(((TextBlock)sender).DataContext, e as MouseButtonEventArgs);
+            var ctx = (V2ExpressionViewModel)this.DataContext;
+            //ctx.ClickExpression(((TextBlock)sender).DataContext, e as MouseButtonEventArgs);
+            ActiveItem.Content = new V2ExpressionModelMappingView(((TextBlock)sender).DataContext as blockoptimiser.Models.Expression);
         }
 
         private void Add(object sender, RoutedEventArgs e)
         {
-            var ctx = (ExpressionViewModel)this.DataContext;
+            var ctx = (V2ExpressionViewModel)this.DataContext;
             ctx.AddExpression();
         }
     }

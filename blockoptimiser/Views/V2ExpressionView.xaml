@@ -28,10 +28,10 @@
         <ListView x:Name="Expressions" ItemsSource="{Binding Expressions}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock MouseLeftButtonUp="MouseLeftUp" cal:Message.Attach="[Event MouseLeftButtonUp] = [ClickExpression($dataContext, $eventArgs))]" Text="{Binding Name}"></TextBlock>
+                    <TextBlock MouseLeftButtonUp="MouseLeftUp" Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="3"/>
+        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="3" Content="{Binding UserControlViewModel}"/>
     </Grid>
 </UserControl>

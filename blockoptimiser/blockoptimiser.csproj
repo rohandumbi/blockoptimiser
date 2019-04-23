@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\ProjectsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\V2AppViewModel.cs" />
+    <Compile Include="ViewModels\V2ExpressionViewModel.cs" />
     <Compile Include="ViewModels\V2ProjectsViewModel.cs" />
     <Compile Include="ViewModels\V2ShellViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
@@ -264,6 +265,9 @@
     </Compile>
     <Compile Include="Views\V2AppView.xaml.cs">
       <DependentUpon>V2AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ExpressionModelMappingView.xaml.cs">
+      <DependentUpon>V2ExpressionModelMappingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ExpressionView.xaml.cs">
       <DependentUpon>V2ExpressionView.xaml</DependentUpon>
@@ -380,6 +384,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\V2AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ExpressionModelMappingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
