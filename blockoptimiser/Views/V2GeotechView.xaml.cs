@@ -1,4 +1,6 @@
-﻿using System;
+﻿using blockoptimiser.Models;
+using blockoptimiser.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,13 @@ namespace blockoptimiser.Views
         public V2GeotechView()
         {
             InitializeComponent();
+            this.DataContext = new GeotechViewModel();
+        }
+
+        private void Update(object sender, RoutedEventArgs e)
+        {
+            var ctx = (GeotechViewModel)this.DataContext;
+            ctx.UpdateGeotech(sender as Geotech);
         }
     }
 }
