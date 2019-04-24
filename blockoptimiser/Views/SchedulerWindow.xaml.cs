@@ -49,8 +49,7 @@ namespace blockoptimiser.Views
         {
             int StartYearInt = 0;
             int EndYearInt = 0;
-            float DiscountFactor = 0;
-            int Period = 0;
+            decimal DiscountFactor = 0;
             try
             {
                 if (StartYearCombo.SelectedItem == null || EndYearCombo.SelectedItem == null)
@@ -63,15 +62,9 @@ namespace blockoptimiser.Views
                     MessageBox.Show("Provide a valid discount factor.");
                     return;
                 }
-                if (PeriodText.Text == null || PeriodText.Text == "")
-                {
-                    MessageBox.Show("Provide a valid period.");
-                    return;
-                }
                 StartYearInt = Int32.Parse((String)StartYearCombo.SelectedItem);
                 EndYearInt = Int32.Parse((String)EndYearCombo.SelectedItem);
-                DiscountFactor = float.Parse(DiscountFactorText.Text);
-                Period = Int32.Parse(PeriodText.Text);
+                DiscountFactor = Decimal.Parse(DiscountFactorText.Text);
             }
             catch (FormatException)
             {
@@ -81,7 +74,15 @@ namespace blockoptimiser.Views
             }
             if (Context.ScenarioId > 0)
             {
-                new CplexSolver().Solve(Context.ProjectId, Context.ScenarioId, StartYearInt, EndYearInt, DiscountFactor, Period);
+                RunConfig runconfig = new RunConfig
+                {
+                    ProjectId = Context.ProjectId,
+                    ScenarioId = Context.ScenarioId,
+                    StartYear = StartYearInt,
+                    EndYear = EndYearInt,
+                    DiscountFactor = DiscountFactor
+                };
+                new CplexSolver().Solve(runconfig);
                 this.Close();
             }
             else

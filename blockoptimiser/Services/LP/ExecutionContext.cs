@@ -33,11 +33,11 @@ namespace blockoptimiser.Services.LP
         private List<long> minedBlocks;
         private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
 
-        public ExecutionContext(int ProjectId, int ScenarioId, int DiscountFactor)
+        public ExecutionContext(RunConfig runconfig)
         {
-            this.ProjectId = ProjectId;
-            this.ScenarioId = ScenarioId;
-            this.DiscountFactor = (decimal)DiscountFactor/100;
+            this.ProjectId = runconfig.ProjectId;
+            this.ScenarioId = runconfig.ScenarioId;
+            this.DiscountFactor = (decimal)runconfig.DiscountFactor / 100;
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
