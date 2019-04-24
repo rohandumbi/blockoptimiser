@@ -1,4 +1,5 @@
-﻿using blockoptimiser.ViewModels;
+﻿using blockoptimiser.Models;
+using blockoptimiser.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace blockoptimiser.Views
         {
             InitializeComponent();
             this.DataContext = new V2ExpressionModelMappingViewModel(expression);
+        }
+
+        private void ExpressionChanged(object sender, RoutedEventArgs e)
+        {
+            var ctx = (V2ExpressionModelMappingViewModel)this.DataContext;
+            ctx.UpdateMapping(((TextBox)sender).DataContext as ExprModelMapping);
         }
     }
 }

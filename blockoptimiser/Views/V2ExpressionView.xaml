@@ -22,7 +22,7 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="ExpressionName" Grid.Row="1" Grid.Column="1" Width="150" Margin="0 0 5 10"/>
+        <TextBox x:Name="extBoxExpressionName" Text="{Binding ExpressionName}" Grid.Row="1" Grid.Column="1" Width="150" Margin="0 0 5 10"/>
         <Button x:Name="AddExpression" Click="Add" Grid.Row="1" Grid.Column="2" Width="100" Margin="0 0 0 10">Add Expression</Button>
 
         <ListView x:Name="Expressions" ItemsSource="{Binding Expressions}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">

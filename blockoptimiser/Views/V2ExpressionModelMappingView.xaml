@@ -20,7 +20,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"  Margin="10 0 5 10">
                         <TextBlock Text="{Binding ModelName}" Margin="10 0 5 10"/>
-                        <TextBox Text="{Binding ExprString}" Width="250px" cal:Message.Attach="[Event LostFocus] = [Action UpdateMapping($dataContext)]" ></TextBox>
+                        <TextBox Text="{Binding ExprString}" Width="250px" LostFocus="ExpressionChanged"></TextBox>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
