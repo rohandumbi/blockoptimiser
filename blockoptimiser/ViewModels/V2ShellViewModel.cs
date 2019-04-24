@@ -85,6 +85,8 @@ namespace blockoptimiser.ViewModels
                 //ActivateItem(new AppViewModel());
                 ActivateItem(new V2AppViewModel());
             }
+            IsAddFlyoutOpen = false;
+            NotifyOfPropertyChange("IsAddFlyoutOpen");
             
         }
 
@@ -94,6 +96,8 @@ namespace blockoptimiser.ViewModels
             {
                 //ActivateItem(new AppViewModel());
                 ActivateItem(new V2AppViewModel());
+                IsShowFlyoutOpen = false;
+                NotifyOfPropertyChange("IsShowFlyoutOpen");
             }
         }
 
