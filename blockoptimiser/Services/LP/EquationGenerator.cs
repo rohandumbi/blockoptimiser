@@ -198,7 +198,9 @@ namespace blockoptimiser.Services.LP
                                             continue;
                                         }
                                         Block ub = blocks[i][j][kk + k];
-                                        
+
+                                        if (!context.IsValid(ub, model.Id)) continue;
+
                                         decimal ubtonneswt = context.GetTonnesWtForBlock(ub);
                                         if (ubtonneswt == 0) continue;
                                         decimal ratio = tonneswt / ubtonneswt;
