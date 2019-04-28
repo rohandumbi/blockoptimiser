@@ -27,7 +27,6 @@ namespace blockoptimiser.Services.LP
         public void Generate(ExecutionContext context)
         {
             this.context = context;
-            this.context.Reset();
             FileStream fs = CreateFile();
 
             using (StreamWriter sw = new StreamWriter(fs))
@@ -56,65 +55,50 @@ namespace blockoptimiser.Services.LP
             int count = 1;
             Dictionary<int, String> modelProcessFilterMap = new Dictionary<int, string>();
             double F = (1 / Math.Pow(Convert.ToDouble(1 + context.DiscountFactor), Convert.ToDouble(context.Period)));
-            foreach (Process process in processes)
+            foreach( Model model in context.GetModels())
             {
-                foreach(ProcessModelMapping mapping in process.Mapping)
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
+                foreach (int ii in blocks.Keys)
                 {
-
-                    if(!modelProcessFilterMap.ContainsKey(mapping.ModelId))
+                    foreach (int jj in blocks[ii].Keys)
                     {
-                        modelProcessFilterMap.Add(mapping.ModelId, " not ( " + mapping.FilterString + ") ");
-                    } else
-                    {
-                        String condition = modelProcessFilterMap[mapping.ModelId] + " AND not(" + mapping.FilterString + ") ";
-                        modelProcessFilterMap[mapping.ModelId] = condition;
-                    }
-                    List<BlockPosition> blockPositions = context.GetBlockPositions(mapping.ModelId, mapping.FilterString);
-                    Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(mapping.ModelId);
-                    foreach (BlockPosition blockPosition in blockPositions)
-                    {
-                        if (!context.IsValid(blockPosition, mapping.ModelId)) continue;
-                        Block block = blocks[blockPosition.I][blockPosition.J][blockPosition.K];                       
-                        if (!context.GetBlockProcessMapping().ContainsKey(blockPosition.Bid))
+                        foreach (int kk in blocks[ii][jj].Keys)
                         {
-                            context.GetBlockProcessMapping().Add(blockPosition.Bid, new List<int>());
-                        }
-                        context.GetBlockProcessMapping()[blockPosition.Bid].Add(process.ProcessNumber);
-                        Decimal minigCost = GetMiningCost(block, context.Year);
-                        Decimal processValue = GetProcessValue(block, process, context.Year) - minigCost;
-                        
-                        if (processValue != 0 )
-                        {
-                            processValue = processValue * (Decimal)F;
-                            if (processValue < 0)
+                            Block block = blocks[ii][jj][kk];
+                            if (!context.IsValid(block, model.Id)) continue;
+                            Decimal minigCost = GetMiningCost(block, context.Year);
+                            if(block.Processes != null && block.Processes.Count > 0 )
                             {
-                                Write( RoundOff(processValue) +" B" + block.Id + "p" + count, sw);
+                                foreach(Process process in block.Processes)
+                                {
+                                    Decimal processValue = GetProcessValue(block, process, context.Year) - minigCost;
+
+                                    if (processValue != 0)
+                                    {
+                                        processValue = processValue * (Decimal)F;
+                                        if (processValue < 0)
+                                        {
+                                            Write(RoundOff(processValue) + " B" + block.Id + "p" + count, sw);
+                                        }
+                                        else
+                                        {
+                                            Write(" + " + RoundOff(processValue) + " B" + block.Id + "p" + count, sw);
+                                        }
+                                    }
+                                    if (minigCost != 0)
+                                        Write(" - " + RoundOff(minigCost * (Decimal)F) + " B" + block.Id + "s1", sw);
+                                }
                             } else
                             {
-                                Write(" + " + RoundOff(processValue) + " B" + block.Id + "p" + count, sw);
+                                if (minigCost > 0)
+                                    Write(" - " + RoundOff(minigCost * (Decimal)F) + " B" + block.Id + "w1", sw);
                             }
+                            
                         }
-                        if(minigCost != 0) 
-                            Write(" - "+ RoundOff(minigCost * (Decimal)F)  + " B" + block.Id + "s1", sw);
                     }
                 }
-                count++;
-            }
 
-            foreach(var ModelId in modelProcessFilterMap.Keys)
-            {
-                List<BlockPosition> blockPositions = context.GetBlockPositions(ModelId, modelProcessFilterMap[ModelId]);
-                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(ModelId);
-                foreach (BlockPosition blockPosition in blockPositions)
-                {
-                    if (!context.IsValid(blockPosition, ModelId)) continue;
-                    Block block = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
-                    Decimal minigCost = GetMiningCost(block, context.Year);
-                    if (minigCost > 0)
-                        Write(" - " + RoundOff(minigCost * (Decimal)F) + " B" + block.Id + "w1", sw);
-                }
-            }
-            
+            }            
         }
 
         private void WriteConstraints(StreamWriter sw)
@@ -219,12 +203,11 @@ namespace blockoptimiser.Services.LP
                                         if (ubtonneswt == 0) continue;
                                         decimal ratio = tonneswt / ubtonneswt;
                                         ratio = RoundOff(ratio);
-                                        if (context.GetBlockProcessMapping().ContainsKey(b.Id))
+                                        if (b.Processes != null)
                                         {
-                                            List<int> processNos = context.GetBlockProcessMapping()[b.Id];
-                                            foreach (int processNo in processNos)
+                                            foreach (Process process in b.Processes)
                                             {
-                                                Write(" + B" + b.Id + "p" + processNo + " + B" + b.Id + "s1", sw);
+                                                Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
                                             }
 
                                         }
@@ -232,12 +215,11 @@ namespace blockoptimiser.Services.LP
                                         {
                                             Write(" + B" + b.Id + "w1", sw);
                                         }
-                                        if (context.GetBlockProcessMapping().ContainsKey(ub.Id))
+                                        if (ub.Processes != null)
                                         {
-                                            List<int> processNos = context.GetBlockProcessMapping()[ub.Id];
-                                            foreach (int processNo in processNos)
+                                            foreach (Process process in ub.Processes)
                                             {
-                                                Write(" - " + ratio + "B" + ub.Id + "p" + processNo + " - " + ratio + "B" + ub.Id + "s1", sw);
+                                                Write(" - " + ratio + "B" + ub.Id + "p" + process.ProcessNumber + " - " + ratio + "B" + ub.Id + "s1", sw);
                                             }
                                         }
                                         else
@@ -275,17 +257,16 @@ namespace blockoptimiser.Services.LP
                             Block block = blocks[ii][jj][kk];
                             if (!context.IsValid(block, model.Id)) continue;
                             decimal tonneswt = context.GetTonnesWtForBlock(block);
-                            if (context.GetBlockProcessMapping().ContainsKey(block.Id))
+                            if (block.Processes != null )
                             {
-                                List<int> processNos = context.GetBlockProcessMapping()[block.Id];
                                 String eqn = "";
-                                foreach (int processNo in processNos)
+                                foreach (Process process in block.Processes)
                                 {
-                                    Write("B" + block.Id + "p" + processNo + " >= 0", sw);
+                                    Write("B" + block.Id + "p" + process.ProcessNumber + " >= 0", sw);
                                     Write("", sw);
                                     Write("B" + block.Id + "s1 >= 0", sw);
                                     Write("", sw);
-                                    eqn = eqn + " + B" + block.Id + "p" + processNo + " + B" + block.Id + "s1";
+                                    eqn = eqn + " + B" + block.Id + "p" + process.ProcessNumber + " + B" + block.Id + "s1";
                                 }
                                 Write(eqn + " <= " + tonneswt, sw);
                                 Write("", sw);
@@ -321,17 +302,31 @@ namespace blockoptimiser.Services.LP
                 if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PROCESS)
                 {
                     Process process = context.GetProcessById(processLimit.ItemId);
-                    foreach(var mapping in process.Mapping)
-                    {
-                        List<BlockPosition> blockPositions = context.GetBlockPositions(mapping.ModelId, mapping.FilterString);
-                        Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(mapping.ModelId);
-                        foreach (BlockPosition blockPosition in blockPositions)
-                        {
-                            if (!context.IsValid(blockPosition, mapping.ModelId)) continue;
-                            Block b = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
-                            Write(" + B" + b.Id + "p" + process.ProcessNumber , sw);
-                        }
 
+                    foreach (Model model in context.GetModels())
+                    {
+                        Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
+                        foreach (int ii in blocks.Keys)
+                        {
+                            foreach (int jj in blocks[ii].Keys)
+                            {
+                                foreach (int kk in blocks[ii][jj].Keys)
+                                {
+                                    Block b = blocks[ii][jj][kk];
+                                    if (!context.IsValid(b, model.Id)) continue;
+                                    if(b.Processes != null)
+                                    {
+                                        foreach(Process p in b.Processes)
+                                        {
+                                            if(p.Id == process.Id)
+                                            {
+                                                Write(" + B" + b.Id + "p" + process.ProcessNumber, sw);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 else if (processLimit.ItemType == ProcessLimit.ITEM_TYPE_PRODUCT)
@@ -341,20 +336,34 @@ namespace blockoptimiser.Services.LP
                     foreach(int processId in product.ProcessIds)
                     {
                         Process process = context.GetProcessById(processId);
-                        foreach (var mapping in process.Mapping)
+
+                        foreach (Model model in context.GetModels())
                         {
-                            List<BlockPosition> blockPositions = context.GetBlockPositions(mapping.ModelId, mapping.FilterString);
-                            Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(mapping.ModelId);
-                            foreach (BlockPosition blockPosition in blockPositions)
+                            Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
+                            foreach (int ii in blocks.Keys)
                             {
-                                if (!context.IsValid(blockPosition, mapping.ModelId)) continue;
-                                Block b = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
-                                Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
-                                Decimal tonnesWt = context.GetTonnesWtForBlock(b);
-
-                                Write(" + "+ RoundOff(value /tonnesWt)+ " B" + b.Id + "p" + process.ProcessNumber, sw);
+                                foreach (int jj in blocks[ii].Keys)
+                                {
+                                    foreach (int kk in blocks[ii][jj].Keys)
+                                    {
+                                        Block b = blocks[ii][jj][kk];
+                                        if (!context.IsValid(b, model.Id)) continue;
+                                        if (b.Processes != null)
+                                        {
+                                            foreach (Process p in b.Processes)
+                                            {
+                                                if (p.Id == process.Id)
+                                                {
+                                                    Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
+                                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                                    Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                }
+                                            }
+                                        }
+                                                    
+                                    }
+                                }
                             }
-
                         }
                     }                                    
                 }
@@ -368,22 +377,35 @@ namespace blockoptimiser.Services.LP
                         foreach (int processId in product.ProcessIds)
                         {
                             Process process = context.GetProcessById(processId);
-                            foreach (var mapping in process.Mapping)
+
+                            foreach (Model model in context.GetModels())
                             {
-
-                                List<BlockPosition> blockPositions = context.GetBlockPositions(mapping.ModelId, mapping.FilterString);
-                                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(mapping.ModelId);
-                                foreach (BlockPosition blockPosition in blockPositions)
+                                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
+                                foreach (int ii in blocks.Keys)
                                 {
-                                    if (!context.IsValid(blockPosition, mapping.ModelId)) continue;
-                                    Block b = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
-                                    Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
-                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
-                                    Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber, sw);
+                                    foreach (int jj in blocks[ii].Keys)
+                                    {
+                                        foreach (int kk in blocks[ii][jj].Keys)
+                                        {
+                                            Block b = blocks[ii][jj][kk];
+                                            if (!context.IsValid(b, model.Id)) continue;
+                                            if (b.Processes != null)
+                                            {
+                                                foreach (Process p in b.Processes)
+                                                {
+                                                    if (p.Id == process.Id)
+                                                    {
+                                                        Decimal value = context.GetFieldValueforBlock(b, product.UnitName);
+                                                        Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                                        Write(" + " + RoundOff(value / tonnesWt) + " B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                    }
+                                                }
+                                            }
+                                                        
+                                        }
+                                    }
                                 }
-
-                            }
-                           
+                            }                           
                         }
                     }
                 }
@@ -397,16 +419,14 @@ namespace blockoptimiser.Services.LP
                         {
                             foreach (int kk in blocks[ii][jj].Keys)
                             {
-
                                 Block b = blocks[ii][jj][kk];
                                 if(!context.IsValid(b, modelId))
                                 {
-                                    if (context.GetBlockProcessMapping().ContainsKey(b.Id))
+                                    if (b.Processes != null )
                                     {
-                                        List<int> processNos = context.GetBlockProcessMapping()[b.Id];
-                                        foreach (int processNo in processNos)
+                                        foreach (Process process in b.Processes)
                                         {
-                                            Write(" + B" + b.Id + "p" + processNo , sw);
+                                            Write(" + B" + b.Id + "p" + process.ProcessNumber , sw);
                                         }
                                     }
                                 }
@@ -442,32 +462,47 @@ namespace blockoptimiser.Services.LP
                     foreach(int processId in product.ProcessIds)
                     {
                         Process process = context.GetProcessById(processId);
-                        foreach (var mapping in process.Mapping)
+
+                        foreach (Model model in context.GetModels())
                         {
-                            List<BlockPosition> blockPositions = context.GetBlockPositions(mapping.ModelId, mapping.FilterString);
-                            Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(mapping.ModelId);
-                            foreach (BlockPosition blockPosition in blockPositions)
+                            Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
+                            foreach (int ii in blocks.Keys)
                             {
-                                if (!context.IsValid(blockPosition, mapping.ModelId)) continue;
-                                Block b = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
-                                Decimal tonnesWt = context.GetTonnesWtForBlock(b);
-                                Decimal processRatio = 0;
-                                if (tonnesWt > 0)
-                                    processRatio = context.GetFieldValueforBlock(b, product.UnitName) / tonnesWt;
+                                foreach (int jj in blocks[ii].Keys)
+                                {
+                                    foreach (int kk in blocks[ii][jj].Keys)
+                                    {
+                                        Block b = blocks[ii][jj][kk];
+                                        if (!context.IsValid(b, model.Id)) continue;
+                                        if (b.Processes != null)
+                                        {
+                                            foreach (Process p in b.Processes)
+                                            {
+                                                if (p.Id == process.Id)
+                                                {
+                                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                                    Decimal processRatio = 0;
+                                                    if (tonnesWt > 0)
+                                                        processRatio = context.GetFieldValueforBlock(b, product.UnitName) / tonnesWt;
 
-                                Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
-                                Decimal coeff = processRatio * (targetGrade - blockGrade);
-                                coeff = RoundOff(coeff);
-                                if (coeff < 0 )
-                                {
-                                    Write(" "+coeff+"B" + b.Id + "p" + process.ProcessNumber , sw);
-                                } else
-                                {
-                                    Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                    Decimal blockGrade = context.GetFieldValueforBlock(b, gradeLimit.GradeName);
+                                                    Decimal coeff = processRatio * (targetGrade - blockGrade);
+                                                    coeff = RoundOff(coeff);
+                                                    if (coeff < 0)
+                                                    {
+                                                        Write(" " + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                    }
+                                                    else
+                                                    {
+                                                        Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
                                 }
-                                
                             }
-
                         }
                     }
                     if(gradeLimit.IsMax)
@@ -505,32 +540,45 @@ namespace blockoptimiser.Services.LP
                         foreach (int processId in product.ProcessIds)
                         {
                             Process process = context.GetProcessById(processId);
-                            foreach (var mapping in process.Mapping)
+                            foreach (Model model in context.GetModels())
                             {
-                                List<BlockPosition> blockPositions = context.GetBlockPositions(mapping.ModelId, mapping.FilterString);
-                                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(mapping.ModelId);
-                                foreach (BlockPosition blockPosition in blockPositions)
+                                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
+                                foreach (int ii in blocks.Keys)
                                 {
-                                    if (!context.IsValid(blockPosition, mapping.ModelId)) continue;
-                                    Block b = blocks[blockPosition.I][blockPosition.J][blockPosition.K];
-                                    Decimal tonnesWt = context.GetTonnesWtForBlock(b);
-                                    Decimal processRatio = 0;
-                                    if (tonnesWt > 0)
-                                        processRatio = context.GetFieldValueforBlock(b, product.UnitName) / tonnesWt;
-                                    Decimal blockGrade = context.GetFieldValueforBlock(b, gradeName);
-                                    Decimal coeff = processRatio * (targetGrade - blockGrade);
-                                    coeff = RoundOff(coeff);
-                                    if (coeff < 0)
+                                    foreach (int jj in blocks[ii].Keys)
                                     {
-                                        Write(" " + coeff + "B" + b.Id + "p" + process.ProcessNumber , sw);
-                                    }
-                                    else
-                                    {
-                                        Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
-                                    }
+                                        foreach (int kk in blocks[ii][jj].Keys)
+                                        {
+                                            Block b = blocks[ii][jj][kk];
+                                            if (!context.IsValid(b, model.Id)) continue;
+                                            if (b.Processes != null)
+                                            {
+                                                foreach (Process p in b.Processes)
+                                                {
+                                                    if (p.Id == process.Id)
+                                                    {
+                                                        Decimal tonnesWt = context.GetTonnesWtForBlock(b);
+                                                        Decimal processRatio = 0;
+                                                        if (tonnesWt > 0)
+                                                            processRatio = context.GetFieldValueforBlock(b, product.UnitName) / tonnesWt;
+                                                        Decimal blockGrade = context.GetFieldValueforBlock(b, gradeName);
+                                                        Decimal coeff = processRatio * (targetGrade - blockGrade);
+                                                        coeff = RoundOff(coeff);
+                                                        if (coeff < 0)
+                                                        {
+                                                            Write(" " + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                        }
+                                                        else
+                                                        {
+                                                            Write(" +" + coeff + "B" + b.Id + "p" + process.ProcessNumber, sw);
+                                                        }
+                                                    }
+                                                }
+                                            }
 
+                                        }
+                                    }
                                 }
-
                             }
                         }
                     }

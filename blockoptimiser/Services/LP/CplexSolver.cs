@@ -39,10 +39,8 @@ namespace blockoptimiser.Services.LP
                     context.Period = (i + 1);
                     try
                     {
-                        if(i>0)
-                        {
-                            context.LoadMinedBlockList();
-                        }
+
+                        context.UpdateBlocks();
                         _generator.Generate(context);
                         SchedulerQueue queueItem = new SchedulerQueue
                         {

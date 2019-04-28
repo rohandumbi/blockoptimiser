@@ -2,6 +2,7 @@
 using blockoptimiser.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,9 +30,7 @@ namespace blockoptimiser.Services.LP
         private List<BenchLimit> benchLimits;
         private Dictionary<int, BenchLimit> modelBenchLimitMapping;
         private Dictionary<String, String> requiredFields;
-        private Dictionary<long, List<int>> blockProcessMapping;
-        private List<long> minedBlocks;
-        private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
+        private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; } 
 
         public ExecutionContext(RunConfig runconfig)
         {
@@ -41,22 +40,16 @@ namespace blockoptimiser.Services.LP
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
 
             List<RequiredFieldMapping> requiredFieldMappings = new RequiredFieldMappingDataAccess().GetAll(ProjectId);
-            blockProcessMapping = new Dictionary<long, List<int>>();
             requiredFields = new Dictionary<string, string>();
             foreach(RequiredFieldMapping mapping in requiredFieldMappings)
             {
                 requiredFields.Add(mapping.RequiredFieldName, mapping.MappedColumnName);
             }
-            LoadData();
+            LoadConfigurations();
             schedulerResultDataAccess.Create(ProjectId);
+            LoadValidBlocks();
         }
-
-        public void Reset()
-        {
-            blockProcessMapping = new Dictionary<long, List<int>>();
-            LoadBlocks();
-        }
-        private void LoadData()
+        private void LoadConfigurations()
         {
             models = new ModelDataAccess().GetAll(ProjectId);
             fields = new FieldDataAccess().GetAll(ProjectId);
@@ -78,26 +71,338 @@ namespace blockoptimiser.Services.LP
             }
         }
 
-        private void LoadBlocks()
+        private void LoadValidBlocks()
         {
             Blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>>();
             BlockDataAccess blockDataAccess = new BlockDataAccess();
             foreach (Model model in models)
             {
-                Dictionary<int, Dictionary<int, Dictionary<int, Block>>>  blocksInModel = blockDataAccess.GetBlocks(this.ProjectId, model.Id);
-                Blocks.Add(model.Id, blocksInModel);
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> validBlocks = new Dictionary<int, Dictionary<int, Dictionary<int, Block>>>();
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocksInModel = blockDataAccess.GetBlocks(this.ProjectId, model.Id);
+                List<BlockPosition> processBlockPositions = GetProcessBlocksPositions(model.Id);
+
+                // Add All process blocks to valid list of blocks
+                foreach(BlockPosition bp in processBlockPositions)
+                {
+                    Block b = blocksInModel[bp.K][bp.I][bp.J];
+                    b.Processes = bp.Processes;
+                    
+                    AddBlockToDictionary(validBlocks, bp.I, bp.J, bp.K, b);
+                }
+
+                decimal xinc = 0, yinc = 0, zinc = 0, max_dim = 0;
+                decimal xm = 0, ym = 0, zm = 0;
+                List<ModelDimension> modelDimensions = GetModelDimension(model.Id);
+                foreach (ModelDimension dimension in modelDimensions)
+                {
+                    if (dimension.Type.Equals("Origin"))
+                    {
+                        xm = dimension.XDim;
+                        ym = dimension.YDim;
+                        zm = dimension.ZDim;
+                    }
+                    else if (dimension.Type.Equals("Dimensions"))
+                    {
+                        xinc = dimension.XDim;
+                        yinc = dimension.YDim;
+                        zinc = dimension.ZDim;
+                        if (xinc > yinc)
+                        {
+                            max_dim = xinc;
+                        }
+                        else
+                        {
+                            max_dim = yinc;
+                        }
+                    }
+                }
+
+                Geotech geotech = GetGeotechByModel(model.Id);
+                String selectstr = "max ( ";
+                if (!geotech.UseScript)
+                {
+                    String columnName = GetColumnNameById(geotech.Id, model.Id);
+                    if (columnName == null)
+                    {
+                        throw new Exception("Please check your geotech configuration.");
+                    }
+                    selectstr = selectstr + GetColumnNameById(geotech.Id, model.Id) + ") as angle";
+                }
+                else
+                {
+                    selectstr = selectstr + geotech.Script + ") as angle";
+                }
+
+                double max_ira = GetIRA(selectstr, model.Id) * Math.PI / 180; ;
+
+                int nbenches = (int)Math.Ceiling((max_dim / 2) / (zinc / (decimal)Math.Tan(max_ira)));
+
+                foreach (int kk in validBlocks.Keys.ToList())
+                {
+                    foreach (int ii in validBlocks[kk].Keys.ToList())
+                    {
+                        foreach (int jj in validBlocks[kk][ii].Keys.ToList())
+                        {
+                            Block b = validBlocks[kk][ii][jj];
+                            decimal xorth = (decimal)b.data["Xortho"];
+                            decimal yorth = (decimal)b.data["Yortho"];
+
+
+                            for (int k = 1; k <= nbenches; k++)
+                            {
+                                decimal dist = k * zinc / (decimal)Math.Tan(max_ira);
+                                int imin = (int)((xorth - dist + xinc - xm) / xinc);
+                                int imax = (int)((xorth + dist + xinc - xm) / xinc);
+                                int jmin = (int)((yorth - dist + yinc - ym) / yinc);
+                                int jmax = (int)((yorth + dist + yinc - ym) / yinc);
+                                if (imin <= 0) imin = 1;
+                                if (jmin <= 0) jmin = 1;
+                                //Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
+                                for (int i = imin; i <= imax; i++)
+                                {
+                                    for (int j = jmin; j <= jmax; j++)
+                                    {
+                                        if (!blocksInModel.ContainsKey(kk + k) || !blocksInModel[kk + k].ContainsKey(i) || !blocksInModel[kk + k][i].ContainsKey(j))
+                                        {
+                                            continue;
+                                        }
+                                        Block ub = blocksInModel[kk + k][i][j];
+                                        AddBlockToDictionary(validBlocks, i, j, kk + k, ub);
+                                        if(b.DependentBlocks == null)
+                                        {
+                                            b.DependentBlocks = new List<Block>();
+                                        }
+                                        b.DependentBlocks.Add(ub);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // Change way of accessing blocks
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> UpdatedBlocks = new Dictionary<int, Dictionary<int, Dictionary<int, Block>>>();
+                foreach (int kk in validBlocks.Keys.ToList())
+                {
+                    foreach (int ii in validBlocks[kk].Keys.ToList())
+                    {
+                        foreach (int jj in validBlocks[kk][ii].Keys.ToList())
+                        {
+                            Block b = validBlocks[kk][ii][jj];
+                            AddBlockToDictionaryByX(UpdatedBlocks, ii, jj, kk, b);
+                        }
+                    }
+                }
+
+                Blocks.Add(model.Id, UpdatedBlocks);
+            }
+            //PrintBlocks();
+        }
+
+        /*
+         * This function will iterate trough all the blocks and mark them as mined or ready for mining
+         */
+        public void UpdateBlocks() 
+        {
+            List<long> minedBlocks = GetMinedBlocks();
+            foreach (Model model in models)
+            {
+                int benchConstraint = -1;
+                if (modelBenchLimitMapping.ContainsKey(model.Id))
+                {
+                    BenchLimit benchLimit = modelBenchLimitMapping[model.Id];
+                    if (benchLimit.IsUsed)
+                    {
+                        benchConstraint = benchLimit.Value;
+                    }
+                }
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocksinModel = Blocks[model.Id];
+                foreach (int i in blocksinModel.Keys)
+                {
+                    foreach (int j in blocksinModel[i].Keys)
+                    {
+                        Dictionary<int, Block> zblocks = blocksinModel[i][j];
+                        List<int> keys = zblocks.Keys.ToList();
+                        keys.Sort();
+                        keys.Reverse();
+                        int includedBlockCount = 0;
+                        int countFromFirstProcessBlock = 0;
+                        foreach(int k in keys)
+                        {
+                            Block b = zblocks[k];
+                            if (b.IsMined) continue;
+                            if(minedBlocks.Contains(b.Id))
+                            {
+                                b.IsMined = true;
+                                continue;
+                            }
+                            if(benchConstraint > 0 && ((countFromFirstProcessBlock == benchConstraint) || (includedBlockCount == Period * benchConstraint)))
+                            {
+                                break;
+                            }
+                            b.IsIncluded = true;
+                            includedBlockCount++;
+                            if (b.IsProcessBlock && countFromFirstProcessBlock == 0)
+                            {
+                                countFromFirstProcessBlock++;
+                            }
+                            if (countFromFirstProcessBlock > 0) countFromFirstProcessBlock++;
+                        }
+                    }
+                }
+                foreach (int i in blocksinModel.Keys)
+                {
+                    foreach (int j in blocksinModel[i].Keys)
+                    {
+                        foreach (int k in blocksinModel[i][j].Keys)
+                        {
+                            Block b = blocksinModel[i][j][k];
+                            if (b.IsMined || !b.IsIncluded || b.DependentBlocks == null ) continue;
+                            foreach(Block db in b.DependentBlocks)
+                            {
+                                if(!db.IsIncluded && !db.IsMined)
+                                {
+                                    b.IsIncluded = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        private void AddBlockToDictionary(Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks, int i, int j, int k, Block block)
+        {
+            if (!blocks.ContainsKey(k))
+            {
+                Dictionary<int, Block> yblocks = new Dictionary<int, Block>();
+                Dictionary<int, Dictionary<int, Block>> xblocks = new Dictionary<int, Dictionary<int, Block>>();
+                yblocks.Add(j, block);
+                xblocks.Add(i, yblocks);
+                blocks.Add(k, xblocks);
+            }
+            else
+            {
+                Dictionary<int, Dictionary<int, Block>> xblocks = blocks[k];
+                if (!xblocks.ContainsKey(i))
+                {
+                    Dictionary<int, Block> yblocks = new Dictionary<int, Block>();
+                    yblocks.Add(j, block);
+                    xblocks.Add(i, yblocks);
+                }
+                else
+                {
+                    Dictionary<int, Block> yblocks = xblocks[i];
+                    if (!yblocks.ContainsKey(j))
+                    {
+                        yblocks.Add(j, block);
+                    }
+                }
             }
         }
 
-        public void LoadMinedBlockList()
+        private void AddBlockToDictionaryByX(Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks, int i, int j, int k, Block block)
+        {
+            if (!blocks.ContainsKey(i))
+            {
+                Dictionary<int, Block> zblocks = new Dictionary<int, Block>();
+                Dictionary<int, Dictionary<int, Block>> yblocks = new Dictionary<int, Dictionary<int, Block>>();
+                zblocks.Add(k, block);
+                yblocks.Add(j, zblocks);
+                blocks.Add(i, yblocks);
+            }
+            else
+            {
+                Dictionary<int, Dictionary<int, Block>> yblocks = blocks[i];
+                if (!yblocks.ContainsKey(j))
+                {
+                    Dictionary<int, Block> zblocks = new Dictionary<int, Block>();
+                    zblocks.Add(k, block);
+                    yblocks.Add(j, zblocks);
+                }
+                else
+                {
+                    Dictionary<int, Block> zblocks = yblocks[j];
+                    if (!zblocks.ContainsKey(k))
+                    {
+                        zblocks.Add(k, block);
+                    }
+                }
+            }
+        }
+        private List<BlockPosition> GetProcessBlocksPositions(int modelId)
+        {
+            List<BlockPosition> blockPositions = new List<BlockPosition>();
+            BlockDataAccess blockDataAccess = new BlockDataAccess();
+            foreach (Process process in processes)
+            {
+                foreach (ProcessModelMapping mapping in process.Mapping)
+                {
+                    if(mapping.ModelId == modelId)
+                    {
+                        List<BlockPosition> procesBlockPositions = blockDataAccess.GetBlockPositions(ProjectId, mapping.ModelId, mapping.FilterString);
+                        foreach(BlockPosition blockPosition in procesBlockPositions)
+                        {
+                            Boolean exists = false;
+                            foreach(BlockPosition bp in blockPositions)
+                            {
+                                if(bp.Bid == blockPosition.Bid)
+                                {
+                                    exists = true;
+                                    bp.Processes.Add(process);
+                                    break;
+                                }
+                            }
+                            if(!exists)
+                            {
+                                blockPosition.Processes = new List<Process> { process };
+                                blockPositions.Add(blockPosition);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return blockPositions;
+        }
+
+        private void PrintBlocks()
+        {
+            Directory.CreateDirectory(@"C:\\blockoptimiser");
+            FileStream fs = File.Create("C:\\blockoptimiser\\blockoptimiser-blocks.csv");
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                foreach (int key in Blocks.Keys)
+                {
+                    Dictionary<int, Dictionary<int, Dictionary<int, Block>>> validBlocks = Blocks[key];
+
+                    foreach (int kk in validBlocks.Keys)
+                    {
+                        foreach (int ii in validBlocks[kk].Keys)
+                        {
+                            foreach (int jj in validBlocks[kk][ii].Keys)
+                            {
+                                Block b = validBlocks[kk][ii][jj];
+                                int i = (int)b.data["I"];
+                                int j = (int)b.data["J"];
+                                int k = (int)b.data["K"];
+                                String xcentre = (String)b.data["xcentre"];
+                                String ycentre = (String)b.data["ycentre"];
+                                String zcentre = (String)b.data["zcentre"];
+                                Boolean isProcessBlock = ((b.Processes != null) && (b.Processes.Count > 0));
+                                String line = b.Id + "," + i + "," + j + "," + k + "," + xcentre + "," + ycentre + "," + zcentre+","+isProcessBlock;
+                                sw.WriteLine(line);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public List<long> GetMinedBlocks()
         {
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
-            minedBlocks = schedulerResultDataAccess.GetMinedBlocks(ProjectId);
+            return schedulerResultDataAccess.GetMinedBlocks(ProjectId);
         } 
-        public Boolean IsMined(long BId)
-        {
-            return minedBlocks.Contains(BId);
-        }
+
         public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int modelId)
         {
             return Blocks[modelId];
@@ -189,9 +494,6 @@ namespace blockoptimiser.Services.LP
             return gradeLimits;
         }
 
-        public Dictionary<long, List<int>> GetBlockProcessMapping() {
-            return blockProcessMapping;
-        }
         public String GetColumnNameById(int fieldId, int modelId)
         {
             List<CsvColumnMapping> mappings = new CsvColumnMappingDataAccess().GetAll(modelId);
@@ -225,10 +527,6 @@ namespace blockoptimiser.Services.LP
         public Geotech GetGeotechByModel(int ModelId)
         {
             return new GeotechDataAccess().Get(ModelId);
-        }
-        public List<BlockPosition> GetBlockPositions(int modelId, String condition)
-        {
-            return new BlockDataAccess().GetBlockPositions(ProjectId, modelId, condition);
         }
 
         public List<Opex> getOpexList()
@@ -335,30 +633,9 @@ namespace blockoptimiser.Services.LP
             }
         }
 
-        public Boolean IsValid(BlockPosition bp, int modelId)
-        {
-            Boolean isValid = true;
-            if(modelBenchLimitMapping.ContainsKey(modelId))
-            {
-                BenchLimit benchLimit = modelBenchLimitMapping[modelId];
-                if(benchLimit.IsUsed)
-                {
-                    Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = GetBlocks(modelId);
-                    Dictionary<int, Block> verticalBlocks = blocks[bp.I][bp.J];
-                    int maxKValue = verticalBlocks.Keys.Max();
-                    if (bp.K <= (maxKValue - benchLimit.Value))
-                    {
-                        isValid = false;
-                    }
-                }
-
-            }
-            return isValid;
-        }
         public Boolean IsValid(Block b, int modelId)
         {
-            Boolean isValid = true;
-            if (modelBenchLimitMapping.ContainsKey(modelId))
+            /*if (modelBenchLimitMapping.ContainsKey(modelId))
             {
                 BenchLimit benchLimit = modelBenchLimitMapping[modelId];
                 if (benchLimit.IsUsed)
@@ -375,8 +652,8 @@ namespace blockoptimiser.Services.LP
                         isValid = false;
                     }
                 }
-            }
-            return isValid;
+            }*/
+            return !b.IsMined && b.IsIncluded;
         }
     }
 }

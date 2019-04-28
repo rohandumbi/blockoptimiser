@@ -10,6 +10,16 @@ namespace blockoptimiser.Models
     {
         public long Id { get; set; }
         public IDictionary<string, object> data { get; set; }
+        public List<Process> Processes { get; set; }
+        public List<Block> DependentBlocks { get; set; }
+        public Boolean IsMined { get; set; }
+        public Boolean IsIncluded { get; set; }
+        public Boolean IsProcessBlock
+        {
+            get {
+                return (Processes != null) && (Processes.Count > 0);
+            }
+        }
     }
 
     public class BlockPosition
@@ -18,6 +28,7 @@ namespace blockoptimiser.Models
         public int I { get; set; }
         public int J { get; set; }
         public int K { get; set; }
+        public List<Process> Processes { get; set; }
 
     }
 }
