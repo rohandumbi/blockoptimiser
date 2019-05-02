@@ -38,8 +38,7 @@
         </ComboBox>
         <Label Grid.Row="2">Period:</Label>
         <TextBox x:Name="DiscountFactorText" Grid.Row="2" Grid.Column="1" Margin="0 0 10 0" Width="100"/>
-        <Label Grid.Row="3"> Discount Factor:</Label>
-        <TextBox x:Name="PeriodText" Grid.Row="3" Grid.Column="1" Margin="0 0 10 0" Width="100"/>
+        <Label Grid.Row="3">Discount Factor:</Label>
         <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="4" Grid.Column="0" Content="Run"></Button>
     </Grid>
 </Window>
