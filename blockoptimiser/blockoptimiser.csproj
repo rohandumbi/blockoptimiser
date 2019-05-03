@@ -268,11 +268,17 @@
     <Compile Include="Views\V2AppView.xaml.cs">
       <DependentUpon>V2AppView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2BenchLimitView.xaml.cs">
+      <DependentUpon>V2BenchLimitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ExpressionModelMappingView.xaml.cs">
       <DependentUpon>V2ExpressionModelMappingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ExpressionView.xaml.cs">
       <DependentUpon>V2ExpressionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2FinanceLimitView.xaml.cs">
+      <DependentUpon>V2FinanceLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2GeotechContainerView.xaml.cs">
       <DependentUpon>V2GeotechContainerView.xaml</DependentUpon>
@@ -280,6 +286,15 @@
     <Compile Include="ViewModels\V2GeotechContainerViewModel.cs" />
     <Compile Include="Views\V2GeotechView.xaml.cs">
       <DependentUpon>V2GeotechView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2GradeLimitView.xaml.cs">
+      <DependentUpon>V2GradeLimitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2LimitsView.xaml.cs">
+      <DependentUpon>V2LimitsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ProcessLimitView.xaml.cs">
+      <DependentUpon>V2ProcessLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ProcessView.xaml.cs">
       <DependentUpon>V2ProcessView.xaml</DependentUpon>
@@ -389,6 +404,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2BenchLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2ExpressionModelMappingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -397,11 +416,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2FinanceLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2GeotechContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\V2GeotechView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2GradeLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2LimitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ProcessLimitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

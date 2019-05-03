@@ -191,15 +191,7 @@
                         </Controls:HamburgerMenuIconItem>
                         <Controls:HamburgerMenuIconItem Icon="{iconPacks:Octicons Kind=Briefcase}" Label="Limits">
                             <Controls:HamburgerMenuIconItem.Tag>
-                                <UserControl>
-                                    <StackPanel Orientation="Vertical">
-                                        <Controls:ToggleSwitch Margin="0 0 0 5" Header="Lorem ipsum dolor sit amet, consectetur adipiscing elit" />
-                                        <Controls:ToggleSwitch Margin="0 0 0 5"
-                                                               Header="Ut dictum arcu egestas aliquet elementum"
-                                                               IsChecked="True" />
-                                        <Controls:ToggleSwitch Margin="0 0 0 5" Header="Pellentesque ultricies metus quis dui luctus, vel faucibus risus rhoncus" />
-                                    </StackPanel>
-                                </UserControl>
+                                <local:V2LimitsView/>
                             </Controls:HamburgerMenuIconItem.Tag>
                         </Controls:HamburgerMenuIconItem>
                     </Controls:HamburgerMenuItemCollection>
