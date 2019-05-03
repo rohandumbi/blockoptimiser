@@ -43,6 +43,11 @@ namespace blockoptimiser.Views
             Context.ScenarioId = 1;
             this.DataContext = new GradeLimitViewModel();
         }
+
+        private void AddGradeLimit(object sender, RoutedEventArgs e)
+        {
+            ((GradeLimitViewModel)this.DataContext).CreateGradeLimit();
+        }
         private void Item_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox itemCombo = (ComboBox)sender;

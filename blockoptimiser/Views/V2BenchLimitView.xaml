@@ -41,7 +41,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button x:Name="CreateBenchLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+                <Button Click="AddBenchLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
             </Grid>
         </GroupBox>
         <DataGrid  Grid.Column="1"
@@ -49,10 +49,15 @@
                    Grid.ColumnSpan="3" 
                    Grid.RowSpan="4" 
                    x:Name="Projects" 
-                   Margin="10,0,0,10" 
+                   Margin="5" 
                    ItemsSource="{Binding BenchLimits}" 
                    CanUserAddRows="False"  
                    AutoGenerateColumns="False">
+            <DataGrid.Style>
+                <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
+                </Style>
+            </DataGrid.Style>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Model Name" Binding="{Binding Path=ModelName}" />
                 <DataGridCheckBoxColumn Header="Is Used" Binding="{Binding Path=IsUsed}" />

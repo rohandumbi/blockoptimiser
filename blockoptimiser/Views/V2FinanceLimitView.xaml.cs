@@ -28,5 +28,9 @@ namespace blockoptimiser.Views
             Context.ScenarioId = 1;
             this.DataContext = new FinanceLimitViewModel();
         }
+        private void AddOpex(object sender, RoutedEventArgs e)
+        {
+            ((FinanceLimitViewModel)this.DataContext).CreateOpex();
+        }
     }
 }

@@ -28,5 +28,10 @@ namespace blockoptimiser.Views
             Context.ScenarioId = 1;
             this.DataContext = new ProcessLimitViewModel();
         }
+
+        private void AddProcessLimit(object sender, RoutedEventArgs e)
+        {
+            ((ProcessLimitViewModel)this.DataContext).CreateProcessLimit();
+        }
     }
 }

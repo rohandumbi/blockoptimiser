@@ -62,16 +62,22 @@
                 </ComboBox>
                 <CheckBox Name="InUse" Content="In Use" IsChecked="{Binding IsUsed}"  CommandParameter="{Binding Id}" Grid.Row="2" Grid.Column="7">
                 </CheckBox>
-                <Button x:Name="CreateOpex" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+                <Button Click="AddOpex" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
             </Grid>
         </GroupBox>
         <DataGrid  Grid.Column="1"
                    Grid.Row="2" 
-                   Margin="10,0,0,10" 
+                   Margin="5" 
                    ItemsSource="{Binding OpexList}"
                    attachedBehaviors:DataGridColumnsBehavior.BindableColumns="{Binding OpexColumns}"
                    CanUserAddRows="False" 
-                   AutoGenerateColumns="False"/>
+                   AutoGenerateColumns="False">
+            <DataGrid.Style>
+                <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
 
     </Grid>
 </UserControl>

@@ -28,5 +28,10 @@ namespace blockoptimiser.Views
             //temp hard coded
             Context.ScenarioId = 1;
         }
+
+        private void AddBenchLimit(object sender, RoutedEventArgs e)
+        {
+            ((BenchLimitViewModel)this.DataContext).CreateBenchLimit();
+        }
     }
 }

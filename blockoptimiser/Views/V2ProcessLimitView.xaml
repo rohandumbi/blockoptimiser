@@ -42,16 +42,22 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button x:Name="CreateProcessLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+                <Button Click="AddProcessLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
             </Grid>
         </GroupBox>
         <DataGrid  Grid.Column="1"
                    Grid.Row="2" 
-                   Margin="10,0,0,10" 
+                   Margin="5" 
                    ItemsSource="{Binding ProcessLimits}"
                    attachedBehaviors:DataGridColumnsBehavior.BindableColumns="{Binding ProcessLimitColumns}"
                    CanUserAddRows="False" 
-                   AutoGenerateColumns="False"/>
-
+                   AutoGenerateColumns="False"
+                   SelectionUnit="FullRow">
+            <DataGrid.Style>
+                <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
     </Grid>
 </UserControl>
