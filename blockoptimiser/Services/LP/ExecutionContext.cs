@@ -137,7 +137,7 @@ namespace blockoptimiser.Services.LP
 
                 int nbenches = (int)Math.Ceiling((max_dim / 2) / (zinc / (decimal)Math.Tan(max_ira)));
 
-                foreach (int kk in validBlocks.Keys.ToList())
+                foreach (int kk in GetSortedList(validBlocks.Keys.ToList()))
                 {
                     foreach (int ii in validBlocks[kk].Keys.ToList())
                     {
@@ -654,6 +654,12 @@ namespace blockoptimiser.Services.LP
                 }
             }*/
             return !b.IsMined && b.IsIncluded;
+        }
+
+        private List<int> GetSortedList(List<int> list)
+        {
+            list.Sort();
+            return list;
         }
     }
 }
