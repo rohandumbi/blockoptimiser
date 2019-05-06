@@ -70,6 +70,7 @@ namespace blockoptimiser.Services.LP
                         {
                             break;
                         }
+                        context.ProcessMinedBlocks();
                     }
                     catch (Exception e)
                     {

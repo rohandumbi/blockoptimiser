@@ -31,4 +31,14 @@ namespace blockoptimiser.Models
         public List<Process> Processes { get; set; }
 
     }
+
+    public class MinedBlock
+    {
+        public long Bid { get; set; }
+        public int Year { get; set; }
+        public int I { get; set; }
+        public int J { get; set; }
+        public int K { get; set; }
+
+    }
 }

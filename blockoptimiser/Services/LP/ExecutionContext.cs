@@ -30,8 +30,9 @@ namespace blockoptimiser.Services.LP
         private List<BenchLimit> benchLimits;
         private Dictionary<int, BenchLimit> modelBenchLimitMapping;
         private Dictionary<String, String> requiredFields;
-        private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; } 
-
+        private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
+        private Dictionary<String, int> BenchesMinedinPeriod;
+        private Dictionary<int, List<long>> LastPeriodMinedBlocks;
         public ExecutionContext(RunConfig runconfig)
         {
             this.ProjectId = runconfig.ProjectId;
@@ -45,6 +46,7 @@ namespace blockoptimiser.Services.LP
             {
                 requiredFields.Add(mapping.RequiredFieldName, mapping.MappedColumnName);
             }
+            BenchesMinedinPeriod = new Dictionary<String, int>();
             LoadConfigurations();
             schedulerResultDataAccess.Create(ProjectId);
             LoadValidBlocks();
@@ -203,9 +205,19 @@ namespace blockoptimiser.Services.LP
          */
         public void UpdateBlocks() 
         {
-            List<long> minedBlocks = GetMinedBlocks();
+            
             foreach (Model model in models)
             {
+                List<long> minedBlocks = null;
+                if (LastPeriodMinedBlocks != null && LastPeriodMinedBlocks.ContainsKey(model.Id))
+                {
+                    minedBlocks = LastPeriodMinedBlocks[model.Id];
+                }
+                else
+                {
+                    minedBlocks = new List<long>();
+                }
+
                 int benchConstraint = -1;
                 if (modelBenchLimitMapping.ContainsKey(model.Id))
                 {
@@ -226,6 +238,15 @@ namespace blockoptimiser.Services.LP
                         keys.Reverse();
                         int includedBlockCount = 0;
                         int countFromFirstProcessBlock = 0;
+                        int periodMinedLast = 0; 
+                        if(BenchesMinedinPeriod.ContainsKey(model.Id + "-" + i + "-" + j))
+                        {
+                            periodMinedLast = BenchesMinedinPeriod[model.Id + "-" + i + "-" + j];
+                        }
+                        if(this.Period > 1 && periodMinedLast == 0)
+                        {
+                            periodMinedLast = 1;
+                        }
                         foreach(int k in keys)
                         {
                             Block b = zblocks[k];
@@ -235,7 +256,7 @@ namespace blockoptimiser.Services.LP
                                 b.IsMined = true;
                                 continue;
                             }
-                            if(benchConstraint > 0 && ((countFromFirstProcessBlock == benchConstraint) || (includedBlockCount == Period * benchConstraint)))
+                            if(benchConstraint > 0 && ((countFromFirstProcessBlock == benchConstraint) || (includedBlockCount == (Period - periodMinedLast) * benchConstraint)))
                             {
                                 break;
                             }
@@ -270,6 +291,7 @@ namespace blockoptimiser.Services.LP
                 }
             }
         }
+
         private void AddBlockToDictionary(Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks, int i, int j, int k, Block block)
         {
             if (!blocks.ContainsKey(k))
@@ -397,10 +419,59 @@ namespace blockoptimiser.Services.LP
                 }
             }
         }
-        public List<long> GetMinedBlocks()
+        public void ProcessMinedBlocks()
         {
+            LastPeriodMinedBlocks = new Dictionary<int, List<long>>();
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
-            return schedulerResultDataAccess.GetMinedBlocks(ProjectId);
+            foreach(Model model in models)
+            {
+                int benchConstraint = -1;
+                if (modelBenchLimitMapping.ContainsKey(model.Id))
+                {
+                    BenchLimit benchLimit = modelBenchLimitMapping[model.Id];
+                    if (benchLimit.IsUsed)
+                    {
+                        benchConstraint = benchLimit.Value;
+                    }
+                }
+                List<long> lastYearMinedBlockIds = new List<long>();
+                Dictionary<int, Dictionary<int, Dictionary<int, MinedBlock>>> minedBlockMap = schedulerResultDataAccess.GetMinedBlocks(ProjectId, model.Id, this.Year);
+                List<MinedBlock> updatedBlocks = new List<MinedBlock>();
+                foreach(int i in minedBlockMap.Keys)
+                {
+                    foreach (int j in minedBlockMap[i].Keys)
+                    {
+                        Dictionary<int, MinedBlock> zblocks = minedBlockMap[i][j];
+                        List<int> keys = GetSortedList(zblocks.Keys.ToList());
+                        keys.Reverse();
+                        for(int count = 0; count < keys.Count; count ++ )
+                        {
+                            int k = keys.ElementAt(count);
+                            MinedBlock minedBlock = zblocks[k];
+                            lastYearMinedBlockIds.Add(minedBlock.Bid);
+                            String key = model.Id + "-" + minedBlock.I + "-" + minedBlock.J;
+                            if (BenchesMinedinPeriod.ContainsKey(key))
+                            {
+                                BenchesMinedinPeriod[key] = Period;
+                            }
+                            else
+                            {
+                                BenchesMinedinPeriod.Add(key, Period);
+                            }
+                            count++;
+                            if(benchConstraint > 0 )
+                            {
+                                int factor = count / benchConstraint;
+                                minedBlock.Year = minedBlock.Year - factor;
+                                updatedBlocks.Add(minedBlock);
+                            }
+                            
+                        }                      
+                    }
+                }
+                schedulerResultDataAccess.UpdateYear(ProjectId, updatedBlocks);
+                LastPeriodMinedBlocks.Add(model.Id, lastYearMinedBlockIds);
+            }          
         } 
 
         public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int modelId)
