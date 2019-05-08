@@ -24,8 +24,13 @@ namespace blockoptimiser.Views
         public V2FinanceLimitView()
         {
             InitializeComponent();
-            //temp hard coded
+            //temp hack
             Context.ScenarioId = 1;
+            if (!(Context.ScenarioId > 0))
+            {
+                MessageBox.Show("Please select a period.");
+                return;
+            }
             this.DataContext = new FinanceLimitViewModel();
         }
         private void AddOpex(object sender, RoutedEventArgs e)

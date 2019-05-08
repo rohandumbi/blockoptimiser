@@ -24,9 +24,13 @@ namespace blockoptimiser.Views
         public V2BenchLimitView()
         {
             InitializeComponent();
-            this.DataContext = new BenchLimitViewModel();
-            //temp hard coded
+            //temp hack
             Context.ScenarioId = 1;
+            if (!(Context.ScenarioId > 0)) {
+                MessageBox.Show("Please select a period.");
+                return;
+            }
+            this.DataContext = new BenchLimitViewModel();
         }
 
         private void AddBenchLimit(object sender, RoutedEventArgs e)

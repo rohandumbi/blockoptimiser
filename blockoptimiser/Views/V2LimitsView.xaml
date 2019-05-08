@@ -16,8 +16,8 @@
                     Controls:ControlsHelper.HeaderFontSize="18"
                     TabStripPlacement="Top">
             <TabItem Header="Period">
-                <TextBlock FontSize="30" Text="first content" />
-                <!--<local:PeriodView/>-->
+                <!--<TextBlock FontSize="30" Text="first content" />-->
+                <local:V2PeriodView/>
             </TabItem>
             <TabItem Header="Finance">
                 <!--<TextBlock FontSize="30" Text="second one" />-->
