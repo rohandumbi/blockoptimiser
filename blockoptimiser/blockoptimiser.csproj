@@ -189,6 +189,7 @@
     <Compile Include="ViewModels\V2AppViewModel.cs" />
     <Compile Include="ViewModels\V2ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\V2ExpressionViewModel.cs" />
+    <Compile Include="ViewModels\V2ModelImportViewModel.cs" />
     <Compile Include="ViewModels\V2PeriodViewModel.cs" />
     <Compile Include="ViewModels\V2ProjectsViewModel.cs" />
     <Compile Include="ViewModels\V2ShellViewModel.cs" />
@@ -293,6 +294,9 @@
     </Compile>
     <Compile Include="Views\V2LimitsView.xaml.cs">
       <DependentUpon>V2LimitsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ModelImportView.xaml.cs">
+      <DependentUpon>V2ModelImportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2PeriodView.xaml.cs">
       <DependentUpon>V2PeriodView.xaml</DependentUpon>
@@ -437,6 +441,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\V2LimitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ModelImportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

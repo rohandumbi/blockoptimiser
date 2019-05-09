@@ -69,7 +69,6 @@ namespace blockoptimiser.ViewModels
                 DiscountFactor = x
             };
             ScenarioDAO.Insert(newScenario);
-            //Scenarios.Add(newScenario);
             Scenarios = ScenarioDAO.GetAll();
             NotifyOfPropertyChange("Scenarios");
         }

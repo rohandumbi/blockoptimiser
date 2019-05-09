@@ -180,9 +180,9 @@
                 <Controls:HamburgerMenu.ItemsSource>
                     <Controls:HamburgerMenuItemCollection>
                         <Controls:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Home}" Label="Model Import">
-                            <!--<Controls:HamburgerMenuIconItem.Tag>
-                                <metroDemo:HomeView />
-                            </Controls:HamburgerMenuIconItem.Tag>-->
+                            <Controls:HamburgerMenuIconItem.Tag>
+                                <local:V2ModelImportView/>
+                            </Controls:HamburgerMenuIconItem.Tag>
                         </Controls:HamburgerMenuIconItem>
                         <Controls:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=AccountCircle}" Label="Geotech/Process">
                             <Controls:HamburgerMenuIconItem.Tag>
