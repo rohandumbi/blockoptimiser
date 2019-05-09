@@ -31,5 +31,10 @@ namespace blockoptimiser.Views
         {
             ((V2ModelImportViewModel)this.DataContext).ClickMenu(sender, (MouseButtonEventArgs)e);
         }
+
+        private void AddModel(object sender, RoutedEventArgs e)
+        {
+            ((V2ModelImportViewModel)this.DataContext).AddModel();
+        }
     }
 }

@@ -22,8 +22,8 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="ModelName" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10"/>
-        <Button x:Name="AddModel" Grid.Row="1" Grid.Column="2" Width="75" Margin="0 0 0 10">Add Model</Button>
+        <TextBox Text="{Binding ModelName}" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10"/>
+        <Button Click="AddModel" Grid.Row="1" Grid.Column="2" Width="75" Margin="0 0 0 10">Add Model</Button>
         <TreeView x:Name="MainTreeView" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding MenuItems}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
