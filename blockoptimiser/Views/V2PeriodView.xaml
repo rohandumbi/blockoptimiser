@@ -6,13 +6,37 @@
              xmlns:local="clr-namespace:blockoptimiser.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UniformGrid>
-        <ListView Margin="2"
-                 BorderThickness="1"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox x:Name="groupBox" 
+                  Header="Create New Row" 
+                  Grid.Column="1"
+                  Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="LabelScenarioName" Margin="5" Text="Name:"/>
+                <TextBox x:Name="Name" Width="150" Margin="5" Text="{Binding ScenarioName}"/>
+                <TextBlock x:Name="LabelStartYear" Margin="5" Text="Start Year:"/>
+                <TextBox x:Name="Year" Width="100" Margin="5" Text="{Binding StartYear}"/>
+                <TextBlock x:Name="LabelTimePeriod" Margin="5" Text="Time Period:"/>
+                <TextBox x:Name="Period" Width="50" Margin="5" Text="{Binding TimePeriod}"/>
+                <TextBlock x:Name="LabelDiscountFactor" Margin="5" Text="Discount Factor:"/>
+                <TextBox x:Name="DFactor" Width="50" Margin="5" Text="{Binding DiscountFactor}"/>
+                <Button Click="AddScenario" Content="Add" Margin="5" Width="75"></Button>
+            </StackPanel>
+        </GroupBox>
+        <ListView Margin="5"
                  ItemsSource="{Binding Scenarios}"
                  SelectedIndex="0"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                 Style="{StaticResource VirtualisedMetroListView}">
+                 Style="{StaticResource VirtualisedMetroListView}"
+                 Grid.Column="1"
+                 Grid.Row="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
@@ -22,5 +46,5 @@
             </ListView.View>
         </ListView>
 
-    </UniformGrid>
+    </Grid>
 </UserControl>

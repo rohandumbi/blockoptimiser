@@ -26,5 +26,9 @@ namespace blockoptimiser.Views
             InitializeComponent();
             this.DataContext = new V2PeriodViewModel();
         }
+        private void AddScenario(object sender, RoutedEventArgs e)
+        {
+            ((V2PeriodViewModel)this.DataContext).CreateScenario();
+        }
     }
 }
