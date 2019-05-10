@@ -295,11 +295,17 @@
     <Compile Include="Views\V2LimitsView.xaml.cs">
       <DependentUpon>V2LimitsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2ModelDefinitionView.xaml.cs">
+      <DependentUpon>V2ModelDefinitionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ModelImportView.xaml.cs">
       <DependentUpon>V2ModelImportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2PeriodView.xaml.cs">
       <DependentUpon>V2PeriodView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2PrimaryModelDefinitionView.xaml.cs">
+      <DependentUpon>V2PrimaryModelDefinitionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ProcessLimitView.xaml.cs">
       <DependentUpon>V2ProcessLimitView.xaml</DependentUpon>
@@ -444,11 +450,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2ModelDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2ModelImportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\V2PeriodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2PrimaryModelDefinitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

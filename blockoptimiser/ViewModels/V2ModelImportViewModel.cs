@@ -1,6 +1,7 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
 using blockoptimiser.Services.LP;
+using blockoptimiser.Views;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,8 @@ namespace blockoptimiser.ViewModels
         private ModelDimensionDataAccess ModelDimensionDAO;
         private ProjectDataAccess ProjectDAO;
         private String _newModelName;
-        private MenuItem ProjectMenu;
-        private MenuItem DataImportMenu;
         private String PrimaryModelName;
+        public UserControl ModelDefinitionUserControl { get; set; }
         public V2ModelImportViewModel()
         {
             ProjectDAO = new ProjectDataAccess();
@@ -39,6 +39,7 @@ namespace blockoptimiser.ViewModels
                     PrimaryModelName = model.Name;
                 }
             }
+            ModelDefinitionUserControl = new UserControl();
         }
 
         public void ClickMenu(object e, MouseButtonEventArgs mouseButtonEventArgs)
@@ -56,12 +57,15 @@ namespace blockoptimiser.ViewModels
             Boolean isPrimaryModel = PrimaryModelName.Equals(SelectedModelName);
             if (isPrimaryModel)
             {
-                ActivateItem(new PrimaryModelDefinitionViewModel());
+                //ActivateItem(new PrimaryModelDefinitionViewModel());
+                ModelDefinitionUserControl = new V2PrimaryModelDefinitionView();
             }
             else
             {
-                ActivateItem(new ModelDefinitionViewModel());
+                //ActivateItem(new ModelDefinitionViewModel());
+                ModelDefinitionUserControl = new V2ModelDefinitionView();
             }
+            NotifyOfPropertyChange("ModelDefinitionUserControl");
         }
 
         public String ModelName

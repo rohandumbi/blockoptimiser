@@ -42,6 +42,9 @@
                  ItemsSource="{Binding Models}"
                  SelectedIndex="0"
                  Style="{StaticResource VirtualisedMetroListBox}" />
-        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="3"/>
+        <ContentControl x:Name="ActiveItem"
+                        Content="{Binding ModelDefinitionUserControl}"
+                        Grid.Row="2" 
+                        Grid.Column="3"/>
     </Grid>
 </UserControl>
