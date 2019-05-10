@@ -17,16 +17,13 @@ namespace blockoptimiser.ViewModels
     public class V2ModelImportViewModel : Conductor<Object>
     {
         private BindableCollection<MenuItem> menuItems { get; set; }
-        private List<Model> Models;
+        public List<Model> Models { get; set; }
         private ModelDataAccess ModelDAO;
         private ModelDimensionDataAccess ModelDimensionDAO;
         private ProjectDataAccess ProjectDAO;
         private String _newModelName;
         private MenuItem ProjectMenu;
         private MenuItem DataImportMenu;
-        private MenuItem GeoTechMenu;
-        private MenuItem LimitMenu;
-        private MenuItem ZoneMenu;
         private String PrimaryModelName;
         public V2ModelImportViewModel()
         {
@@ -34,61 +31,29 @@ namespace blockoptimiser.ViewModels
             ModelDAO = new ModelDataAccess();
             ModelDimensionDAO = new ModelDimensionDataAccess();
             Project Project = ProjectDAO.Get(Context.ProjectId);
-            ProjectMenu = new MenuItem(Project.Name, "project");
             Models = ModelDAO.GetAll(Context.ProjectId);
-            DataImportMenu = new MenuItem("Data Import", "data-import");
             foreach (Model model in Models)
             {
-                DataImportMenu.ChildMenuItems.Add(new MenuItem(model.Name, "model"));
                 if (String.IsNullOrEmpty(PrimaryModelName))
                 {
                     PrimaryModelName = model.Name;
                 }
             }
-            //GeoTechMenu = new MenuItem("Geotech/Process", "geotech");
-            //LimitMenu = new MenuItem("Limits", "limits");
-            //ZoneMenu = new MenuItem("Zone", "zone");
-            //LimitMenu.ChildMenuItems.Add(ZoneMenu);
-            //GeoTechMenu.ChildMenuItems.Add(LimitMenu);
-            //DataImportMenu.ChildMenuItems.Add(GeoTechMenu);
-            ProjectMenu.ChildMenuItems.Add(DataImportMenu);
-
-
-            //ProjectMenu.ChildMenuItems.Add(GeoTechMenu);
-
-            MenuItems = new BindableCollection<MenuItem>()
-            {
-                ProjectMenu
-            };
-            //ActivateItem(new ModelDefinitionViewModel());
-        }
-
-        public BindableCollection<MenuItem> MenuItems
-        {
-            get
-            {
-                return menuItems;
-            }
-            set
-            {
-                menuItems = value;
-                NotifyOfPropertyChange(() => MenuItems);
-            }
         }
 
         public void ClickMenu(object e, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            // MessageBox.Show(e.Source.ToString());
-            Label SelectedLabel = (Label)e;
+            ListBox ModelList = (ListBox)e;
+            String SelectedModelName = ((Model)ModelList.SelectedItem).Name;
             foreach (var Model in Models)
             {
-                if (Model.Name.Equals(SelectedLabel.Content))
+                if (Model.Name.Equals(SelectedModelName))
                 {
                     Context.ModelId = Model.Id;
                     break;
                 }
             }
-            Boolean isPrimaryModel = PrimaryModelName.Equals(SelectedLabel.Content);
+            Boolean isPrimaryModel = PrimaryModelName.Equals(SelectedModelName);
             if (isPrimaryModel)
             {
                 ActivateItem(new PrimaryModelDefinitionViewModel());
@@ -114,6 +79,10 @@ namespace blockoptimiser.ViewModels
             try
             {
                 ModelDAO.Insert(newModel);
+                if (String.IsNullOrEmpty(PrimaryModelName))
+                {
+                    PrimaryModelName = _newModelName;
+                }
             }
             catch (Exception e)
             {
@@ -130,10 +99,8 @@ namespace blockoptimiser.ViewModels
                 };
                 ModelDimensionDAO.Insert(obj);
             }
-
-            DataImportMenu.ChildMenuItems.Add(new MenuItem(newModel.Name, "model"));
-            //NotifyOfPropertyChange("MenuItems");
-            NotifyOfPropertyChange(() => MenuItems);
+            Models = ModelDAO.GetAll(Context.ProjectId);
+            NotifyOfPropertyChange("Models");
         }
     }
 }
