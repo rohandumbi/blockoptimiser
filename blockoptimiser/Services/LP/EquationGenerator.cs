@@ -422,7 +422,7 @@ namespace blockoptimiser.Services.LP
                             foreach (int kk in blocks[ii][jj].Keys)
                             {
                                 Block b = blocks[ii][jj][kk];
-                                if(!context.IsValid(b, modelId))
+                                if(context.IsValid(b, modelId))
                                 {
                                     if (b.Processes != null )
                                     {

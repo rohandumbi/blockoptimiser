@@ -458,7 +458,6 @@ namespace blockoptimiser.Services.LP
                             {
                                 BenchesMinedinPeriod.Add(key, Period);
                             }
-                            count++;
                             if(benchConstraint > 0 )
                             {
                                 int factor = count / benchConstraint;
