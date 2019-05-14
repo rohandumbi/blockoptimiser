@@ -443,7 +443,7 @@ namespace blockoptimiser.Services.LP
                     {
                         Dictionary<int, MinedBlock> zblocks = minedBlockMap[i][j];
                         List<int> keys = GetSortedList(zblocks.Keys.ToList());
-                        keys.Reverse();
+                        //keys.Reverse();
                         for(int count = 0; count < keys.Count; count ++ )
                         {
                             int k = keys.ElementAt(count);
