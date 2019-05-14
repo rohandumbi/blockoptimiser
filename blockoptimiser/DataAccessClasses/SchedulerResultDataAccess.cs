@@ -21,6 +21,8 @@ namespace blockoptimiser.DataAccessClasses
                     " DestinationType TINYINT, " +
                     " Destination INT," +
                     " Year INT," +
+                    " MinedYear INT," +
+                    " AdjustedYear INT," +
                     " TonnageMined DECIMAL(18,10) )";
                 
                 try
@@ -90,7 +92,7 @@ namespace blockoptimiser.DataAccessClasses
                 {
                     try
                     {
-                        connection.Execute($"update BOResult_{ ProjectId } set year = { minedBlock.Year }  where bid = { minedBlock.Bid } ");
+                        connection.Execute($"update BOResult_{ ProjectId } set year = { minedBlock.Year }, adjustedYear = { minedBlock.Year }  where bid = { minedBlock.Bid } ");
                     }
                     catch (Exception e)
                     {
