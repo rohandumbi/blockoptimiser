@@ -7,14 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid>
+        <!--<Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name = "GraphContainer" Grid.Row="1" Grid.Column="1" Background="White" Margin="10"></StackPanel>
-        </Grid>
+            <ContentControl Width="1000" Height="800" Content="{Binding GraphControl}"/>
+        </Grid>-->
     </Grid>
 </UserControl>

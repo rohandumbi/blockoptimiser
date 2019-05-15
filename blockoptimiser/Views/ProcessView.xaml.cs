@@ -96,11 +96,15 @@ namespace blockoptimiser.Views
             ProcessGraphViewerPanel.HorizontalAlignment = HorizontalAlignment.Left;
             ProductGraphViewerPanel.HorizontalAlignment = HorizontalAlignment.Right;
 
-            ProcessGraphViewerPanel.Width = (this.ActualWidth/2 - 10);
-            ProductGraphViewerPanel.Width = (this.ActualWidth/2 - 10);
+            //ProcessGraphViewerPanel.Width = (this.ActualWidth/2 - 10);
+            ProcessGraphViewerPanel.Width = 500;
+            //ProductGraphViewerPanel.Width = (this.ActualWidth/2 - 10);
+            ProductGraphViewerPanel.Width = 500;
 
-            ProcessGraphViewerPanel.Height = this.ActualHeight - 20;
-            ProductGraphViewerPanel.Height = this.ActualHeight - 20;
+            //ProcessGraphViewerPanel.Height = this.ActualHeight - 20;
+            ProcessGraphViewerPanel.Height = 500;
+            //ProductGraphViewerPanel.Height = this.ActualHeight - 20;
+            ProductGraphViewerPanel.Height = 500;
 
 
 

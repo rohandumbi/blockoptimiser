@@ -20,8 +20,8 @@
                 <local:V2GeotechView/>
             </TabItem>
             <TabItem Header="Process">
-                <TextBlock FontSize="30" Text="second one" />
-                <!--<local:V2ProcessView/>-->
+                <!--<TextBlock FontSize="30" Text="second one" />-->
+                <local:V2ProcessView/>
             </TabItem>
             <TabItem Header="Expression">
                 <!--<TextBlock FontSize="30" Text="last of them" />-->

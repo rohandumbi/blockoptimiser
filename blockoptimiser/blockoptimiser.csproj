@@ -191,6 +191,7 @@
     <Compile Include="ViewModels\V2ExpressionViewModel.cs" />
     <Compile Include="ViewModels\V2ModelImportViewModel.cs" />
     <Compile Include="ViewModels\V2PeriodViewModel.cs" />
+    <Compile Include="ViewModels\V2ProcessViewModel.cs" />
     <Compile Include="ViewModels\V2ProjectsViewModel.cs" />
     <Compile Include="ViewModels\V2ShellViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
