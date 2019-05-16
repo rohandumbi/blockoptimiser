@@ -38,9 +38,11 @@ namespace blockoptimiser.Views
         ProductDataAccess ProductDAO;
         ProductJoinDataAccess ProductJoinDAO;
         ContextMenu contextMenu;
-        public V2ProductJoinGraph()
+        private readonly IEventAggregator _eventAggregator;
+        public V2ProductJoinGraph(IEventAggregator eventAggregator)
         {
             InitializeComponent();
+            _eventAggregator = eventAggregator;
             this.Content = Panel;
             ProductDAO = new ProductDataAccess();
             ProductJoinDAO = new ProductJoinDataAccess();
@@ -193,6 +195,7 @@ namespace blockoptimiser.Views
             AddProductJoinNodes();
             graph.Attr.LayerDirection = LayerDirection.TB;
             graphViewer.Graph = graph;
+            _eventAggregator.PublishOnUIThread("changed:productJoinGraph");
         }
         private void DeleteProductJoin(String name)
         {
@@ -217,6 +220,7 @@ namespace blockoptimiser.Views
             AddProductJoinNodes();
             graph.Attr.LayerDirection = LayerDirection.TB;
             graphViewer.Graph = graph;
+            _eventAggregator.PublishOnUIThread("changed:productJoinGraph");
         }
 
         private void EditProductJoin(String productJoin)

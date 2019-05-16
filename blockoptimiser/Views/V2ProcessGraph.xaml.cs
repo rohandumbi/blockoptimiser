@@ -38,9 +38,11 @@ namespace blockoptimiser.Views
         ProcessDataAccess ProcessDAO;
         ProductDataAccess ProductDAO;
         ContextMenu contextMenu;
-        public V2ProcessGraph()
+        private readonly IEventAggregator _eventAggregator;
+        public V2ProcessGraph(IEventAggregator eventAggregator)
         {
             InitializeComponent();
+            _eventAggregator = eventAggregator;
             this.Content = Panel;
             ProcessDAO = new ProcessDataAccess();
             ProductDAO = new ProductDataAccess();
@@ -90,7 +92,7 @@ namespace blockoptimiser.Views
             foreach (var en in graphViewer.Entities)
             {
                 if (en.MarkedForDragging && en is IViewerNode)
-                { //got a selected node}
+                { //got a selected node
                     Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
                     nodesToEdit.Add(ViewerNode);
                 }
@@ -114,11 +116,6 @@ namespace blockoptimiser.Views
             {
                 Process process = GetProcessByName(nodesToEdit[0].Node.LabelText);
                 if (process != null) EditProcess(process);
-            }
-            foreach (var node in nodesToEdit)
-            {
-
-                //ViewerNode.Node.IsVisible = false;
             }
         }
 
@@ -151,7 +148,6 @@ namespace blockoptimiser.Views
                     Process process = GetProcessByName(node.Node.LabelText);
                     if (process != null) DeleteProcess(process);
                 }
-                //ViewerNode.Node.IsVisible = false;
             }
         }
 
@@ -185,6 +181,7 @@ namespace blockoptimiser.Views
             AddProductNodes();
             graph.Attr.LayerDirection = LayerDirection.TB;
             graphViewer.Graph = graph;
+            _eventAggregator.PublishOnUIThread("changed:processGraph");
         }
 
         private void AddProcessNodes()
@@ -272,6 +269,7 @@ namespace blockoptimiser.Views
             AddProductNodes();
             graph.Attr.LayerDirection = LayerDirection.TB;
             graphViewer.Graph = graph;
+            _eventAggregator.PublishOnUIThread("changed:processGraph");
         }
 
         private void EditProduct(Product product)
