@@ -16,24 +16,19 @@
                     Controls:ControlsHelper.HeaderFontSize="18"
                     TabStripPlacement="Top">
             <TabItem Header="Period">
-                <!--<TextBlock FontSize="30" Text="first content" />-->
-                <local:V2PeriodView/>
+                <ContentControl x:Name="PeriodViewContent"/>
             </TabItem>
             <TabItem Header="Finance">
-                <!--<TextBlock FontSize="30" Text="second one" />-->
-                <local:V2FinanceLimitView/>
+                <ContentControl x:Name="FinanceLimitContent"/>
             </TabItem>
             <TabItem Header="Process">
-                <!--<TextBlock FontSize="30" Text="second one" />-->
-                <local:V2ProcessLimitView/>
+                <ContentControl x:Name="ProcessLimitContent"/>
             </TabItem>
             <TabItem Header="Grade">
-                <!--<TextBlock FontSize="30" Text="second one" />-->
-                <local:V2GradeLimitView/>
+                <ContentControl x:Name="GradeLimitContent"/>
             </TabItem>
             <TabItem Header="Bench">
-                <!--<TextBlock FontSize="30" Text="second one" />-->
-                <local:V2BenchLimitView/>
+                <ContentControl x:Name="BenchLimitContent"/>
             </TabItem>
         </TabControl>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using blockoptimiser.ViewModels;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +20,37 @@ namespace blockoptimiser.Views
     /// <summary>
     /// Interaction logic for V2LimitsView.xaml
     /// </summary>
-    public partial class V2LimitsView : UserControl
+    public partial class V2LimitsView : UserControl, IHandle<object>
     {
+        private readonly IEventAggregator _eventAggregator;
         public V2LimitsView()
         {
             InitializeComponent();
-            this.DataContext = new LimitsViewModel();
+            _eventAggregator = new EventAggregator();
+            _eventAggregator.Subscribe(this);
+            Loaded += Control_Loaded;
         }
 
-        private void ClickTab(object sender, RoutedEventArgs e)
+        public void Handle(object message)
         {
-            var ctx = (LimitsViewModel)this.DataContext;
-            ctx.ClickTab(sender);
+            String EventName = message as String;
+            if (EventName == "changed:scenario")
+            {
+                LoadLimits();
+            }
+        }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            PeriodViewContent.Content = new V2PeriodView(_eventAggregator);
+        }
+
+        private void LoadLimits()
+        {
+            FinanceLimitContent.Content = new V2FinanceLimitView();
+            ProcessLimitContent.Content = new V2ProcessLimitView();
+            GradeLimitContent.Content = new V2GradeLimitView();
+            BenchLimitContent.Content = new V2BenchLimitView();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace blockoptimiser.ViewModels
 {
     public class V2PeriodViewModel : Screen
     {
+        private readonly IEventAggregator _eventAggregator;
         public List<Scenario> Scenarios { get; set; }
         private ScenarioDataAccess ScenarioDAO;
         private Scenario _selectedScenario;
@@ -26,12 +27,14 @@ namespace blockoptimiser.ViewModels
                 if (value != null)
                 {
                     Context.ScenarioId = _selectedScenario.Id;
+                    _eventAggregator.PublishOnUIThread("changed:scenario");
                 }
             }
         }
 
-        public V2PeriodViewModel()
+        public V2PeriodViewModel(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             ScenarioDAO = new ScenarioDataAccess();
             Scenarios = ScenarioDAO.GetAll();
         }

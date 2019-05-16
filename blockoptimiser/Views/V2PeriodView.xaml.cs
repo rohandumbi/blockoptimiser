@@ -1,4 +1,5 @@
 ﻿using blockoptimiser.ViewModels;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,12 @@ namespace blockoptimiser.Views
     /// </summary>
     public partial class V2PeriodView : UserControl
     {
-        public V2PeriodView()
+        public V2PeriodView(IEventAggregator eventAggregator)
         {
             InitializeComponent();
             //temp hack
             Context.ScenarioId = 1;
-            this.DataContext = new V2PeriodViewModel();
+            this.DataContext = new V2PeriodViewModel(eventAggregator);
         }
         private void AddScenario(object sender, RoutedEventArgs e)
         {
