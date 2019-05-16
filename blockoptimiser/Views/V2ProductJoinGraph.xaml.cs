@@ -31,21 +31,53 @@ namespace blockoptimiser.Views
     public partial class V2ProductJoinGraph : UserControl
     {
         DockPanel Panel = new DockPanel();
+        GraphViewer graphViewer;
+        Graph graph;
+        List<Product> Products;
+        List<String> ProductJoinNames;
+        ProductDataAccess ProductDAO;
+        ProductJoinDataAccess ProductJoinDAO;
         public V2ProductJoinGraph()
         {
             InitializeComponent();
             this.Content = Panel;
+            ProductDAO = new ProductDataAccess();
+            ProductJoinDAO = new ProductJoinDataAccess();
+            Products = ProductDAO.GetAll(Context.ProjectId);
+            ProductJoinNames = ProductJoinDAO.GetProductJoins(Context.ProjectId);
             Loaded += MainWindow_Loaded;
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            GraphViewer graphViewer = new GraphViewer();
+            Panel.ClipToBounds = true;
+            graphViewer = new GraphViewer();
             graphViewer.BindToPanel(Panel);
-            Graph graph = new Graph();
-
-            graph.AddEdge("c", "D");
-            graph.Attr.LayerDirection = LayerDirection.LR;
+            graph = new Graph();
+            graph.Attr.LayerDirection = LayerDirection.TB;
+            AddProductNodes();
+            AddProductJoinNodes();
             graphViewer.Graph = graph; // throws exception
+        }
+
+        private void AddProductNodes()
+        {
+            foreach (Product product in Products)
+            {
+                graph.AddNode(product.Name);
+            }
+        }
+
+        private void AddProductJoinNodes()
+        {
+            foreach (String productJoinName in ProductJoinNames)
+            {
+                graph.AddNode(productJoinName);
+                List<String> ProductNames = ProductJoinDAO.GetProductsInJoin(productJoinName);
+                foreach (String productName in ProductNames)
+                {
+                    graph.AddEdge(productName, productJoinName);
+                }
+            }
         }
     }
 }
