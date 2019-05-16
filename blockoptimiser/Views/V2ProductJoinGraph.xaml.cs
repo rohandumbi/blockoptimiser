@@ -91,7 +91,7 @@ namespace blockoptimiser.Views
             foreach (var en in graphViewer.Entities)
             {
                 if (en.MarkedForDragging && en is IViewerNode)
-                { //got a selected node}
+                { //got a selected node
                     Microsoft.Msagl.WpfGraphControl.VNode ViewerNode = (Microsoft.Msagl.WpfGraphControl.VNode)en;
                     nodesToEdit.Add(ViewerNode);
                 }
