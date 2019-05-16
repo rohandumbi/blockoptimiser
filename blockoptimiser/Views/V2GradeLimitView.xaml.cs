@@ -39,14 +39,10 @@ namespace blockoptimiser.Views
             Fields = FieldDAO.GetAll(Context.ProjectId);
             ProductJoins = new List<ProductJoin>();
             InitializeComponent();
-            //temp hack
-            Context.ScenarioId = 1;
-            if (!(Context.ScenarioId > 0))
+            if (Context.ScenarioId > 0)
             {
-                MessageBox.Show("Please select a period.");
-                return;
+                this.DataContext = new GradeLimitViewModel();
             }
-            this.DataContext = new GradeLimitViewModel();
         }
 
         private void AddGradeLimit(object sender, RoutedEventArgs e)

@@ -24,14 +24,10 @@ namespace blockoptimiser.Views
         public V2ProcessLimitView()
         {
             InitializeComponent();
-            //temp hack
-            Context.ScenarioId = 1;
-            if (!(Context.ScenarioId > 0))
+            if (Context.ScenarioId > 0)
             {
-                MessageBox.Show("Please select a period.");
-                return;
+                this.DataContext = new ProcessLimitViewModel();
             }
-            this.DataContext = new ProcessLimitViewModel();
         }
 
         private void AddProcessLimit(object sender, RoutedEventArgs e)

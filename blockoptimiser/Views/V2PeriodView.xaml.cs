@@ -24,6 +24,8 @@ namespace blockoptimiser.Views
         public V2PeriodView()
         {
             InitializeComponent();
+            //temp hack
+            Context.ScenarioId = 1;
             this.DataContext = new V2PeriodViewModel();
         }
         private void AddScenario(object sender, RoutedEventArgs e)
