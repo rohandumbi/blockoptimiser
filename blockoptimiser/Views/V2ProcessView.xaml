@@ -7,14 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <!--<Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ContentControl Width="1000" Height="800" Content="{Binding GraphControl}"/>
-        </Grid>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0"
+                Background="GhostWhite" 
+                BorderBrush="Gainsboro" 
+                BorderThickness="1">
+            <ContentControl x:Name="ProcessGraphContainer"
+                            Margin="10"
+                            BorderThickness="2"
+                            BorderBrush="Gainsboro"/>
+        </Border>
+        <Border Grid.Column="1"
+                Background="GhostWhite" 
+                BorderBrush="Gainsboro" 
+                BorderThickness="1">
+            <ContentControl x:Name="ProductJoinGraphContainer"
+                            Margin="10"
+                            BorderThickness="2"
+                            BorderBrush="Gainsboro"
+                            Grid.Column="1"/>
+        </Border>
     </Grid>
 </UserControl>

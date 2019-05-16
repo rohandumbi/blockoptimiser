@@ -308,11 +308,17 @@
     <Compile Include="Views\V2PrimaryModelDefinitionView.xaml.cs">
       <DependentUpon>V2PrimaryModelDefinitionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2ProcessGraph.xaml.cs">
+      <DependentUpon>V2ProcessGraph.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ProcessLimitView.xaml.cs">
       <DependentUpon>V2ProcessLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ProcessView.xaml.cs">
       <DependentUpon>V2ProcessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ProductJoinGraph.xaml.cs">
+      <DependentUpon>V2ProductJoinGraph.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ProjectsView.xaml.cs">
       <DependentUpon>V2ProjectsView.xaml</DependentUpon>
@@ -467,11 +473,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2ProcessGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2ProcessLimitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\V2ProcessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ProductJoinGraph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

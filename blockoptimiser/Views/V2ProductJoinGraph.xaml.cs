@@ -26,27 +26,26 @@ using System;
 namespace blockoptimiser.Views
 {
     /// <summary>
-    /// Interaction logic for V2ProcessView.xaml
+    /// Interaction logic for V2ProductJoinGraph.xaml
     /// </summary>
-    public partial class V2ProcessView : UserControl
+    public partial class V2ProductJoinGraph : UserControl
     {
         DockPanel Panel = new DockPanel();
-        public V2ProcessView()
+        public V2ProductJoinGraph()
         {
             InitializeComponent();
-            Loaded += Window_Loaded;
+            this.Content = Panel;
+            Loaded += MainWindow_Loaded;
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (this.ActualWidth > 0) //Ensuring the parent user control is in screen
-            {
-                //Setting widths of the graph containers
-                ProcessGraphContainer.Width = ((this.ActualWidth / 2) - 5);
-                ProductJoinGraphContainer.Width = ((this.ActualWidth / 2) - 5);
-                //Inserting the graphs in the containers
-                ProcessGraphContainer.Content = new V2ProcessGraph();
-                ProductJoinGraphContainer.Content = new V2ProductJoinGraph();
-            }
+            GraphViewer graphViewer = new GraphViewer();
+            graphViewer.BindToPanel(Panel);
+            Graph graph = new Graph();
+
+            graph.AddEdge("c", "D");
+            graph.Attr.LayerDirection = LayerDirection.LR;
+            graphViewer.Graph = graph; // throws exception
         }
     }
 }
