@@ -323,6 +323,9 @@
     <Compile Include="Views\V2ProjectsView.xaml.cs">
       <DependentUpon>V2ProjectsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2SettingsView.xaml.cs">
+      <DependentUpon>V2SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ShellView.xaml.cs">
       <DependentUpon>V2ShellView.xaml</DependentUpon>
     </Compile>
@@ -490,6 +493,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\V2ProjectsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

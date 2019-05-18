@@ -202,7 +202,7 @@
                     <Controls:HamburgerMenuItemCollection>
                         <Controls:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Settings}" Label="Settings">
                             <!--<Controls:HamburgerMenuIconItem.Tag>
-                                <metroDemo:SettingsView />
+                                <local:V2SettingsView/>
                             </Controls:HamburgerMenuIconItem.Tag>-->
                         </Controls:HamburgerMenuIconItem>
                     </Controls:HamburgerMenuItemCollection>
