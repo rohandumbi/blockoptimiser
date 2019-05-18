@@ -19,11 +19,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" 
-               Grid.Column="0" 
-               Grid.ColumnSpan="2" 
-               Text="Please configure the scheduler paramteres." />
+                   Grid.Column="0" 
+                   Grid.ColumnSpan="2" 
+                   Text="Please configure the scheduler paramteres." />
         <Label Grid.Row="1"
                Grid.Column="0"
                Margin="5"
@@ -112,6 +113,16 @@
                 Content="Run Scheduler"
                 HorizontalAlignment="Right"
                 Style="{DynamicResource SquareButtonStyle}" />
+        <Controls:ProgressRing Width="100"
+                               Height="100"
+                               Grid.Column="1"
+                               Grid.Row="6"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               IsActive="True"
+                               IsLarge="True"
+                               ToolTip="Magic happens!"
+                               Visibility="{Binding ProgressVisibility}" />
     </Grid>
     
 </UserControl>

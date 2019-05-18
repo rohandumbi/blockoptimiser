@@ -27,6 +27,7 @@ namespace blockoptimiser.ViewModels
                 PopulateYears();
             }
         }
+        public String ProgressVisibility { get; set; }
         public String StartYear { get; set; }
         public String EndYear { get; set; }
         public V2SettingsViewModel()
@@ -35,6 +36,7 @@ namespace blockoptimiser.ViewModels
             AvailableScenarios = new List<Scenario>();
             AvailableYears = new List<String>();
             AvailableScenarios = ScenarioDAO.GetAll();
+            ProgressVisibility = "Hidden";
         }
 
         private void PopulateYears()
@@ -49,6 +51,17 @@ namespace blockoptimiser.ViewModels
                 AvailableYears.Add(PresentYear.ToString());
             }
             NotifyOfPropertyChange("AvailableYears");
+        }
+
+        private void DisplayIndicator()
+        {
+            ProgressVisibility = "Visible";
+            NotifyOfPropertyChange("ProgressVisibility");
+        }
+        private void HideIndicator()
+        {
+            ProgressVisibility = "Hidden";
+            NotifyOfPropertyChange("ProgressVisibility");
         }
 
         public void RunScheduler()
@@ -77,6 +90,7 @@ namespace blockoptimiser.ViewModels
                 MessageBox.Show("One of the input values is wrong.");
                 return;
             }
+            DisplayIndicator();
             RunConfig runconfig = new RunConfig
             {
                 ProjectId = Context.ProjectId,
@@ -86,6 +100,7 @@ namespace blockoptimiser.ViewModels
                 DiscountFactor = DiscountFactorDecimal
             };
             new CplexSolver().Solve(runconfig);
+            HideIndicator();
         }
     }
 }
