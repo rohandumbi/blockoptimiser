@@ -193,6 +193,7 @@
     <Compile Include="ViewModels\V2PeriodViewModel.cs" />
     <Compile Include="ViewModels\V2ProcessViewModel.cs" />
     <Compile Include="ViewModels\V2ProjectsViewModel.cs" />
+    <Compile Include="ViewModels\V2SettingsViewModel.cs" />
     <Compile Include="ViewModels\V2ShellViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">

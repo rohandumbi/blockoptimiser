@@ -1,6 +1,7 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
 using blockoptimiser.Services.LP;
+using blockoptimiser.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,71 +26,17 @@ namespace blockoptimiser.Views
         public List<String> AvailableYears { get; set; }
         public String StartYear { get; set; }
         public String EndYear { get; set; }
-        private ScenarioDataAccess ScenarioDAO;
+        public List<Scenario> AvailableScenarios { get; set; }
 
         public V2SettingsView()
         {
             InitializeComponent();
-            ScenarioDAO = new ScenarioDataAccess();
-            Scenario loadedScenario = ScenarioDAO.Get(Context.ScenarioId);
-            AvailableYears = new List<string>();
-            int StartYear = loadedScenario.StartYear;
-            AvailableYears.Add(StartYear.ToString());
-            int PresentYear = StartYear;
-            for (int i = 1; i < loadedScenario.TimePeriod; i++)
-            {
-                PresentYear++;
-                AvailableYears.Add(PresentYear.ToString());
-            }
-            StartYearCombo.ItemsSource = AvailableYears;
-            EndYearCombo.ItemsSource = AvailableYears;
+            this.DataContext = new V2SettingsViewModel();
         }
 
         public void button_Click(object sender, RoutedEventArgs e)
         {
-            int StartYearInt = 0;
-            int EndYearInt = 0;
-            decimal DiscountFactor = 0;
-            try
-            {
-                if (StartYearCombo.SelectedItem == null || EndYearCombo.SelectedItem == null)
-                {
-                    MessageBox.Show("Select a valid year.");
-                    return;
-                }
-                if (DiscountFactorText.Text == null || DiscountFactorText.Text == "")
-                {
-                    MessageBox.Show("Provide a valid discount factor.");
-                    return;
-                }
-                StartYearInt = Int32.Parse((String)StartYearCombo.SelectedItem);
-                EndYearInt = Int32.Parse((String)EndYearCombo.SelectedItem);
-                DiscountFactor = Decimal.Parse(DiscountFactorText.Text);
-            }
-            catch (FormatException)
-            {
-                //Console.WriteLine($"Unable to parse '{input}'");
-                MessageBox.Show("Input valid values for all fields.");
-                return;
-            }
-            if (Context.ScenarioId > 0)
-            {
-                RunConfig runconfig = new RunConfig
-                {
-                    ProjectId = Context.ProjectId,
-                    ScenarioId = Context.ScenarioId,
-                    StartYear = StartYearInt,
-                    EndYear = EndYearInt,
-                    DiscountFactor = DiscountFactor
-                };
-                new CplexSolver().Solve(runconfig);
-                //this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Please select a scenario.");
-                return;
-            }
+            ((V2SettingsViewModel)this.DataContext).RunScheduler();
         }
     }
 }
