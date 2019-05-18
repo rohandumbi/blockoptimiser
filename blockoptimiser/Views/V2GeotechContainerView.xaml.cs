@@ -25,6 +25,16 @@ namespace blockoptimiser.Views
         {
             InitializeComponent();
             Loaded += Control_Loaded;
+            IsVisibleChanged += Visibility_Handler;
+        }
+
+        private void Visibility_Handler(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (((bool)e.NewValue)) //ensuring control is in screen
+            {
+                this.DataContext = new V2GeotechContainerViewModel();
+                InitializeComponent();
+            }
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
