@@ -199,7 +199,11 @@ namespace blockoptimiser.Views
                 graph.AddNode(product.Name);
                 foreach (int ProcessId in product.ProcessIds)
                 {
-                    graph.AddEdge(product.Name, GetProcessById(ProcessId).Name);
+                    Process process = GetProcessById(ProcessId);
+                    if (process != null)
+                    {
+                        graph.AddEdge(product.Name, process.Name);
+                    }
                 }
 
             }
@@ -207,7 +211,7 @@ namespace blockoptimiser.Views
 
         private Process GetProcessById(int Id)
         {
-            Process selectedProcess = new Process();
+            Process selectedProcess = null;
             foreach (Process process in Processes)
             {
                 if (process.Id == Id)

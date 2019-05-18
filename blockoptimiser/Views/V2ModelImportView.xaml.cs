@@ -27,6 +27,14 @@ namespace blockoptimiser.Views
             this.DataContext = new V2ModelImportViewModel();
         }
 
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                this.DataContext = new V2ModelImportViewModel();
+            }
+        }
+
         private void HandleMenu(object sender, RoutedEventArgs e)
         {
             ((V2ModelImportViewModel)this.DataContext).ClickMenu(sender, (MouseButtonEventArgs)e);

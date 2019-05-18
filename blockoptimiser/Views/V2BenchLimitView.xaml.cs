@@ -24,8 +24,17 @@ namespace blockoptimiser.Views
         public V2BenchLimitView()
         {
             InitializeComponent();
-            if (Context.ScenarioId > 0) {
-                this.DataContext = new BenchLimitViewModel();
+            Loaded += Control_Loaded;
+        }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                if (Context.ScenarioId > 0)
+                {
+                    this.DataContext = new BenchLimitViewModel();
+                }
             }
         }
 

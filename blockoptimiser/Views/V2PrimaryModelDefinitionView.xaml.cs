@@ -28,6 +28,14 @@ namespace blockoptimiser.Views
             this.DataContext = new PrimaryModelDefinitionViewModel();
         }
 
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                this.DataContext = new PrimaryModelDefinitionViewModel();
+            }
+        }
+
         private void InputFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();

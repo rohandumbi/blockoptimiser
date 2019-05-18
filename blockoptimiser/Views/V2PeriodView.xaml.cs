@@ -22,13 +22,22 @@ namespace blockoptimiser.Views
     /// </summary>
     public partial class V2PeriodView : UserControl
     {
+        private IEventAggregator _eventAggregator;
         public V2PeriodView(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             InitializeComponent();
-            //temp hack
-            Context.ScenarioId = 1;
-            this.DataContext = new V2PeriodViewModel(eventAggregator);
+            Loaded += Control_Loaded;
         }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                this.DataContext = new V2PeriodViewModel(_eventAggregator);
+            }
+        }
+
         private void AddScenario(object sender, RoutedEventArgs e)
         {
             ((V2PeriodViewModel)this.DataContext).CreateScenario();

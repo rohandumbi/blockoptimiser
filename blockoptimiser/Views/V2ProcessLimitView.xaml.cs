@@ -24,9 +24,17 @@ namespace blockoptimiser.Views
         public V2ProcessLimitView()
         {
             InitializeComponent();
-            if (Context.ScenarioId > 0)
+            Loaded += Control_Loaded;
+        }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
             {
-                this.DataContext = new ProcessLimitViewModel();
+                if (Context.ScenarioId > 0)
+                {
+                    this.DataContext = new ProcessLimitViewModel();
+                }
             }
         }
 

@@ -25,7 +25,15 @@ namespace blockoptimiser.Views
         public V2ModelDefinitionView()
         {
             InitializeComponent();
-            this.DataContext = new ModelDefinitionViewModel();
+            Loaded += Control_Loaded;
+        }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                this.DataContext = new ModelDefinitionViewModel();
+            }
         }
 
         private void InputFile_MouseDown(object sender, MouseButtonEventArgs e)

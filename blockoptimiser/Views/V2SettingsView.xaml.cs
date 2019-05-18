@@ -31,7 +31,15 @@ namespace blockoptimiser.Views
         public V2SettingsView()
         {
             InitializeComponent();
-            this.DataContext = new V2SettingsViewModel();
+            Loaded += Control_Loaded;
+        }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                this.DataContext = new V2SettingsViewModel();
+            }
         }
 
         public void button_Click(object sender, RoutedEventArgs e)

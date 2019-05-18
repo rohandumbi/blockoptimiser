@@ -24,11 +24,21 @@ namespace blockoptimiser.Views
         public V2FinanceLimitView()
         {
             InitializeComponent();
+            Loaded += Control_Loaded;
             if (Context.ScenarioId > 0)
             {
                 this.DataContext = new FinanceLimitViewModel();
             }
         }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Context.ScenarioId > 0)
+            {
+                this.DataContext = new FinanceLimitViewModel();
+            }
+        }
+
         private void AddOpex(object sender, RoutedEventArgs e)
         {
             ((FinanceLimitViewModel)this.DataContext).CreateOpex();
