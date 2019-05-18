@@ -17,8 +17,7 @@ namespace blockoptimiser.DataAccessClasses
             using (IDbConnection connection = getConnection())
             {
                 return connection.Query<BlockPosition>($"select bid, i, j, k from " +
-                     $" BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }" +
-                     $" and b.Bid not in ( select distinct BId from BOResult_" + Context.ProjectId +")" ).ToList();
+                     $" BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id and { condition }").ToList();
             }
         }
         public String GetAngle(int ProjectId, int ModelId, String selectstr)
@@ -50,7 +49,7 @@ namespace blockoptimiser.DataAccessClasses
             }
                 
         }
-
+        /*
         public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int ProjectId, int ModelId)
         {
             
@@ -93,6 +92,58 @@ namespace blockoptimiser.DataAccessClasses
                             if (!zblocks.ContainsKey(k))
                             {
                                 zblocks.Add(k, block);
+                            }
+                        }
+                    }
+
+                }
+                return blocks;
+            }
+        }
+        */
+        public Dictionary<int, Dictionary<int, Dictionary<int, Block>>> GetBlocks(int ProjectId, int ModelId)
+        {
+
+            using (IDbConnection connection = getConnection())
+            {
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = new Dictionary<int, Dictionary<int, Dictionary<int, Block>>>();
+                String sql = $"select a.* , b.*  from BOData_{ ProjectId }_{ ModelId } a, BOData_Computed_{ ProjectId }_{ ModelId } b where a.id = b.id order by i,j,k asc ";
+
+                List<object> rows = connection.Query(sql).ToList();
+                foreach (Object row in rows)
+                {
+                    IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
+                    Block block = new Block
+                    {
+                        Id = (long)rowDictionary["Bid"],
+                        data = rowDictionary
+                    };
+                    int i = (int)rowDictionary["I"];
+                    int j = (int)rowDictionary["J"];
+                    int k = (int)rowDictionary["K"];
+                    if (!blocks.ContainsKey(k))
+                    {
+                        Dictionary<int, Block> yblocks = new Dictionary<int, Block>();
+                        Dictionary<int, Dictionary<int, Block>> xblocks = new Dictionary<int, Dictionary<int, Block>>();
+                        yblocks.Add(j, block);
+                        xblocks.Add(i, yblocks);
+                        blocks.Add(k, xblocks);
+                    }
+                    else
+                    {
+                        Dictionary<int, Dictionary<int, Block>> xblocks = blocks[k];
+                        if (!xblocks.ContainsKey(i))
+                        {
+                            Dictionary<int, Block> yblocks = new Dictionary<int, Block>();
+                            yblocks.Add(j, block);
+                            xblocks.Add(i, yblocks);
+                        }
+                        else
+                        {
+                            Dictionary<int, Block> yblocks = xblocks[i];
+                            if (!yblocks.ContainsKey(j))
+                            {
+                                yblocks.Add(j, block);
                             }
                         }
                     }
