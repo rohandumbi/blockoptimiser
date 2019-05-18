@@ -99,8 +99,8 @@ namespace blockoptimiser.ViewModels
                 EndYear = EndYearInt,
                 DiscountFactor = DiscountFactorDecimal
             };
-            new CplexSolver().Solve(runconfig);
-            HideIndicator();
+            TaskCompletedCallBack callback = HideIndicator;
+            new CplexSolver().Solve(runconfig, HideIndicator);
         }
     }
 }
