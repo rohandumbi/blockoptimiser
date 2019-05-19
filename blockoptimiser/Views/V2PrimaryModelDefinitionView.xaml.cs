@@ -25,7 +25,7 @@ namespace blockoptimiser.Views
         public V2PrimaryModelDefinitionView()
         {
             InitializeComponent();
-            this.DataContext = new PrimaryModelDefinitionViewModel();
+            Loaded += Control_Loaded;
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
@@ -36,11 +36,18 @@ namespace blockoptimiser.Views
             }
         }
 
+        private void Import_Clicked(object sender, RoutedEventArgs e)
+        {
+            ((PrimaryModelDefinitionViewModel)this.DataContext).ImportData();
+        }
+
         private void InputFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                InputFile.Text = openFileDialog.FileName;
+            if (openFileDialog.ShowDialog() == true) {
+                InputFileTextBox.Text = openFileDialog.FileName;
+                ((PrimaryModelDefinitionViewModel)this.DataContext).FileChosen(openFileDialog.FileName);
+            }
         }
     }
 }

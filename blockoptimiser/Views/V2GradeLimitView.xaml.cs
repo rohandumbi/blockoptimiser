@@ -62,6 +62,10 @@ namespace blockoptimiser.Views
         {
             ComboBox itemCombo = (ComboBox)sender;
             UnitItem SelectedItem = (UnitItem)itemCombo.SelectedItem;
+            if (SelectedItem == null)
+            {
+                return;
+            }
             if (SelectedItem.UnitType == GradeLimit.ITEM_TYPE_PRODUCT)
             {
                 Product SelectedProduct = GetProductById(SelectedItem.UnitId);

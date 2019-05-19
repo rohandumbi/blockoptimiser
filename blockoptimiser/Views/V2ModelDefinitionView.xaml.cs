@@ -36,11 +36,18 @@ namespace blockoptimiser.Views
             }
         }
 
+        private void Import_Clicked(object sender, RoutedEventArgs e)
+        {
+            ((ModelDefinitionViewModel)this.DataContext).ImportData();
+        }
+
         private void InputFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                InputFile.Text = openFileDialog.FileName;
+            if (openFileDialog.ShowDialog() == true) {
+                InputFileTextBox.Text = openFileDialog.FileName;
+                ((ModelDefinitionViewModel)this.DataContext).FileChosen(openFileDialog.FileName);
+            }
         }
     }
 }

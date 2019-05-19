@@ -131,6 +131,11 @@ namespace blockoptimiser.ViewModels
             NotifyOfPropertyChange(() => CSVFieldMappings);
         }
 
+        public void FileChosen(String FileName)
+        {
+            InputFile = FileName;
+        }
+
         public void ImportData()
         {
             if (String.IsNullOrEmpty(_inputFileName))

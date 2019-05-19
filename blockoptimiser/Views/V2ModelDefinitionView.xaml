@@ -40,12 +40,18 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Name="LabelFileName" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Select File:"/>
-                    <TextBox x:Name="InputFile" Grid.Row="2" Grid.Column="2" Width="350" Margin="0 0 5 10" PreviewMouseDown="InputFile_MouseDown"/>
+                    <TextBox x:Name="InputFileTextBox"
+                             Text="{Binding InputFile}"
+                             Grid.Row="2" 
+                             Grid.Column="2"
+                             Width="350" 
+                             Margin="0 0 5 10" 
+                             PreviewMouseDown="InputFile_MouseDown"/>
                     <TextBlock x:Name="LabelModelBearing" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Model Bearing:"/>
                     <TextBox x:Name="ModelBearing" Grid.Row="2" Grid.Column="6" Width="150" Margin="0 0 5 10" Text="{Binding ModelBearing}"/>
-                    <Button x:Name="ImportData" 
-                            Grid.Row="2" 
-                            Grid.Column="8" 
+                    <Button Grid.Row="2" 
+                            Grid.Column="8"
+                            Click="Import_Clicked"
                             Width="75" 
                             Content="Import"
                             HorizontalAlignment="Right"
@@ -57,7 +63,8 @@
             <DataGrid ItemsSource="{Binding CSVFieldMappings}"
                       Grid.Row="3" 
                       CanUserAddRows="False" 
-                      AutoGenerateColumns="False" Margin="10">
+                      AutoGenerateColumns="False" 
+                      Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=PrimayModelColumnName}" IsReadOnly="True"/>
                     <DataGridTemplateColumn Header="Model Mapping">

@@ -41,15 +41,21 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Name="LabelFileName" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Select File:"/>
-                    <TextBox x:Name="InputFile" Grid.Row="2" Grid.Column="2" Width="350" Margin="0 0 5 10" PreviewMouseDown="InputFile_MouseDown"/>
+                    <TextBox x:Name="InputFileTextBox" 
+                             Text="{Binding InputFile}"
+                             Grid.Row="2" 
+                             Grid.Column="2" 
+                             Width="350" 
+                             Margin="0 0 5 10" 
+                             PreviewMouseDown="InputFile_MouseDown"/>
                     <TextBlock x:Name="LabelModelBearing" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Model Bearing:"/>
                     <TextBox x:Name="ModelBearing" Grid.Row="2" Grid.Column="6" Width="150" Margin="0 0 5 10" Text="{Binding ModelBearing}"/>
-                    <Button x:Name="ImportData" 
-                            Grid.Row="2" 
+                    <Button Grid.Row="2" 
                             Grid.Column="8" 
                             Width="75" 
                             Margin="10 0 5 10"
                             HorizontalAlignment="Right"
+                            Click="Import_Clicked"
                             Style="{DynamicResource SquareButtonStyle}"
                             Content="Import"/>
                 </Grid>
