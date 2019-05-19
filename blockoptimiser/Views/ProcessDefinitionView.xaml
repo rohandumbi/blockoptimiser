@@ -35,6 +35,14 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button x:Name="AddProcess"  Click="button_Click" Grid.Row="3" Grid.Column="0" Content="Add"></Button>
+        <Button x:Name="AddProcess" 
+                Click="button_Click"
+                Grid.Row="3" 
+                Grid.Column="1" 
+                Margin="5"
+                Width="100"
+                Content="Add"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource SquareButtonStyle}"/>
     </Grid>
 </Controls:MetroWindow>

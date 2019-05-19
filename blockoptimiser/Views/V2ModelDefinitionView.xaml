@@ -43,7 +43,14 @@
                     <TextBox x:Name="InputFile" Grid.Row="2" Grid.Column="2" Width="350" Margin="0 0 5 10" PreviewMouseDown="InputFile_MouseDown"/>
                     <TextBlock x:Name="LabelModelBearing" Grid.Row="2" Grid.Column="5" Margin="0 0 5 10" Text="Model Bearing:"/>
                     <TextBox x:Name="ModelBearing" Grid.Row="2" Grid.Column="6" Width="150" Margin="0 0 5 10" Text="{Binding ModelBearing}"/>
-                    <Button x:Name="ImportData" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Import</Button>
+                    <Button x:Name="ImportData" 
+                            Grid.Row="2" 
+                            Grid.Column="8" 
+                            Width="75" 
+                            Content="Import"
+                            HorizontalAlignment="Right"
+                            Style="{DynamicResource SquareButtonStyle}"
+                            Margin="10 0 5 10"/>
                 </Grid>
             </GroupBox>
             <Label Grid.Row="2" Content="Field Mapping" FontWeight="Bold"/>

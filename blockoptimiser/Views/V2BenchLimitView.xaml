@@ -41,7 +41,14 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Click="AddBenchLimit" Grid.Row="2" Grid.Column="8" Width="75" Margin="10 0 5 10">Add</Button>
+                <Button Click="AddBenchLimit" 
+                        Grid.Row="2" 
+                        Grid.Column="8" 
+                        Width="100"
+                        Content="Add"
+                        HorizontalAlignment="Right" 
+                        Style="{DynamicResource SquareButtonStyle}"
+                        Margin="5"/>
             </Grid>
         </GroupBox>
         <DataGrid  Grid.Column="1"

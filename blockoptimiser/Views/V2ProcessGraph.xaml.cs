@@ -298,7 +298,7 @@ namespace blockoptimiser.Views
             graph = new Graph();
             AddProcessNodes();
             AddProductNodes();
-            graph.Attr.LayerDirection = LayerDirection.RL;
+            graph.Attr.LayerDirection = LayerDirection.TB;
             graphViewer.Graph = graph;
         }
     }

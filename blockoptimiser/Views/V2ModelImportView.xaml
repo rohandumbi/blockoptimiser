@@ -17,21 +17,21 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
         <TextBox Text="{Binding ModelName}" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10"/>
-        <Button Click="AddModel" Grid.Row="1" Grid.Column="2" Width="75" Margin="0 0 0 10">Add Model</Button>
-        <!--<TreeView x:Name="MainTreeView" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding MenuItems}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding ChildMenuItems}">
-                    <Label MouseLeftButtonUp="HandleMenu" Content="{Binding MenuLabel}"/>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>-->
+        <Button Click="AddModel"
+                Grid.Row="1" 
+                Grid.Column="2" 
+                Width="100" 
+                Margin="0 0 0 10"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource SquareButtonStyle}"
+                Content="Add model"/>
         <ListBox Margin="2"
                  Grid.Row="2"
                  Grid.Column="1"

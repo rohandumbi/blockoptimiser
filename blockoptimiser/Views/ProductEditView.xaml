@@ -46,6 +46,14 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button x:Name="AddProduct"  Click="button_Click" Grid.Row="6" Grid.Column="0" Content="Submit"></Button>
+        <Button x:Name="AddProduct" 
+                Click="button_Click" 
+                Grid.Row="6" 
+                Grid.Column="1" 
+                Margin="5"
+                Content="Submit"
+                HorizontalAlignment="Right"
+                Style="{DynamicResource SquareButtonStyle}"
+                Width="100"/>
     </Grid>
 </Controls:MetroWindow>
