@@ -683,6 +683,10 @@ namespace blockoptimiser.Services.LP
 
         public Decimal GetFieldValueforBlock(Block b, String fieldName)
         {
+            if(b.data[fieldName].GetType().Name.Equals("Decimal"))
+            {
+                return (Decimal)b.data[fieldName];
+            }
             String value = (String)b.data[fieldName];
             if (value != null)
             {

@@ -52,7 +52,6 @@ namespace blockoptimiser.Services.LP
         {
 
             List<Process> processes = context.GetProcessList();
-            int count = 1;
             Dictionary<int, String> modelProcessFilterMap = new Dictionary<int, string>();
             double F = (1 / Math.Pow(Convert.ToDouble(1 + context.DiscountFactor), Convert.ToDouble(context.Period)));
             foreach( Model model in context.GetModels())
@@ -78,11 +77,11 @@ namespace blockoptimiser.Services.LP
                                         processValue = processValue * (Decimal)F;
                                         if (processValue < 0)
                                         {
-                                            Write(RoundOff(processValue) + " B" + block.Id + "p" + count, sw);
+                                            Write(RoundOff(processValue) + " B" + block.Id + "p" + process.ProcessNumber, sw);
                                         }
                                         else
                                         {
-                                            Write(" + " + RoundOff(processValue) + " B" + block.Id + "p" + count, sw);
+                                            Write(" + " + RoundOff(processValue) + " B" + block.Id + "p" + process.ProcessNumber, sw);
                                         }
                                     }
                                     if (minigCost != 0)
