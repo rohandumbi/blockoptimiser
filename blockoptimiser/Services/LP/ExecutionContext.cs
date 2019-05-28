@@ -137,7 +137,7 @@ namespace blockoptimiser.Services.LP
 
                 double max_ira = GetIRA(selectstr, model.Id) * Math.PI / 180; ;
 
-                int nbenches = (int)Math.Ceiling(max_dim / (zinc / (decimal)Math.Tan(max_ira)))*2;
+                int nbenches = (int)Math.Ceiling(max_dim / (zinc / (decimal)Math.Tan(max_ira))) * 2;
 
                 foreach (int kk in GetSortedList(validBlocks.Keys.ToList()))
                 {
@@ -153,10 +153,10 @@ namespace blockoptimiser.Services.LP
                             for (int k = 1; k <= nbenches; k++)
                             {
                                 decimal dist = k * zinc / (decimal)Math.Tan(max_ira);
-                                int imin = (int)((xorth - dist + xinc - xm) / xinc);
-                                int imax = (int)((xorth + dist + xinc - xm) / xinc - 1);
-                                int jmin = (int)((yorth - dist + yinc - ym) / yinc);
-                                int jmax = (int)((yorth + dist + yinc - ym) / yinc - 1);
+                                int imin = (int)Math.Round((xorth - dist + xinc - xm) / xinc);
+                                int imax = (int)Math.Round((xorth + dist + xinc - xm) / xinc - 1);
+                                int jmin = (int)Math.Round((yorth - dist + yinc - ym) / yinc);
+                                int jmax = (int)Math.Round((yorth + dist + yinc - ym) / yinc - 1);
                                 if (imin <= 0) imin = 1;
                                 if (jmin <= 0) jmin = 1;
                                 //Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
