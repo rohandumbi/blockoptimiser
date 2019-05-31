@@ -22,31 +22,29 @@ namespace blockoptimiser.Services.LP
             _schedulerQueueDataAccess = new SchedulerQueueDataAccess();
         }
 
-        public void Solve(int ProjectId, int ScenarioId, int StartYear, int EndYear, float DiscountFactor, int Period)
+        public void Solve(RunConfig runconfig)
         {
             new Thread(() =>
             {
                 Console.WriteLine("Scheduler Started");
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                Scenario scenario = new ScenarioDataAccess().Get(ScenarioId);
-                
-                ExecutionContext context = new ExecutionContext(ProjectId, ScenarioId, scenario.DiscountFactor);
-                for (int i = 0; i < (EndYear - StartYear + 1 ); i++)
+                Scenario scenario = new ScenarioDataAccess().Get(runconfig.ScenarioId);
+
+                ExecutionContext context = new ExecutionContext(runconfig);
+                for (int i = 0; i < (runconfig.EndYear - runconfig.StartYear + 1); i++)
                 {
-                    int year = StartYear + i;
+                    int year = runconfig.StartYear + i;
                     context.Year = year;
                     context.Period = (i + 1);
                     try
                     {
-                        if(i>0)
-                        {
-                            context.LoadMinedBlockList();
-                        }
+
+                        context.UpdateBlocks();
                         _generator.Generate(context);
                         SchedulerQueue queueItem = new SchedulerQueue
                         {
-                            ProjectId = ProjectId,
+                            ProjectId = runconfig.ProjectId,
                             FileName = _generator.FileName,
                             Year = year
                         };
@@ -72,6 +70,7 @@ namespace blockoptimiser.Services.LP
                         {
                             break;
                         }
+                        context.ProcessMinedBlocks();
                     }
                     catch (Exception e)
                     {

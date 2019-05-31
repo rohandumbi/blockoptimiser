@@ -167,6 +167,7 @@
     <Compile Include="Services\LP\CplexSolver.cs" />
     <Compile Include="Services\LP\EquationGenerator.cs" />
     <Compile Include="Services\LP\ExecutionContext.cs" />
+    <Compile Include="Services\LP\RunConfig.cs" />
     <Compile Include="UnitItem.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />

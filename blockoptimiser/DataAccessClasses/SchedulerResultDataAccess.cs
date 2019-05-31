@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using blockoptimiser.Models;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,21 +34,71 @@ namespace blockoptimiser.DataAccessClasses
             }
         }
 
-        public List<long> GetMinedBlocks(int ProjectId)
+        public Dictionary<int, Dictionary<int, Dictionary<int, MinedBlock>>> GetMinedBlocks(int ProjectId, int ModelId, int year)
         {
-            List<long> minedBlocks = new List<long>();
+            Dictionary<int, Dictionary<int, Dictionary<int, MinedBlock>>> blocks = new Dictionary<int, Dictionary<int, Dictionary<int, MinedBlock>>>();
             using (IDbConnection connection = getConnection())
             {
                 try
                 {
-                    minedBlocks = connection.Query<long>("select distinct BId from BOResult_"+ Context.ProjectId).ToList();
+                    List<MinedBlock> minedBlocks =  connection.Query<MinedBlock>($"select distinct a.bid, a.year, i, j, k from BOResult_{ ProjectId} a, BOData_Computed_{ ProjectId }_{ ModelId } b" +
+                        $" where a.bid = b.bid and a.year = { year } ").ToList();
+
+
+                    foreach(MinedBlock minedBlock in minedBlocks)
+                    {
+                        if (!blocks.ContainsKey(minedBlock.I))
+                        {
+                            Dictionary<int, MinedBlock> zblocks = new Dictionary<int, MinedBlock>();
+                            Dictionary<int, Dictionary<int, MinedBlock>> yblocks = new Dictionary<int, Dictionary<int, MinedBlock>>();
+                            zblocks.Add(minedBlock.K, minedBlock);
+                            yblocks.Add(minedBlock.J, zblocks);
+                            blocks.Add(minedBlock.I, yblocks);
+                        }
+                        else
+                        {
+                            Dictionary<int, Dictionary<int, MinedBlock>> yblocks = blocks[minedBlock.I];
+                            if (!yblocks.ContainsKey(minedBlock.J))
+                            {
+                                Dictionary<int, MinedBlock> zblocks = new Dictionary<int, MinedBlock>();
+                                zblocks.Add(minedBlock.K, minedBlock);
+                                yblocks.Add(minedBlock.J, zblocks);
+                            }
+                            else
+                            {
+                                Dictionary<int, MinedBlock> zblocks = yblocks[minedBlock.J];
+                                if (!zblocks.ContainsKey(minedBlock.K))
+                                {
+                                    zblocks.Add(minedBlock.K, minedBlock);
+                                }
+                            }
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error while dropping result table : " + e.Message);
+                    Console.WriteLine("Error while accessing result table : " + e.Message);
                 }
             }
-            return minedBlocks;
+            return blocks;
+        }
+        public void UpdateYear(int ProjectId, List<MinedBlock> minedBlocks)
+        {
+            using (IDbConnection connection = getConnection())
+            {
+                foreach(MinedBlock minedBlock in minedBlocks)
+                {
+                    try
+                    {
+                        connection.Execute($"update BOResult_{ ProjectId } set year = { minedBlock.Year }  where bid = { minedBlock.Bid } ");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error while updating result table : " + e.Message);
+                    }
+                }
+
+            }
         }
         private void Drop()
         {
