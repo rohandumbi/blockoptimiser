@@ -189,7 +189,11 @@
     <Compile Include="ViewModels\V2AppViewModel.cs" />
     <Compile Include="ViewModels\V2ExpressionModelMappingViewModel.cs" />
     <Compile Include="ViewModels\V2ExpressionViewModel.cs" />
+    <Compile Include="ViewModels\V2ModelImportViewModel.cs" />
+    <Compile Include="ViewModels\V2PeriodViewModel.cs" />
+    <Compile Include="ViewModels\V2ProcessViewModel.cs" />
     <Compile Include="ViewModels\V2ProjectsViewModel.cs" />
+    <Compile Include="ViewModels\V2SettingsViewModel.cs" />
     <Compile Include="ViewModels\V2ShellViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
@@ -268,11 +272,17 @@
     <Compile Include="Views\V2AppView.xaml.cs">
       <DependentUpon>V2AppView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2BenchLimitView.xaml.cs">
+      <DependentUpon>V2BenchLimitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ExpressionModelMappingView.xaml.cs">
       <DependentUpon>V2ExpressionModelMappingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ExpressionView.xaml.cs">
       <DependentUpon>V2ExpressionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2FinanceLimitView.xaml.cs">
+      <DependentUpon>V2FinanceLimitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2GeotechContainerView.xaml.cs">
       <DependentUpon>V2GeotechContainerView.xaml</DependentUpon>
@@ -281,11 +291,41 @@
     <Compile Include="Views\V2GeotechView.xaml.cs">
       <DependentUpon>V2GeotechView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2GradeLimitView.xaml.cs">
+      <DependentUpon>V2GradeLimitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2LimitsView.xaml.cs">
+      <DependentUpon>V2LimitsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ModelDefinitionView.xaml.cs">
+      <DependentUpon>V2ModelDefinitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ModelImportView.xaml.cs">
+      <DependentUpon>V2ModelImportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2PeriodView.xaml.cs">
+      <DependentUpon>V2PeriodView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2PrimaryModelDefinitionView.xaml.cs">
+      <DependentUpon>V2PrimaryModelDefinitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ProcessGraph.xaml.cs">
+      <DependentUpon>V2ProcessGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2ProcessLimitView.xaml.cs">
+      <DependentUpon>V2ProcessLimitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ProcessView.xaml.cs">
       <DependentUpon>V2ProcessView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\V2ProductJoinGraph.xaml.cs">
+      <DependentUpon>V2ProductJoinGraph.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\V2ProjectsView.xaml.cs">
       <DependentUpon>V2ProjectsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\V2SettingsView.xaml.cs">
+      <DependentUpon>V2SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\V2ShellView.xaml.cs">
       <DependentUpon>V2ShellView.xaml</DependentUpon>
@@ -389,11 +429,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2BenchLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2ExpressionModelMappingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\V2ExpressionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2FinanceLimitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -405,11 +453,51 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2GradeLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2LimitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ModelDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ModelImportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2PeriodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2PrimaryModelDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ProcessGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2ProcessLimitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\V2ProductJoinGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\V2ProjectsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\V2SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

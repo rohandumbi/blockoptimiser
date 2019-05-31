@@ -1,5 +1,4 @@
-﻿using blockoptimiser.Models;
-using blockoptimiser.ViewModels;
+﻿using blockoptimiser.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,28 +17,31 @@ using System.Windows.Shapes;
 namespace blockoptimiser.Views
 {
     /// <summary>
-    /// Interaction logic for V2GeotechView.xaml
+    /// Interaction logic for V2FinanceLimitView.xaml
     /// </summary>
-    public partial class V2GeotechView : UserControl
+    public partial class V2FinanceLimitView : UserControl
     {
-        public V2GeotechView()
+        public V2FinanceLimitView()
         {
             InitializeComponent();
             Loaded += Control_Loaded;
+            if (Context.ScenarioId > 0)
+            {
+                this.DataContext = new FinanceLimitViewModel();
+            }
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            if (this.ActualWidth > 0) //ensuring control is in screen
+            if (Context.ScenarioId > 0)
             {
-                this.DataContext = new GeotechViewModel();
+                this.DataContext = new FinanceLimitViewModel();
             }
         }
 
-        private void Update(object sender, RoutedEventArgs e)
+        private void AddOpex(object sender, RoutedEventArgs e)
         {
-            var ctx = (GeotechViewModel)this.DataContext;
-            ctx.UpdateGeotech(((Button)sender).DataContext as Geotech);
+            ((FinanceLimitViewModel)this.DataContext).CreateOpex();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using blockoptimiser.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,11 @@ using System.Windows.Shapes;
 namespace blockoptimiser.Views
 {
     /// <summary>
-    /// Interaction logic for V2ExpressionView.xaml
+    /// Interaction logic for V2PrimaryModelDefinitionView.xaml
     /// </summary>
-    public partial class V2ExpressionView : UserControl
+    public partial class V2PrimaryModelDefinitionView : UserControl
     {
-        public V2ExpressionView()
+        public V2PrimaryModelDefinitionView()
         {
             InitializeComponent();
             Loaded += Control_Loaded;
@@ -31,21 +32,22 @@ namespace blockoptimiser.Views
         {
             if (this.ActualWidth > 0) //ensuring control is in screen
             {
-                this.DataContext = new V2ExpressionViewModel();
+                this.DataContext = new PrimaryModelDefinitionViewModel();
             }
         }
 
-        private void MouseLeftUp(object sender, RoutedEventArgs e)
+        private void Import_Clicked(object sender, RoutedEventArgs e)
         {
-            var ctx = (V2ExpressionViewModel)this.DataContext;
-            //ctx.ClickExpression(((TextBlock)sender).DataContext, e as MouseButtonEventArgs);
-            ActiveItem.Content = new V2ExpressionModelMappingView(((TextBlock)sender).DataContext as blockoptimiser.Models.Expression);
+            ((PrimaryModelDefinitionViewModel)this.DataContext).ImportData();
         }
 
-        private void Add(object sender, RoutedEventArgs e)
+        private void InputFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var ctx = (V2ExpressionViewModel)this.DataContext;
-            ctx.AddExpression();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true) {
+                InputFileTextBox.Text = openFileDialog.FileName;
+                ((PrimaryModelDefinitionViewModel)this.DataContext).FileChosen(openFileDialog.FileName);
+            }
         }
     }
 }

@@ -22,10 +22,20 @@ namespace blockoptimiser.Views
     /// </summary>
     public partial class V2ExpressionModelMappingView : UserControl
     {
+        private blockoptimiser.Models.Expression _expresion;
         public V2ExpressionModelMappingView(blockoptimiser.Models.Expression expression)
         {
+            _expresion = expression;
             InitializeComponent();
-            this.DataContext = new V2ExpressionModelMappingViewModel(expression);
+            Loaded += Control_Loaded;
+        }
+
+        private void Control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.ActualWidth > 0) //ensuring control is in screen
+            {
+                this.DataContext = new V2ExpressionModelMappingViewModel(_expresion);
+            }
         }
 
         private void ExpressionChanged(object sender, RoutedEventArgs e)

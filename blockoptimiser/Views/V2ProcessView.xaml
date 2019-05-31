@@ -7,6 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label x:Name="label" Content="I am the new Process View" HorizontalAlignment="Left" Margin="429,238,0,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0"
+                Background="GhostWhite" 
+                BorderBrush="Gainsboro" 
+                BorderThickness="1">
+            <ContentControl x:Name="ProcessGraphContainer"
+                            Margin="10"
+                            BorderThickness="2"
+                            BorderBrush="Gainsboro"/>
+        </Border>
+        <Border Grid.Column="1"
+                Background="GhostWhite" 
+                BorderBrush="Gainsboro" 
+                BorderThickness="1">
+            <ContentControl x:Name="ProductJoinGraphContainer"
+                            Margin="10"
+                            BorderThickness="2"
+                            BorderBrush="Gainsboro"
+                            Grid.Column="1"/>
+        </Border>
     </Grid>
 </UserControl>

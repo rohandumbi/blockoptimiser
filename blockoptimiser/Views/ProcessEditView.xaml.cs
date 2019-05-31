@@ -1,5 +1,6 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace blockoptimiser.Views
     /// <summary>
     /// Interaction logic for ProcessDefinitionView.xaml
     /// </summary>
-    public partial class ProcessEditView : Window
+    public partial class ProcessEditView : MetroWindow
     {
         private ProcessDataAccess ProcessDAO;
         private FieldDataAccess FieldDAO;

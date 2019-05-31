@@ -17,35 +17,32 @@ using System.Windows.Shapes;
 namespace blockoptimiser.Views
 {
     /// <summary>
-    /// Interaction logic for V2ExpressionView.xaml
+    /// Interaction logic for V2ModelImportView.xaml
     /// </summary>
-    public partial class V2ExpressionView : UserControl
+    public partial class V2ModelImportView : UserControl
     {
-        public V2ExpressionView()
+        public V2ModelImportView()
         {
             InitializeComponent();
-            Loaded += Control_Loaded;
+            this.DataContext = new V2ModelImportViewModel();
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.ActualWidth > 0) //ensuring control is in screen
             {
-                this.DataContext = new V2ExpressionViewModel();
+                this.DataContext = new V2ModelImportViewModel();
             }
         }
 
-        private void MouseLeftUp(object sender, RoutedEventArgs e)
+        private void HandleMenu(object sender, RoutedEventArgs e)
         {
-            var ctx = (V2ExpressionViewModel)this.DataContext;
-            //ctx.ClickExpression(((TextBlock)sender).DataContext, e as MouseButtonEventArgs);
-            ActiveItem.Content = new V2ExpressionModelMappingView(((TextBlock)sender).DataContext as blockoptimiser.Models.Expression);
+            ((V2ModelImportViewModel)this.DataContext).ClickMenu(sender, (MouseButtonEventArgs)e);
         }
 
-        private void Add(object sender, RoutedEventArgs e)
+        private void AddModel(object sender, RoutedEventArgs e)
         {
-            var ctx = (V2ExpressionViewModel)this.DataContext;
-            ctx.AddExpression();
+            ((V2ModelImportViewModel)this.DataContext).AddModel();
         }
     }
 }

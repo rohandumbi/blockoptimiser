@@ -1,6 +1,7 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
 using blockoptimiser.Services.LP;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace blockoptimiser.Views
     /// <summary>
     /// Interaction logic for SchedulerWindow.xaml
     /// </summary>
-    public partial class SchedulerWindow : Window
+    public partial class SchedulerWindow : MetroWindow
     {
         public List<String> AvailableYears { get; set; }
         public String StartYear { get; set; }

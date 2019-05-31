@@ -48,6 +48,9 @@ namespace blockoptimiser.ViewModels
 
         public String InputFile
         {
+            get {
+                return _inputFileName;
+            }
             set
             {
                 _inputFileName = value;
@@ -169,6 +172,10 @@ namespace blockoptimiser.ViewModels
             }
         }
 
+        public void FileChosen(String FileName)
+        {
+            InputFile = FileName;
+        }
         private Field GetFieldById(int id)
         {
             Field returnedField = null;

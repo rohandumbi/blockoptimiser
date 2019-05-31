@@ -1,5 +1,6 @@
 ﻿using blockoptimiser.DataAccessClasses;
 using blockoptimiser.Models;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace blockoptimiser.Views
     /// <summary>
     /// Interaction logic for ProductDefinitionView.xaml
     /// </summary>
-    public partial class ProductEditView : Window
+    public partial class ProductEditView : MetroWindow
     {
         private ProcessDataAccess ProcessDAO;
         private ProductDataAccess ProductDAO;
