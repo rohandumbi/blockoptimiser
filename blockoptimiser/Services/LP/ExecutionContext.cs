@@ -32,7 +32,7 @@ namespace blockoptimiser.Services.LP
         private Dictionary<String, String> requiredFields;
         private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, Block>>>> Blocks { get; set; }
         private Dictionary<String, int> BenchesMinedinPeriod;
-        private Dictionary<int, List<long>> LastPeriodMinedBlocks;
+        private Dictionary<String, int> BenchesMinedCount;
         public ExecutionContext(RunConfig runconfig)
         {
             this.ProjectId = runconfig.ProjectId;
@@ -47,6 +47,7 @@ namespace blockoptimiser.Services.LP
                 requiredFields.Add(mapping.RequiredFieldName, mapping.MappedColumnName);
             }
             BenchesMinedinPeriod = new Dictionary<String, int>();
+            BenchesMinedCount = new Dictionary<String, int>();
             LoadConfigurations();
             schedulerResultDataAccess.Create(ProjectId);
             LoadValidBlocks();
@@ -208,16 +209,6 @@ namespace blockoptimiser.Services.LP
             
             foreach (Model model in models)
             {
-                List<long> minedBlocks = null;
-                if (LastPeriodMinedBlocks != null && LastPeriodMinedBlocks.ContainsKey(model.Id))
-                {
-                    minedBlocks = LastPeriodMinedBlocks[model.Id];
-                }
-                else
-                {
-                    minedBlocks = new List<long>();
-                }
-
                 int benchConstraint = -1;
                 if (modelBenchLimitMapping.ContainsKey(model.Id))
                 {
@@ -237,26 +228,32 @@ namespace blockoptimiser.Services.LP
                         keys.Sort();
                         keys.Reverse();
                         int includedBlockCount = 0;
+                        int benchesMined = 0;
                         int countFromFirstProcessBlock = 0;
-                        int periodMinedLast = 0; 
-                        if(BenchesMinedinPeriod.ContainsKey(model.Id + "-" + i + "-" + j))
+                        int periodMinedLast = 0;
+                        
+                        String benchkey = model.Id + "-" + i + "-" + j;
+
+                        if (BenchesMinedinPeriod.ContainsKey(benchkey))
                         {
-                            periodMinedLast = BenchesMinedinPeriod[model.Id + "-" + i + "-" + j];
+                            periodMinedLast = BenchesMinedinPeriod[benchkey];
                         }
-                        if(this.Period > 1 && periodMinedLast == 0)
+                        if (BenchesMinedCount.ContainsKey(benchkey))
+                        {
+                            benchesMined = BenchesMinedCount[benchkey];
+                        }
+                        if (this.Period > 1 && periodMinedLast == 0)
                         {
                             periodMinedLast = 1;
                         }
-                        foreach(int k in keys)
+
+                        int benchesToCheck = (Period - periodMinedLast) * benchConstraint;
+                        int noOfBlocksToInclude = benchesToCheck - benchesMined + benchConstraint;
+                        foreach (int k in keys)
                         {
                             Block b = zblocks[k];
                             if (b.IsMined) continue;
-                            if(minedBlocks.Contains(b.Id))
-                            {
-                                b.IsMined = true;
-                                continue;
-                            }
-                            if(benchConstraint > 0 && ((countFromFirstProcessBlock == benchConstraint) || (includedBlockCount == (Period - periodMinedLast) * benchConstraint)))
+                            if(benchConstraint > 0 && ((countFromFirstProcessBlock == benchConstraint) || (includedBlockCount == noOfBlocksToInclude)))
                             {
                                 break;
                             }
@@ -421,7 +418,6 @@ namespace blockoptimiser.Services.LP
         }
         public void ProcessMinedBlocks()
         {
-            LastPeriodMinedBlocks = new Dictionary<int, List<long>>();
             SchedulerResultDataAccess schedulerResultDataAccess = new SchedulerResultDataAccess();
             foreach(Model model in models)
             {
@@ -434,6 +430,7 @@ namespace blockoptimiser.Services.LP
                         benchConstraint = benchLimit.Value;
                     }
                 }
+                Dictionary<int, Dictionary<int, Dictionary<int, Block>>> modelBlocks = Blocks[model.Id];
                 List<long> lastYearMinedBlockIds = new List<long>();
                 Dictionary<int, Dictionary<int, Dictionary<int, MinedBlock>>> minedBlockMap = schedulerResultDataAccess.GetMinedBlocks(ProjectId, model.Id, this.Year);
                 List<MinedBlock> updatedBlocks = new List<MinedBlock>();
@@ -443,12 +440,12 @@ namespace blockoptimiser.Services.LP
                     {
                         Dictionary<int, MinedBlock> zblocks = minedBlockMap[i][j];
                         List<int> keys = GetSortedList(zblocks.Keys.ToList());
-                        //keys.Reverse();
+                        
                         for(int count = 0; count < keys.Count; count ++ )
                         {
                             int k = keys.ElementAt(count);
                             MinedBlock minedBlock = zblocks[k];
-                            lastYearMinedBlockIds.Add(minedBlock.Bid);
+                            modelBlocks[i][j][k].IsMined = true;
                             String key = model.Id + "-" + minedBlock.I + "-" + minedBlock.J;
                             if (BenchesMinedinPeriod.ContainsKey(key))
                             {
@@ -458,7 +455,15 @@ namespace blockoptimiser.Services.LP
                             {
                                 BenchesMinedinPeriod.Add(key, Period);
                             }
-                            if(benchConstraint > 0 )
+                            if (BenchesMinedCount.ContainsKey(key))
+                            {
+                                BenchesMinedCount[key] = BenchesMinedCount[key] + 1;
+                            }
+                            else
+                            {
+                                BenchesMinedCount.Add(key, 1);
+                            }
+                            if (benchConstraint > 0 )
                             {
                                 int factor = count / benchConstraint;
                                 minedBlock.Year = minedBlock.Year - factor;
@@ -469,7 +474,6 @@ namespace blockoptimiser.Services.LP
                     }
                 }
                 schedulerResultDataAccess.UpdateYear(ProjectId, updatedBlocks);
-                LastPeriodMinedBlocks.Add(model.Id, lastYearMinedBlockIds);
             }          
         } 
 
