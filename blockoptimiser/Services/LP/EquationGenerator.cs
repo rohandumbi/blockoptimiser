@@ -118,51 +118,6 @@ namespace blockoptimiser.Services.LP
             List<Model> models = context.GetModels();
             foreach(Model model in models)
             {
-                decimal xinc = 0, yinc = 0, zinc = 0, max_dim = 0;
-                decimal xm = 0, ym = 0, zm = 0;
-                List<ModelDimension> modelDimensions = context.GetModelDimension(model.Id);
-                foreach(ModelDimension dimension in modelDimensions)
-                {
-                    if (dimension.Type.Equals("Origin"))
-                    {
-                        xm = dimension.XDim;
-                        ym = dimension.YDim;
-                        zm = dimension.ZDim;
-                    }
-                    else if (dimension.Type.Equals("Dimensions"))
-                    {
-                        xinc = dimension.XDim;
-                        yinc = dimension.YDim;
-                        zinc = dimension.ZDim;
-                        if(xinc > yinc)
-                        {
-                            max_dim = xinc;
-                        } else
-                        {
-                            max_dim = yinc;
-                        }
-                    }
-                }
-                
-                Geotech geotech = context.GetGeotechByModel(model.Id);
-                String selectstr = "max ( ";
-                if (!geotech.UseScript)
-                {
-                    String columnName = context.GetColumnNameById(geotech.Id, model.Id);
-                    if(columnName == null)
-                    {
-                        throw new Exception("Please check your geotech configuration.");
-                    }
-                    selectstr = selectstr +  context.GetColumnNameById(geotech.Id, model.Id) + ") as angle";
-                } else
-                {
-                    selectstr = selectstr + geotech.Script + ") as angle";
-                }
-
-                double max_ira = context.GetIRA(selectstr, model.Id) * Math.PI / 180; ;
-
-                int nbenches = (int)Math.Ceiling(max_dim / (zinc / (decimal)Math.Tan(max_ira))) * 2;
-
                 Dictionary<int, Dictionary<int, Dictionary<int, Block>>> blocks = context.GetBlocks(model.Id);
                 foreach (int ii in blocks.Keys)
                 {
@@ -176,62 +131,41 @@ namespace blockoptimiser.Services.LP
                             decimal xorth = (decimal)b.data["Xortho"];
                             decimal yorth = (decimal)b.data["Yortho"];
                             decimal tonneswt = context.GetTonnesWtForBlock(b);
-
-
-                            for (int k = 1; k <= nbenches; k++)
+                            List<Block> dependentBlocks = b.DependentBlocks;
+                            foreach(Block ub in dependentBlocks)
                             {
-                                decimal dist = k* zinc / (decimal)Math.Tan(max_ira);
-                                int imin = (int)Math.Round((xorth - dist + xinc - xm) / xinc);
-                                int imax = (int)Math.Round((xorth + dist + xinc - xm) / xinc - 1);
-                                int jmin = (int)Math.Round((yorth - dist + yinc - ym) / yinc);
-                                int jmax = (int)Math.Round((yorth + dist + yinc - ym) / yinc - 1);
-                                if (imin <= 0) imin = 1;
-                                if (jmin <= 0) jmin = 1;
-                                //Console.WriteLine("Block :" + b.Id + " imin: " + imin + " imax: " + imax + " jmin: " + jmin + " jmax: " + jmax + " nbneches:" + nbenches);
-                                for (int i = imin; i <= imax; i++)
+                                if (!context.IsValid(ub, model.Id)) continue;
+
+                                decimal ubtonneswt = context.GetTonnesWtForBlock(ub);
+                                if (ubtonneswt == 0) continue;
+                                decimal ratio = tonneswt / ubtonneswt;
+                                ratio = RoundOff(ratio);
+                                if (b.Processes != null)
                                 {
-                                    for (int j = jmin; j <= jmax; j++)
+                                    foreach (Process process in b.Processes)
                                     {
-                                        if(!blocks.ContainsKey(i) || !blocks[i].ContainsKey(j) || !blocks[i][j].ContainsKey(kk+ k))
-                                        {
-                                            continue;
-                                        }
-                                        Block ub = blocks[i][j][kk + k];
+                                        Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
+                                    }
 
-                                        if (!context.IsValid(ub, model.Id)) continue;
-
-                                        decimal ubtonneswt = context.GetTonnesWtForBlock(ub);
-                                        if (ubtonneswt == 0) continue;
-                                        decimal ratio = tonneswt / ubtonneswt;
-                                        ratio = RoundOff(ratio);
-                                        if (b.Processes != null)
-                                        {
-                                            foreach (Process process in b.Processes)
-                                            {
-                                                Write(" + B" + b.Id + "p" + process.ProcessNumber + " + B" + b.Id + "s1", sw);
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            Write(" + B" + b.Id + "w1", sw);
-                                        }
-                                        if (ub.Processes != null)
-                                        {
-                                            foreach (Process process in ub.Processes)
-                                            {
-                                                Write(" - " + ratio + "B" + ub.Id + "p" + process.ProcessNumber + " - " + ratio + "B" + ub.Id + "s1", sw);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Write(" - " + ratio + "B" + ub.Id + "w1", sw);
-                                        }
-
-                                        Write(" <= 0", sw);
-                                        Write("", sw);
+                                }
+                                else
+                                {
+                                    Write(" + B" + b.Id + "w1", sw);
+                                }
+                                if (ub.Processes != null)
+                                {
+                                    foreach (Process process in ub.Processes)
+                                    {
+                                        Write(" - " + ratio + "B" + ub.Id + "p" + process.ProcessNumber + " - " + ratio + "B" + ub.Id + "s1", sw);
                                     }
                                 }
+                                else
+                                {
+                                    Write(" - " + ratio + "B" + ub.Id + "w1", sw);
+                                }
+
+                                Write(" <= 0", sw);
+                                Write("", sw);
                             }
                         }
                     }
