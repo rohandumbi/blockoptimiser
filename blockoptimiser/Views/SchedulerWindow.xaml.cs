@@ -83,7 +83,7 @@ namespace blockoptimiser.Views
                     EndYear = EndYearInt,
                     DiscountFactor = DiscountFactor
                 };
-                new CplexSolver().Solve(runconfig);
+                //new CplexSolver().Solve(runconfig);
                 this.Close();
             }
             else

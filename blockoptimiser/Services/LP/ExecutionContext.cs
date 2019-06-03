@@ -242,28 +242,33 @@ namespace blockoptimiser.Services.LP
                         {
                             benchesMined = BenchesMinedCount[benchkey];
                         }
-                        if (this.Period > 1 && periodMinedLast == 0)
+                        if (periodMinedLast == 0)
                         {
                             periodMinedLast = 1;
                         }
 
                         int benchesToCheck = (Period - periodMinedLast) * benchConstraint;
                         int noOfBlocksToInclude = benchesToCheck - benchesMined + benchConstraint;
+                        bool processBlockPresent = false;
                         foreach (int k in keys)
                         {
                             Block b = zblocks[k];
                             if (b.IsMined) continue;
                             if(benchConstraint > 0 && ((countFromFirstProcessBlock == benchConstraint) || (includedBlockCount == noOfBlocksToInclude)))
                             {
-                                break;
+                                b.IsIncluded = false;
                             }
-                            b.IsIncluded = true;
-                            includedBlockCount++;
-                            if (b.IsProcessBlock && countFromFirstProcessBlock == 0)
+                            else
                             {
-                                countFromFirstProcessBlock++;
+                                b.IsIncluded = true;
+                                includedBlockCount++;
+                                if (b.IsProcessBlock && countFromFirstProcessBlock == 0)
+                                {
+                                    processBlockPresent = true;
+                                }
+                                if (processBlockPresent) countFromFirstProcessBlock++;
                             }
-                            if (countFromFirstProcessBlock > 0) countFromFirstProcessBlock++;
+
                         }
                     }
                 }
