@@ -132,7 +132,8 @@ namespace blockoptimiser.Services.LP
                             decimal yorth = (decimal)b.data["Yortho"];
                             decimal tonneswt = context.GetTonnesWtForBlock(b);
                             List<Block> dependentBlocks = b.DependentBlocks;
-                            foreach(Block ub in dependentBlocks)
+                            if (dependentBlocks == null) continue;
+                            foreach (Block ub in dependentBlocks)
                             {
                                 if (!context.IsValid(ub, model.Id)) continue;
 
