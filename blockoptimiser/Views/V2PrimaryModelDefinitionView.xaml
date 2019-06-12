@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="10">
+        <Grid Margin="10 0 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -23,7 +23,7 @@
             </Grid.ColumnDefinitions>
             <GroupBox x:Name="groupBox" 
                   Header="Model Data Import" 
-                  Grid.Row="1"
+                  Grid.Row="0"
                   Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -61,12 +61,14 @@
                 </Grid>
             </GroupBox>
 
-            <Label Content="Data Structure" Grid.Row="2" FontWeight="Bold"></Label>
+            <Label Content="Data Structure" Grid.Row="1" FontWeight="Bold"></Label>
             <DataGrid ItemsSource="{Binding Fields}" 
-                      Grid.Row="3" 
+                      Grid.Row="2" 
                       Grid.Column="0" 
-                      CanUserAddRows="False" 
-                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False"
+                      GridLinesVisibility="All"
+                      AutoGenerateColumns="False"
+                      AlternatingRowBackground="{DynamicResource GrayBrush10}"
                       Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" IsReadOnly="True" />
@@ -108,12 +110,14 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Label Content="Required Fields" Grid.Row="2" Grid.Column="2" FontWeight="Bold"></Label>
+            <Label Content="Required Fields" Grid.Row="1" Grid.Column="2" FontWeight="Bold"></Label>
             <DataGrid ItemsSource="{Binding RequiredFieldMappings}"
-                      Grid.Row="3" 
+                      Grid.Row="2" 
                       Grid.Column="1"
+                      GridLinesVisibility="All"
                       CanUserAddRows="False"
                       AutoGenerateColumns="False"
+                      AlternatingRowBackground="{DynamicResource GrayBrush10}"
                       Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" IsReadOnly="True" />
@@ -137,12 +141,14 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Label Content="Block Dimensions" Grid.Row="4" FontWeight="Bold"></Label>
+            <Label Content="Block Dimensions" Grid.Row="3" FontWeight="Bold"></Label>
             <DataGrid ItemsSource="{Binding ModelDimensions}"
-                      Grid.Row="5" 
+                      Grid.Row="4"
+                      GridLinesVisibility="All"
                       Grid.Column="0" 
                       CanUserAddRows="False"
-                      AutoGenerateColumns="False" 
+                      AutoGenerateColumns="False"
+                      AlternatingRowBackground="{DynamicResource GrayBrush10}"
                       Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}" IsReadOnly="True"/>

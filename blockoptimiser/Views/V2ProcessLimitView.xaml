@@ -57,7 +57,8 @@
                    Margin="5" 
                    ItemsSource="{Binding ProcessLimits}"
                    attachedBehaviors:DataGridColumnsBehavior.BindableColumns="{Binding ProcessLimitColumns}"
-                   CanUserAddRows="False" 
+                   CanUserAddRows="False"
+                   GridLinesVisibility="All"
                    AutoGenerateColumns="False"
                    SelectionUnit="FullRow">
             <DataGrid.Style>

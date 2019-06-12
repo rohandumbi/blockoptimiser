@@ -58,7 +58,8 @@
                    x:Name="Projects" 
                    Margin="5" 
                    ItemsSource="{Binding BenchLimits}" 
-                   CanUserAddRows="False"  
+                   CanUserAddRows="False"
+                   GridLinesVisibility="All"
                    AutoGenerateColumns="False">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">

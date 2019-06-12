@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid  Margin="10">
+        <Grid Margin="10 0 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -22,7 +22,7 @@
             </Grid.ColumnDefinitions>
             <GroupBox x:Name="groupBox" 
                   Header="Model Data Import" 
-                  Grid.Row="1"
+                  Grid.Row="0"
                   Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -59,11 +59,13 @@
                             Margin="10 0 5 10"/>
                 </Grid>
             </GroupBox>
-            <Label Grid.Row="2" Content="Field Mapping" FontWeight="Bold"/>
+            <Label Grid.Row="1" Content="Field Mapping" FontWeight="Bold"/>
             <DataGrid ItemsSource="{Binding CSVFieldMappings}"
-                      Grid.Row="3" 
+                      Grid.Row="2" 
                       CanUserAddRows="False" 
-                      AutoGenerateColumns="False" 
+                      AutoGenerateColumns="False"
+                      AlternatingRowBackground="{DynamicResource GrayBrush10}"
+                      GridLinesVisibility="All"
                       Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Primary Field" Binding="{Binding Path=PrimayModelColumnName}" IsReadOnly="True"/>
@@ -87,12 +89,14 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Label Grid.Row="2" Grid.Column="1" Content="Block Dimensions" FontWeight="Bold"/>
+            <Label Grid.Row="1" Grid.Column="1" Content="Block Dimensions" FontWeight="Bold"/>
             <DataGrid ItemsSource="{Binding ModelDimensions}"
-                      Grid.Row="3" 
+                      Grid.Row="2" 
                       Grid.Column="1" 
                       CanUserAddRows="False"
                       AutoGenerateColumns="False"
+                      AlternatingRowBackground="{DynamicResource GrayBrush10}"
+                      GridLinesVisibility="All"
                       Margin="10">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}" IsReadOnly="True"/>
