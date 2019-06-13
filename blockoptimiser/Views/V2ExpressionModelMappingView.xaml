@@ -15,15 +15,22 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ItemsControl ItemsSource="{Binding ModelMapping}" Grid.Row="0">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal"  Margin="10 0 5 10">
-                        <TextBlock Text="{Binding ModelName}" Margin="10 0 5 10"/>
-                        <TextBox Text="{Binding ExprString}" Width="250px" LostFocus="ExpressionChanged"></TextBox>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer x:Name="Wrapper" Grid.Row="0">
+            <ItemsControl ItemsSource="{Binding ModelMapping}" 
+                          Margin="5">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding ModelName}" Grid.Column="0" Margin="5"/>
+                            <TextBox Text="{Binding ExprString}" Grid.Column="1" Margin="5" Width="250px" LostFocus="ExpressionChanged"></TextBox>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

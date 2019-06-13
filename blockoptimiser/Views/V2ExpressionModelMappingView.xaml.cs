@@ -35,6 +35,7 @@ namespace blockoptimiser.Views
             if (this.ActualWidth > 0) //ensuring control is in screen
             {
                 this.DataContext = new V2ExpressionModelMappingViewModel(_expresion);
+                Wrapper.MaxHeight = this.ActualHeight - 20;
             }
         }
 

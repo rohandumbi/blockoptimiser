@@ -72,37 +72,5 @@
                 </ItemsControl>
             </WrapPanel>
         </ScrollViewer>
-
-        <!--<ItemsControl x:Name="Geotechs" Grid.Row="1" ItemsSource="{Binding Geotechs}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <GroupBox x:Name="groupBox" 
-                              Header="{Binding ModelName}" 
-                              Width="300"
-                              Grid.Row="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10px" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="LabelAssetModel" Grid.Row="1" Grid.Column="1" Margin="0 0 5 10" Text="Geotech Row:"/>
-                            <ComboBox ItemsSource="{Binding Path=AvailableFields}"  SelectedItem="{Binding Path=FieldName}" SelectedValue="{Binding Path=FieldName}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="0 0 5 10" Width="150" >
-                            </ComboBox>
-                            <TextBlock x:Name="LabelScript" Grid.Row="2" Grid.Column="1" Margin="0 0 5 10" Text="Script:"/>
-                            <TextBox x:Name="TextScript" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" AcceptsReturn="True" Height="100" Width="150" Margin="0 0 5 10" Text="{Binding Script}"/>
-                            <CheckBox x:Name="CheckBoxUseScript" Grid.Row="3" Grid.Column="1" Margin="10 0 5 10" IsChecked="{Binding Path=UseScript, Mode=TwoWay}">Use Script</CheckBox>
-                            <Button x:Name="ButtonUpdate" Click="Update"  Grid.Row="3" Grid.Column="2" Width="75" Margin="10 0 5 10">Save</Button>
-                        </Grid>
-                    </GroupBox>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
     </Grid>
 </UserControl>
