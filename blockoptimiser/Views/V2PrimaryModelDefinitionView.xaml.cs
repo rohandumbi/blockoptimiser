@@ -33,6 +33,7 @@ namespace blockoptimiser.Views
             if (this.ActualWidth > 0) //ensuring control is in screen
             {
                 this.DataContext = new PrimaryModelDefinitionViewModel();
+                CSVDataGrid.MaxHeight = (this.ActualHeight - groupBox.ActualHeight) - 50;
             }
         }
 

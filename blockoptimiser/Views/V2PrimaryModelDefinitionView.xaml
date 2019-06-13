@@ -9,10 +9,6 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="10 0 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -60,103 +56,117 @@
                             Content="Import"/>
                 </Grid>
             </GroupBox>
-
-            <Label Content="Data Structure" Grid.Row="1" FontWeight="Bold"></Label>
-            <DataGrid ItemsSource="{Binding Fields}" 
-                      Grid.Row="2" 
+            <Grid Grid.Row="1" 
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Content="Data Structure" Grid.Row="0" FontWeight="Bold"></Label>
+                <DataGrid x:Name="CSVDataGrid"
+                      ItemsSource="{Binding Fields}" 
+                      Grid.Row="1" 
                       Grid.Column="0" 
                       CanUserAddRows="False"
                       GridLinesVisibility="All"
                       AutoGenerateColumns="False"
                       AlternatingRowBackground="{DynamicResource GrayBrush10}"
                       Margin="10">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" IsReadOnly="True" />
-                    <DataGridTemplateColumn Header="Data type">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Path=DataTypeName}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox ItemsSource="{Binding DataTypeUnitItems}" SelectedItem="{Binding SelectedDataTypeUnitItem}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Associated Field">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Path=AssociatedFieldName}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox ItemsSource="{Binding AssocitedFieldUnitItems}" SelectedItem="{Binding SelectedAssocitedFieldUnitItem}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <Label Content="Required Fields" Grid.Row="1" Grid.Column="2" FontWeight="Bold"></Label>
-            <DataGrid ItemsSource="{Binding RequiredFieldMappings}"
-                      Grid.Row="2" 
-                      Grid.Column="1"
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Field" Binding="{Binding Path=Name}" IsReadOnly="True" />
+                        <DataGridTemplateColumn Header="Data type">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=DataTypeName}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataTypeUnitItems}" SelectedItem="{Binding SelectedDataTypeUnitItem}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Associated Field">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=AssociatedFieldName}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding AssocitedFieldUnitItems}" SelectedItem="{Binding SelectedAssocitedFieldUnitItem}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <Grid Grid.Row="1" 
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Content="Required Fields" Grid.Row="0" Grid.Column="2" FontWeight="Bold"></Label>
+                <DataGrid ItemsSource="{Binding RequiredFieldMappings}"
+                      Grid.Row="1" 
                       GridLinesVisibility="All"
                       CanUserAddRows="False"
                       AutoGenerateColumns="False"
                       AlternatingRowBackground="{DynamicResource GrayBrush10}"
                       Margin="10">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" IsReadOnly="True" />
-                    <DataGridTemplateColumn Header="Mapping">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Path=MappedColumnName}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox ItemsSource="{Binding Path=mappingOptions}" SelectedItem="{Binding Path=MappedColumnName}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding}" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <Label Content="Block Dimensions" Grid.Row="3" FontWeight="Bold"></Label>
-            <DataGrid ItemsSource="{Binding ModelDimensions}"
-                      Grid.Row="4"
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Field" Binding="{Binding Path=RequiredFieldName}" IsReadOnly="True" />
+                        <DataGridTemplateColumn Header="Mapping">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=MappedColumnName}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Path=mappingOptions}" SelectedItem="{Binding Path=MappedColumnName}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Label Content="Block Dimensions" Grid.Row="2" FontWeight="Bold"></Label>
+                <DataGrid ItemsSource="{Binding ModelDimensions}"
+                      Grid.Row="3"
                       GridLinesVisibility="All"
-                      Grid.Column="0" 
                       CanUserAddRows="False"
                       AutoGenerateColumns="False"
                       AlternatingRowBackground="{DynamicResource GrayBrush10}"
                       Margin="10">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
-                    <DataGridTextColumn Header="Y" Binding="{Binding Path=YDim}" />
-                    <DataGridTextColumn Header="Z" Binding="{Binding Path=ZDim}" />
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Type}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="X" Binding="{Binding Path=XDim}" />
+                        <DataGridTextColumn Header="Y" Binding="{Binding Path=YDim}" />
+                        <DataGridTextColumn Header="Z" Binding="{Binding Path=ZDim}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
     </ScrollViewer>
 </UserControl>
