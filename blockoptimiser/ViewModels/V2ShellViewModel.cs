@@ -109,6 +109,15 @@ namespace blockoptimiser.ViewModels
             }
         }
 
+        public void ExportProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (Context.ProjectId > 0)
+            {
+                MessageBox.Show("TODO: Export project.");
+            }
+        }
+
+
         public void DeleteProject(object e, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (Context.ProjectId > 0)
