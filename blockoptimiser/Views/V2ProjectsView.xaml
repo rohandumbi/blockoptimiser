@@ -15,7 +15,7 @@
                 <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
                 <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
                 <Setter Property="TitleFontSize" Value="14" />
-                <Setter Property="Width" Value="300" />
+                <Setter Property="Width" Value="280" />
             </Style>
 
             <Style x:Key="SmallTileStyle" TargetType="Controls:Tile">
@@ -33,27 +33,26 @@
                   VerticalScrollBarVisibility="Auto">
         <Grid Background="{DynamicResource AccentColorBrush4}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="430*" />
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="83*" />
-                <RowDefinition Height="259*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="1"
-                       VerticalAlignment="Center"
+            <TextBlock VerticalAlignment="Center"
                        FontFamily="Segoe UI"
                        FontSize="30"
+                       Margin="20 0 0 0"
                        FontWeight="Light"
                        Foreground="{DynamicResource BlackBrush}"
                        Text="Available Projects" />
 
-            <WrapPanel Grid.Row="1"
-                       Grid.Column="1"
-                       Width="940"
+            <WrapPanel x:Name="Wrapper"
+                       Grid.Row="1"
+                       Margin="20"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Orientation="Horizontal">
+                       Orientation="Vertical">
 
                 <ItemsControl x:Name="Projects">
                     <ItemsControl.ItemsPanel>
@@ -80,6 +79,7 @@
                 </ItemsControl>
                 <Controls:Tile Title="Add project"
                                VerticalTitleAlignment="Top"
+                               HorizontalAlignment="Left"
                                Background="#1E90FF"
                                x:Name="AddProject"
                                Style="{StaticResource SmallTileStyle}">

@@ -23,11 +23,12 @@ namespace blockoptimiser.Views
         public V2ProjectsView()
         {
             InitializeComponent();
+            Loaded += Component_loaded;
         }
 
-        private void Add_Project(object sender, RoutedEventArgs e)
+        private void Component_loaded(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Add new project");
+            Wrapper.Width = this.ActualWidth - 60;
         }
     }
 }

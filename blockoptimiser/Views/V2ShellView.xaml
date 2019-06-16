@@ -4,8 +4,8 @@
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:cal="http://www.caliburnproject.org"
                       Title="Block Optimizer"
-                      Height="600"
-                      Width="800">
+                      WindowState="Maximized"
+                      WindowStyle="None">
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout Header="Add project"

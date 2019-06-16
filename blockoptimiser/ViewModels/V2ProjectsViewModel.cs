@@ -90,27 +90,27 @@ namespace blockoptimiser.ViewModels
         {
             if (index == 1)
             {
-                return "Teal";
+                return "#ef767a";
             }
             else if (index == 2)
             {
-                return "DimGray";
+                return "#456990";
             }
             else if (index == 3)
             {
-                return "#D2691E";
+                return "#49beaa";
             }
             else if (index == 4)
             {
-                return "#FF842D";
+                return "#49dcb1";
             }
             else if (index == 5)
             {
-                return "#1E90FF";
+                return "#eeb868";
             }
             else if (index == 6)
             {
-                return "Green";
+                return "Gray";
             }
             else return "";
         }

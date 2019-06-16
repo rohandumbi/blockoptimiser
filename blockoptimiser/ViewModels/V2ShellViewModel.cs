@@ -94,7 +94,6 @@ namespace blockoptimiser.ViewModels
         {
             if (Context.ProjectId > 0)
             {
-                //ActivateItem(new AppViewModel());
                 ActivateItem(new V2AppViewModel());
                 IsShowFlyoutOpen = false;
                 NotifyOfPropertyChange("IsShowFlyoutOpen");
@@ -113,7 +112,7 @@ namespace blockoptimiser.ViewModels
         {
             if (Context.ProjectId > 0)
             {
-                MessageBox.Show("TODO: Export project.");
+                Context.ExportProject();
             }
         }
 
@@ -131,8 +130,6 @@ namespace blockoptimiser.ViewModels
             String EventName = message as String;
             if (EventName == "loaded:project")
             {
-                //ActivateItem(new MainViewModel());
-                //ActivateItem(new AppViewModel());
                 if (isNewApp == true)
                 {
                     ActivateItem(new V2AppViewModel());
