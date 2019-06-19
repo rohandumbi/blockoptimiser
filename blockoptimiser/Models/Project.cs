@@ -14,5 +14,10 @@ namespace blockoptimiser.Models
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public String BackgroundColor { get; set; }
+
+        public override string ToString()
+        {
+            return Name + "," + Description + "," + CreatedDate + "," + ModifiedDate;
+        }
     }
 }

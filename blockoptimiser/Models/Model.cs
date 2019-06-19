@@ -19,5 +19,10 @@ namespace blockoptimiser.Models
         public UnitItem AssociatedUnit {get;set;}
         public String FilterString { get; set; }
         public List<UnitItem> AssociatedUnitItems { get; set; }
+
+        public override string ToString()
+        {
+            return Id + "," + ProjectId + "," + Name + "," + Bearing + "," + HasData + "," + CheckStatus;
+        }
     }
 }
