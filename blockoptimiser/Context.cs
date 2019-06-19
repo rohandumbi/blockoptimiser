@@ -19,6 +19,8 @@ namespace blockoptimiser
             MessageBox.Show("Exporting project: " + Context.ProjectId);
             ExportProjectsTable();
             ExportModelTable();
+            ExportModelDimensionTable();
+            ExportFieldTable();
         }
 
         private static void ExportProjectsTable()
@@ -39,5 +41,24 @@ namespace blockoptimiser
                 Console.WriteLine(model.ToString());
             }
         }
+
+        private static void ExportModelDimensionTable()
+        {
+            //TODO
+        }
+
+        private static void ExportFieldTable()
+        {
+            FieldDataAccess FieldDAO = new FieldDataAccess();
+            List<Field> exportedFields = FieldDAO.GetAll(Context.ProjectId);
+            Console.WriteLine("===============Field Table==============");
+            //TODO: how to handle associated field id
+            foreach (Field field in exportedFields)
+            {
+                Console.WriteLine(field.ToString());
+            }
+        }
+
+
     }
 }

@@ -72,6 +72,11 @@ namespace blockoptimiser.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public override string ToString()
+        {
+            return Id + "," + ProjectId + "," + Name + "," + DataType + "," + AssociatedField;
+        }
+
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
