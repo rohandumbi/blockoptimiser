@@ -47,5 +47,10 @@ namespace blockoptimiser.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        public override string ToString()
+        {
+            return Id + "," + ModelId + "," + Type + "," + XDim + "," + YDim + "," + ZDim;
+        }
     }
 }

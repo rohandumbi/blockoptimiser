@@ -15,6 +15,11 @@ namespace blockoptimiser
         public static int ModelId = -1;
         public static int ScenarioId = -1;
 
+        private static Project exportedProject;
+        private static List<Model> exportedModels;
+        private static List<Field> exportedFields;
+        private static List<ModelDimension> exportedModelDimensions;
+
         public static void ExportProject() {
             MessageBox.Show("Exporting project: " + Context.ProjectId);
             ExportProjectsTable();
@@ -26,7 +31,7 @@ namespace blockoptimiser
         private static void ExportProjectsTable()
         {
             ProjectDataAccess ProjectDAO = new ProjectDataAccess();
-            Project exportedProject = ProjectDAO.Get(Context.ProjectId);
+            exportedProject = ProjectDAO.Get(Context.ProjectId);
             Console.WriteLine("=============Projects Table=============");
             Console.WriteLine(exportedProject.ToString());
         }
@@ -34,7 +39,7 @@ namespace blockoptimiser
         private static void ExportModelTable()
         {
             ModelDataAccess ModelDAO = new ModelDataAccess();
-            List<Model> exportedModels = ModelDAO.GetAll(Context.ProjectId);
+            exportedModels = ModelDAO.GetAll(Context.ProjectId);
             Console.WriteLine("===============Model Table==============");
             foreach (Model model in exportedModels)
             {
@@ -44,13 +49,27 @@ namespace blockoptimiser
 
         private static void ExportModelDimensionTable()
         {
-            //TODO
+            exportedModelDimensions = new List<ModelDimension>();
+            ModelDimensionDataAccess ModelDimensionDAO = new ModelDimensionDataAccess();
+            Console.WriteLine("==========Model Dimension Table========");
+            foreach (Model model in exportedModels)
+            {
+                List<ModelDimension> modelDimensions = ModelDimensionDAO.GetAll(model.Id);
+                foreach (ModelDimension modelDimension in modelDimensions)
+                {
+                    exportedModelDimensions.Add(modelDimension);
+                }
+            }
+            foreach (ModelDimension modelDimension in exportedModelDimensions)
+            {
+                Console.WriteLine(modelDimension.ToString());
+            }
         }
 
         private static void ExportFieldTable()
         {
             FieldDataAccess FieldDAO = new FieldDataAccess();
-            List<Field> exportedFields = FieldDAO.GetAll(Context.ProjectId);
+            exportedFields = FieldDAO.GetAll(Context.ProjectId);
             Console.WriteLine("===============Field Table==============");
             //TODO: how to handle associated field id
             foreach (Field field in exportedFields)
