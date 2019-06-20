@@ -15,5 +15,10 @@ namespace blockoptimiser.Models
         public int FieldId { get; set; }
         public int DataType { get; set; }
         public int AssociatedField { get; set; }
+
+        public override string ToString()
+        {
+            return Id + "," + ModelId + "," + ColumnName + "," + FieldId + "," + DefaultValue;
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace blockoptimiser
         private static List<Model> exportedModels;
         private static List<Field> exportedFields;
         private static List<ModelDimension> exportedModelDimensions;
+        private static List<CsvColumnMapping> exportedCsvColumnMapping;
 
         public static void ExportProject() {
             MessageBox.Show("Exporting project: " + Context.ProjectId);
@@ -26,6 +27,7 @@ namespace blockoptimiser
             ExportModelTable();
             ExportModelDimensionTable();
             ExportFieldTable();
+            ExportCsvColumnMappingTable();
         }
 
         private static void ExportProjectsTable()
@@ -78,6 +80,24 @@ namespace blockoptimiser
             }
         }
 
+        private static void ExportCsvColumnMappingTable()
+        {
+            exportedCsvColumnMapping = new List<CsvColumnMapping>();
+            CsvColumnMappingDataAccess CsvColumnMappingDAO = new CsvColumnMappingDataAccess();
+            Console.WriteLine("========CsvColumn Mapping Table========");
+            foreach (Model model in exportedModels)
+            {
+                List<CsvColumnMapping> columnMappings = CsvColumnMappingDAO.GetAll(model.Id);
+                foreach (CsvColumnMapping columnMapping in columnMappings)
+                {
+                    exportedCsvColumnMapping.Add(columnMapping);
+                }
+            }
+            foreach (CsvColumnMapping csvColumnMapping in exportedCsvColumnMapping)
+            {
+                Console.WriteLine(csvColumnMapping.ToString());
+            }
+        }
 
     }
 }
