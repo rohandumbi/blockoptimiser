@@ -20,6 +20,7 @@ namespace blockoptimiser
         private static List<Field> exportedFields;
         private static List<ModelDimension> exportedModelDimensions;
         private static List<CsvColumnMapping> exportedCsvColumnMapping;
+        private static List<RequiredFieldMapping> exportedRequiredFieldMapping;
 
         public static void ExportProject() {
             MessageBox.Show("Exporting project: " + Context.ProjectId);
@@ -28,6 +29,7 @@ namespace blockoptimiser
             ExportModelDimensionTable();
             ExportFieldTable();
             ExportCsvColumnMappingTable();
+            ExportRequiredFieldMappingTable();
         }
 
         private static void ExportProjectsTable()
@@ -96,6 +98,18 @@ namespace blockoptimiser
             foreach (CsvColumnMapping csvColumnMapping in exportedCsvColumnMapping)
             {
                 Console.WriteLine(csvColumnMapping.ToString());
+            }
+        }
+
+        private static void ExportRequiredFieldMappingTable()
+        {
+            RequiredFieldMappingDataAccess RequiredFieldMappingDAO = new RequiredFieldMappingDataAccess();
+            exportedRequiredFieldMapping = RequiredFieldMappingDAO.GetAll(Context.ProjectId);
+            Console.WriteLine("=========Required Field Table==========");
+            //TODO: how to handle associated field id
+            foreach (RequiredFieldMapping requiredFieldMapping in exportedRequiredFieldMapping)
+            {
+                Console.WriteLine(requiredFieldMapping.ToString());
             }
         }
 

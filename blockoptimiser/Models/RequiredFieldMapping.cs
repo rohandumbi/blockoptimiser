@@ -31,5 +31,10 @@ namespace blockoptimiser.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         public List<String> mappingOptions { get; set; }
+
+        public override string ToString()
+        {
+            return Id + "," + ProjectId + "," + RequiredFieldName + "," + MappedColumnName;
+        }
     }
 }
