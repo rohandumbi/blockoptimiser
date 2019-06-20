@@ -18,5 +18,10 @@ namespace blockoptimiser.Models
         public String Script { get; set; }
         public List<String> AvailableFields { get; set; }
         public String ModelName { get; set; }
+
+        public override string ToString()
+        {
+            return Id + "," + ProjectId + "," + ModelId + "," + Type + "," + FieldId + "," + UseScript + "," + Script;
+        }
     }
 }

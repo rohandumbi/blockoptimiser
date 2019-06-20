@@ -21,6 +21,7 @@ namespace blockoptimiser
         private static List<ModelDimension> exportedModelDimensions;
         private static List<CsvColumnMapping> exportedCsvColumnMapping;
         private static List<RequiredFieldMapping> exportedRequiredFieldMapping;
+        private static List<Geotech> exportedGeotechs;
 
         public static void ExportProject() {
             MessageBox.Show("Exporting project: " + Context.ProjectId);
@@ -30,6 +31,7 @@ namespace blockoptimiser
             ExportFieldTable();
             ExportCsvColumnMappingTable();
             ExportRequiredFieldMappingTable();
+            ExportGeotechTable();
         }
 
         private static void ExportProjectsTable()
@@ -110,6 +112,18 @@ namespace blockoptimiser
             foreach (RequiredFieldMapping requiredFieldMapping in exportedRequiredFieldMapping)
             {
                 Console.WriteLine(requiredFieldMapping.ToString());
+            }
+        }
+
+        private static void ExportGeotechTable()
+        {
+            GeotechDataAccess GeotechDAO = new GeotechDataAccess();
+            exportedGeotechs = GeotechDAO.GetAll(Context.ProjectId);
+            Console.WriteLine("==============Geotech Table============");
+            //TODO: how to handle associated field id
+            foreach (Geotech geotech in exportedGeotechs)
+            {
+                Console.WriteLine(geotech.ToString());
             }
         }
 
